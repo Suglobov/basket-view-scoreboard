@@ -21,6 +21,14 @@ ws.onmessage = (event) => {
             'dataJson.field': dataJson.field,
         });
     }
+
+    if (dataJson.field === 'overtime') {
+        if (dataJson.value < 1) {
+            fields.period.classList.remove('show-overtime');
+        } else {
+            fields.period.classList.add('show-overtime');
+        }
+    }
 };
 
 const fields = {
@@ -33,4 +41,7 @@ const fields = {
     counter24: document.querySelector('.counter24'),
     minutes: document.querySelector('.minutes'),
     seconds: document.querySelector('.seconds'),
+    period: document.querySelector('.period'),
+    quarter: document.querySelector('.quarter'),
+    overtime: document.querySelector('.overtime'),
 };

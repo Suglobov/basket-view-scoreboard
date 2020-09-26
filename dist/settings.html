@@ -98,6 +98,26 @@
                 </div>
             </div>
         </section>
+        <section class="uk-margin-top uk-flex">
+            <div>
+                <label class="uk-form-label">
+                    Четверть
+                    <div class="uk-form-controls">
+                        <input class="uk-input uk-form-width-small quarter" type="number"
+                            data-input-name="quarter" value="1" min="1" max="4">
+                    </div>
+                </label>
+            </div>
+            <div>
+                <label class="uk-form-label">
+                    Овертайм
+                    <div class="uk-form-controls">
+                        <input class="uk-input uk-form-width-small overtime" type="number"
+                            data-input-name="overtime" value="0" min="0">
+                    </div>
+                </label>
+            </div>
+        </section>
         <div class="uk-alert-primary time-message" uk-alert>
             <div class="message-time-running">Время идет</div>
             <div class="message-time-stop">Время <b>Не</b> идет</div>
@@ -129,12 +149,20 @@
                     </label>
                 </div>
                 <div>
-                    <button class="uk-button uk-button-small uk-button-default time-set-10-minute">10 минут</button>
-                    <button class="uk-button uk-button-small uk-button-default time-set-5-minute">5 минут</button>
+                    <button class="uk-button uk-button-small uk-button-default time-set-10-minute">
+                        Выставить 10 минут
+                    </button>
+                    <button class="uk-button uk-button-small uk-button-default time-set-5-minute">
+                        Выставить 5 минут
+                    </button>
                 </div>
                 <div>
-                    <button class="uk-button uk-button-small uk-button-primary start-timer">Старт</button>
-                    <button class="uk-button uk-button-small uk-button-danger stop-timer">Стоп</button>
+                    <button class="uk-button uk-button-small uk-button-primary start-timer">
+                        Старт
+                    </button>
+                    <button class="uk-button uk-button-small uk-button-danger stop-timer">
+                        Пауза
+                    </button>
                 </div>
             </div>
         </section>

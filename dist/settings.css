@@ -12507,3 +12507,9 @@ iframe.uk-cover {
 .time-running .message-time-stop {
   display: none; }
 
+.period.show-overtime .quarter-wrapper {
+  display: none; }
+
+.period:not(.show-overtime) .overtime-wrapper {
+  display: none; }
+

@@ -9,3 +9,17 @@
         display: none;
     }
 }
+
+.period {
+    &.show-overtime {
+        .quarter-wrapper {
+            display: none;
+        }
+    }
+
+    &:not(.show-overtime) {
+        .overtime-wrapper {
+            display: none;
+        }
+    }
+}
