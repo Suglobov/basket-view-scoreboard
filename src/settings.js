@@ -51,15 +51,15 @@ const startTimer = function () {
     timeMessage.classList.add('time-running');
 };
 
-const counter24SecondsInput = document.querySelector('.counter-24-seconds');
+const counter24Input = document.querySelector('.counter-24');
 const minutesInput = document.querySelector('.minutes');
-const secundesInput = document.querySelector('.secundes');
+const secundesInput = document.querySelector('.seconds');
 
 setInterval(() => {
     if (isTimeRunning) {
-        const counterNewValue = Number(counter24SecondsInput.value) - 1;
-        counter24SecondsInput.value = counterNewValue < 0 ? 0 : counterNewValue;
-        counter24SecondsInput.dispatchEvent(new InputEvent('input', { 'bubbles': true, 'cancelable': true }));
+        const counterNewValue = Number(counter24Input.value) - 1;
+        counter24Input.value = counterNewValue < 0 ? 0 : counterNewValue;
+        ws.send(JSON.stringify({ field: 'counter24', value: Number(counter24Input.value) }));
 
         const secundesNewValue = Number(secundesInput.value) - 1;
         if (secundesNewValue < 0) {
@@ -70,6 +70,7 @@ setInterval(() => {
             }
 
             minutesInput.value = minutesNewValue < 0 ? 0 : minutesNewValue;
+            ws.send(JSON.stringify({ field: 'minutes', value: Number(minutesInput.value) }));
         }
 
         secundesInput.value = secundesNewValue < 0 ? 59 : secundesNewValue;
@@ -88,16 +89,21 @@ stopTimerButton.addEventListener('click', function () {
 
 const resetCounter = document.querySelector('.reset-counter');
 resetCounter.addEventListener('click', function () {
-    counter24SecondsInput.value = 24;
+    counter24Input.value = 24;
+    ws.send(JSON.stringify({ field: 'counter24', value: Number(counter24Input.value) }));
 });
 
 const timeSet10Minute = document.querySelector('.time-set-10-minute');
 timeSet10Minute.addEventListener('click', function () {
     minutesInput.value = 10;
     secundesInput.value = 0;
+    ws.send(JSON.stringify({ field: 'minutes', value: Number(minutesInput.value) }));
+    ws.send(JSON.stringify({ field: 'seconds', value: Number(secundesInput.value) }));
 });
 const timeSet5Minute = document.querySelector('.time-set-5-minute');
 timeSet5Minute.addEventListener('click', function () {
     minutesInput.value = 5;
     secundesInput.value = 0;
+    ws.send(JSON.stringify({ field: 'minutes', value: Number(minutesInput.value) }));
+    ws.send(JSON.stringify({ field: 'seconds', value: Number(secundesInput.value) }));
 });

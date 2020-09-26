@@ -13,5 +13,24 @@ ws.onerror = (error) => {
 };
 ws.onmessage = (event) => {
     const dataJson = JSON.parse(event.data);
-    console.log('dataJson', dataJson);
+    if (fields[dataJson.field]) {
+        fields[dataJson.field].textContent = dataJson.value;
+    } else {
+        console.log({
+            'fields[dataJson.field]': fields[dataJson.field],
+            'dataJson.field': dataJson.field,
+        });
+    }
+};
+
+const fields = {
+    teamLeft: document.querySelector('.teamLeft'),
+    teamRight: document.querySelector('.teamRight'),
+    scoreLeft: document.querySelector('.scoreLeft'),
+    scoreRight: document.querySelector('.scoreRight'),
+    folsLeft: document.querySelector('.folsLeft'),
+    folsRight: document.querySelector('.folsRight'),
+    counter24: document.querySelector('.counter24'),
+    minutes: document.querySelector('.minutes'),
+    seconds: document.querySelector('.seconds'),
 };

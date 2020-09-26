@@ -27,12 +27,13 @@ app.get('/settings', function (req, res) {
 webSocketServer.on('connection', (client) => {
     client.on('message', (message) => {
         console.log('message', message);
-        broadcastJson(webSocketServer.clients, message);
+        webSocketServer.clients.forEach((client) => {
+            client.send(message);
+        });
     });
 
-    client.on('close', (message) => {
-        console.log('message', message);
-
+    client.on('close', (close) => {
+        console.log('close', close);
     });
 });
 
@@ -49,4 +50,10 @@ const broadcastJson = (clients, data) => {
     });
 };
 
-
+const broadcast = (clients, data) => {
+    clients.forEach((client) => {
+        if (client.readyState === WebSocket.OPEN) {
+            sendJson(client, data);
+        }
+    });
+};
