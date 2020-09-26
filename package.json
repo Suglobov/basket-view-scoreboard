@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "npx nodemon webServer.js",
+    "server": "npx nodemon webServer.js",
     "watch": "npx webpack --mode development --watch --progress"
   },
   "keywords": [],
