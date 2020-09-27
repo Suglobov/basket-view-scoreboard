@@ -1,12 +1,11 @@
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
     entry: {
         view: './src/view.js',
         settings: './src/settings.js',
-        // uikit: './node_modules/uikit/src/scss/uikit.scss',
-        // mainStyle: './src/style.scss',
     },
     output: {
         path: path.resolve(__dirname, 'dist'),
@@ -19,6 +18,18 @@ module.exports = {
             filename: '[name].css',
             chunkFilename: '[id].css',
             ignoreOrder: false,
+        }),
+        new HtmlWebpackPlugin({
+            title: 'settings',
+            filename: 'settings.html',
+            template: './src/settings.html',
+            chunks: ['settings'],
+        }),
+        new HtmlWebpackPlugin({
+            title: 'view',
+            filename: 'index.html',
+            template: './src/index.html',
+            chunks: ['view'],
         }),
     ],
     module: {
@@ -39,6 +50,17 @@ module.exports = {
                     'css-loader',
                     'sass-loader',
                 ],
+            },
+            {
+                test: /.*/i,
+                include: [
+                    path.resolve(__dirname, 'src/fonts'),
+                ],
+                loader: 'file-loader',
+                options: {
+                    name: '[name].[ext]',
+                    outputPath: './fonts/'
+                },
             },
         ],
     },

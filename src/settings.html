@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>settings</title>
+    <link rel="stylesheet" href="/settings.css">
+</head>
+
+<body>
+    <div class="uk-container uk-margin-large-top listen-container">
+        <h1 class="uk-text-center">Настройки для отображения</h1>
+
+        <section class="uk-grid uk-child-width-1-2" uk-grid>
+            <div>
+                <div class="uk-margin">
+                    <label class="uk-form-label">
+                        Название левой команды
+                        <div class="uk-form-controls">
+                            <input class="uk-input" type="text" data-input-name="teamLeft">
+                        </div>
+                    </label>
+                </div>
+            </div>
+            <div>
+                <div class="uk-margin">
+                    <label class="uk-form-label">
+                        Название правой команды
+                        <div class="uk-form-controls">
+                            <input class="uk-input" type="text" data-input-name="teamRight">
+                        </div>
+                    </label>
+                </div>
+            </div>
+        </section>
+        <section class="uk-grid uk-child-width-1-2" uk-grid>
+            <div>
+                <div class="uk-margin">
+                    <label class="uk-form-label">
+                        Счет левой команды
+                        <div class="uk-form-controls">
+                            <input class="uk-input score-left" type="number"
+                                data-input-name="scoreLeft" value="0" min="0">
+                        </div>
+                    </label>
+                    <div>
+                        <button class="uk-button uk-button-small uk-button-default score-add"
+                            data-score-add="1" data-direction="left">1</button>
+                        <button class="uk-button uk-button-small uk-button-default score-add"
+                            data-score-add="2" data-direction="left">2</button>
+                        <button class="uk-button uk-button-small uk-button-default score-add"
+                            data-score-add="3" data-direction="left">3</button>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="uk-margin">
+                    <label class="uk-form-label">
+                        Счет правой команды
+                        <div class="uk-form-controls">
+                            <input class="uk-input score-right" type="number"
+                                data-input-name="scoreRight" value="0" min="0">
+                        </div>
+                    </label>
+                    <div>
+                        <button class="uk-button uk-button-small uk-button-default score-add"
+                            data-score-add="1" data-direction="right">1</button>
+                        <button class="uk-button uk-button-small uk-button-default score-add"
+                            data-score-add="2" data-direction="right">2</button>
+                        <button class="uk-button uk-button-small uk-button-default score-add"
+                            data-score-add="3" data-direction="right">3</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="uk-grid uk-child-width-1-2" uk-grid>
+            <div>
+                <div class="uk-margin">
+                    <label class="uk-form-label">
+                        Фолы левой команды
+                        <div class="uk-form-controls">
+                            <input class="uk-input" type="number"
+                                data-input-name="folsLeft" value="0" min="0">
+                        </div>
+                    </label>
+                </div>
+            </div>
+            <div>
+                <div class="uk-margin">
+                    <label class="uk-form-label">
+                        Фолы правой команды
+                        <div class="uk-form-controls">
+                            <input class="uk-input" type="number"
+                                data-input-name="folsRight" value="0" min="0">
+                        </div>
+                    </label>
+                </div>
+            </div>
+        </section>
+        <section class="uk-margin-top uk-flex">
+            <div>
+                <label class="uk-form-label">
+                    Четверть
+                    <div class="uk-form-controls">
+                        <input class="uk-input uk-form-width-small quarter" type="number"
+                            data-input-name="quarter" value="1" min="1" max="4">
+                    </div>
+                </label>
+            </div>
+            <div>
+                <label class="uk-form-label">
+                    Овертайм
+                    <div class="uk-form-controls">
+                        <input class="uk-input uk-form-width-small overtime" type="number"
+                            data-input-name="overtime" value="0" min="0">
+                    </div>
+                </label>
+            </div>
+        </section>
+        <div class="uk-alert-primary time-message" uk-alert>
+            <div class="message-time-running">Время идет</div>
+            <div class="message-time-stop">Время <b>Не</b> идет</div>
+        </div>
+        <section class="uk-margin-top">
+            <div class="uk-margin">
+                <label class="uk-form-label">
+                    Счетчик 24 секунд
+                    <input class="uk-input uk-form-width-small counter-24" type="number"
+                        data-input-name="counter24" value="24" min="0" max="24">
+                </label>
+                <button class="uk-button uk-button-small uk-button-default reset-counter">Сброс</button>
+            </div>
+            <div class="uk-margin">
+                <div class="uk-flex">
+                    <label class="uk-form-label">
+                        Минуты
+                        <div class="uk-form-controls">
+                            <input class="uk-input uk-form-width-small minutes" type="number"
+                                data-input-name="minutes" value="10" min="0" max="10">
+                        </div>
+                    </label>
+                    <label class="uk-form-label">
+                        Секунды
+                        <div class="uk-form-controls">
+                            <input class="uk-input uk-form-width-small seconds" type="number"
+                                data-input-name="seconds" value="0" min="0" max="59">
+                        </div>
+                    </label>
+                </div>
+                <div>
+                    <button class="uk-button uk-button-small uk-button-default time-set-10-minute">
+                        Выставить 10 минут
+                    </button>
+                    <button class="uk-button uk-button-small uk-button-default time-set-5-minute">
+                        Выставить 5 минут
+                    </button>
+                </div>
+                <div>
+                    <button class="uk-button uk-button-small uk-button-primary start-timer">
+                        Старт
+                    </button>
+                    <button class="uk-button uk-button-small uk-button-danger stop-timer">
+                        Пауза
+                    </button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script src="/settings.js"></script>
+</body>
+
+</html>
