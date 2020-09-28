@@ -1,35 +1,45 @@
-import './common.js';
+import './js/common.js';
+import WebSocketConnect from './components/WebSocketConnect.js';
 
 const HOST = location.origin.replace(/^http/, 'ws');
-const ws = new WebSocket(HOST);
-ws.onopen = () => {
-    console.log('WebSocket connection established');
-};
-ws.onclose = (event) => {
-    console.log('event', event);
-};
-ws.onerror = (error) => {
-    console.log('WebSocket connection error:', error);
-};
-ws.onmessage = (event) => {
-    const dataJson = JSON.parse(event.data);
-    if (fields[dataJson.field]) {
-        fields[dataJson.field].textContent = dataJson.value;
-    } else {
-        console.log({
-            'fields[dataJson.field]': fields[dataJson.field],
-            'dataJson.field': dataJson.field,
-        });
-    }
+const webSocket = new WebSocketConnect({
+    url: HOST,
+    reconnectMsTimeout: 1000,
+    messageCallback: (message) => {
+        console.log('message', message);
+    },
+});
 
-    if (dataJson.field === 'overtime') {
-        if (dataJson.value < 1) {
-            fields.period.classList.remove('show-overtime');
-        } else {
-            fields.period.classList.add('show-overtime');
-        }
-    }
-};
+console.log('webSocket', webSocket);
+// const ws = new WebSocket(HOST);
+// ws.onopen = () => {
+//     console.log('WebSocket connection established');
+// };
+// ws.onclose = (event) => {
+//     console.log('event', event);
+// };
+// ws.onerror = (error) => {
+//     console.log('WebSocket connection error:', error);
+// };
+// ws.onmessage = (event) => {
+//     const dataJson = JSON.parse(event.data);
+//     if (fields[dataJson.field]) {
+//         fields[dataJson.field].textContent = dataJson.value;
+//     } else {
+//         console.log({
+//             'fields[dataJson.field]': fields[dataJson.field],
+//             'dataJson.field': dataJson.field,
+//         });
+//     }
+
+//     if (dataJson.field === 'overtime') {
+//         if (dataJson.value < 1) {
+//             fields.period.classList.remove('show-overtime');
+//         } else {
+//             fields.period.classList.add('show-overtime');
+//         }
+//     }
+// };
 
 const fields = {
     teamLeft: document.querySelector('.teamLeft'),
