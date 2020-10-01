@@ -9,93 +9,81 @@
 </head>
 
 <body>
-    <div class="uk-container uk-margin-large-top listen-container">
-        <h1 class="uk-text-center">Настройки для отображения</h1>
+    <div class="uk-container listen-container">
+        <div class="h2 uk-text-center">Настройки для отображения</div>
 
-        <section class="uk-grid uk-child-width-1-2" uk-grid>
+        <section class="uk-grid uk-child-width-1-2 uk-margin-remove-top border" uk-grid>
             <div>
-                <div class="uk-margin">
-                    <label class="uk-form-label">
-                        Название левой команды
-                        <div class="uk-form-controls">
-                            <input class="uk-input" type="text" data-input-name="teamLeft">
-                        </div>
-                    </label>
+                <label class="uk-form-label">
+                    Название левой команды
+                    <div class="uk-form-controls">
+                        <input class="uk-input" type="text" data-input-name="teamLeft">
+                    </div>
+                </label>
+            </div>
+            <div>
+                <label class="uk-form-label">
+                    Название правой команды
+                    <div class="uk-form-controls">
+                        <input class="uk-input" type="text" data-input-name="teamRight">
+                    </div>
+                </label>
+            </div>
+        </section>
+        <section class="uk-grid uk-child-width-1-2 uk-margin-remove-top border" uk-grid>
+            <div>
+                <label class="uk-form-label">
+                    Счет левой команды
+                    <div class="uk-form-controls">
+                        <input class="uk-input score-left" type="number"
+                            data-input-name="scoreLeft" value="0" min="0">
+                    </div>
+                </label>
+                <div>
+                    <button class="uk-button uk-button-small uk-button-default score-add"
+                        data-score-add="1" data-direction="left">1</button>
+                    <button class="uk-button uk-button-small uk-button-default score-add"
+                        data-score-add="2" data-direction="left">2</button>
+                    <button class="uk-button uk-button-small uk-button-default score-add"
+                        data-score-add="3" data-direction="left">3</button>
                 </div>
             </div>
             <div>
-                <div class="uk-margin">
-                    <label class="uk-form-label">
-                        Название правой команды
-                        <div class="uk-form-controls">
-                            <input class="uk-input" type="text" data-input-name="teamRight">
-                        </div>
-                    </label>
+                <label class="uk-form-label">
+                    Счет правой команды
+                    <div class="uk-form-controls">
+                        <input class="uk-input score-right" type="number"
+                            data-input-name="scoreRight" value="0" min="0">
+                    </div>
+                </label>
+                <div>
+                    <button class="uk-button uk-button-small uk-button-default score-add"
+                        data-score-add="1" data-direction="right">1</button>
+                    <button class="uk-button uk-button-small uk-button-default score-add"
+                        data-score-add="2" data-direction="right">2</button>
+                    <button class="uk-button uk-button-small uk-button-default score-add"
+                        data-score-add="3" data-direction="right">3</button>
                 </div>
             </div>
         </section>
-        <section class="uk-grid uk-child-width-1-2" uk-grid>
+        <section class="uk-grid uk-child-width-1-2 uk-margin-remove-top border" uk-grid>
             <div>
-                <div class="uk-margin">
-                    <label class="uk-form-label">
-                        Счет левой команды
-                        <div class="uk-form-controls">
-                            <input class="uk-input score-left" type="number"
-                                data-input-name="scoreLeft" value="0" min="0">
-                        </div>
-                    </label>
-                    <div>
-                        <button class="uk-button uk-button-small uk-button-default score-add"
-                            data-score-add="1" data-direction="left">1</button>
-                        <button class="uk-button uk-button-small uk-button-default score-add"
-                            data-score-add="2" data-direction="left">2</button>
-                        <button class="uk-button uk-button-small uk-button-default score-add"
-                            data-score-add="3" data-direction="left">3</button>
+                <label class="uk-form-label">
+                    Фолы левой команды
+                    <div class="uk-form-controls">
+                        <input class="uk-input" type="number"
+                            data-input-name="folsLeft" value="0" min="0">
                     </div>
-                </div>
+                </label>
             </div>
             <div>
-                <div class="uk-margin">
-                    <label class="uk-form-label">
-                        Счет правой команды
-                        <div class="uk-form-controls">
-                            <input class="uk-input score-right" type="number"
-                                data-input-name="scoreRight" value="0" min="0">
-                        </div>
-                    </label>
-                    <div>
-                        <button class="uk-button uk-button-small uk-button-default score-add"
-                            data-score-add="1" data-direction="right">1</button>
-                        <button class="uk-button uk-button-small uk-button-default score-add"
-                            data-score-add="2" data-direction="right">2</button>
-                        <button class="uk-button uk-button-small uk-button-default score-add"
-                            data-score-add="3" data-direction="right">3</button>
+                <label class="uk-form-label">
+                    Фолы правой команды
+                    <div class="uk-form-controls">
+                        <input class="uk-input" type="number"
+                            data-input-name="folsRight" value="0" min="0">
                     </div>
-                </div>
-            </div>
-        </section>
-        <section class="uk-grid uk-child-width-1-2" uk-grid>
-            <div>
-                <div class="uk-margin">
-                    <label class="uk-form-label">
-                        Фолы левой команды
-                        <div class="uk-form-controls">
-                            <input class="uk-input" type="number"
-                                data-input-name="folsLeft" value="0" min="0">
-                        </div>
-                    </label>
-                </div>
-            </div>
-            <div>
-                <div class="uk-margin">
-                    <label class="uk-form-label">
-                        Фолы правой команды
-                        <div class="uk-form-controls">
-                            <input class="uk-input" type="number"
-                                data-input-name="folsRight" value="0" min="0">
-                        </div>
-                    </label>
-                </div>
+                </label>
             </div>
         </section>
         <section class="uk-margin-top uk-flex">

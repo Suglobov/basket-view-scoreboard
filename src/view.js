@@ -1,45 +1,32 @@
 import './js/common.js';
 import WebSocketConnect from './components/WebSocketConnect.js';
+import Vue from 'vue/dist/vue.esm.js';
+import timeouts from './components/timeouts.vue';
+
+global.Vue = Vue;
 
 const HOST = location.origin.replace(/^http/, 'ws');
 const webSocket = new WebSocketConnect({
     url: HOST,
     reconnectMsTimeout: 1000,
-    messageCallback: (message) => {
+    messageJSONCallback: (message) => {
         console.log('message', message);
     },
 });
 
-console.log('webSocket', webSocket);
-// const ws = new WebSocket(HOST);
-// ws.onopen = () => {
-//     console.log('WebSocket connection established');
-// };
-// ws.onclose = (event) => {
-//     console.log('event', event);
-// };
-// ws.onerror = (error) => {
-//     console.log('WebSocket connection error:', error);
-// };
-// ws.onmessage = (event) => {
-//     const dataJson = JSON.parse(event.data);
-//     if (fields[dataJson.field]) {
-//         fields[dataJson.field].textContent = dataJson.value;
-//     } else {
-//         console.log({
-//             'fields[dataJson.field]': fields[dataJson.field],
-//             'dataJson.field': dataJson.field,
-//         });
-//     }
+const vueInstance = new Vue({
+    el: '#app',
+    components: {
+        timeouts,
+    },
+    data: {
+        leftTimeoutsCount: 2,
+        leftTimeoutsActives: 1,
+        rightTimeoutsCount: 3,
+        rightTimeoutsActives: 2,
+    },
+});
 
-//     if (dataJson.field === 'overtime') {
-//         if (dataJson.value < 1) {
-//             fields.period.classList.remove('show-overtime');
-//         } else {
-//             fields.period.classList.add('show-overtime');
-//         }
-//     }
-// };
 
 const fields = {
     teamLeft: document.querySelector('.teamLeft'),
@@ -55,3 +42,4 @@ const fields = {
     quarter: document.querySelector('.quarter'),
     overtime: document.querySelector('.overtime'),
 };
+

@@ -5,32 +5,33 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>view</title>
-    <link rel="stylesheet" href="/view.css">
 </head>
 
 <body>
-    <div class="view-container">
-        <div class="d-flex align-items-center justify-content-space-around">
+    <div class="view-container" id="app">
+        <div class="flex-center-around">
             <div class="team team-left">Команда Л</div>
             <div class="time">10:00</div>
             <div class="team team-right">Команда П</div>
         </div>
-        <div class="d-flex align-items-center justify-content-space-around">
-            <div class="score score-left">0</div>
+        <div class="flex-center-around">
+            <div>
+                <div class="score score-left">0</div>
+                <timeouts :count-elements="leftTimeoutsCount" :count-active="leftTimeoutsActives"></timeouts>
+            </div>
             <div class="counter-24">24</div>
-            <div class="score score-right">0</div>
+            <div>
+                <div class="score score-right">0</div>
+                <timeouts :count-elements="rightTimeoutsCount" :count-active="rightTimeoutsActives"></timeouts>
+            </div>
         </div>
-        <div class="d-flex align-items-center justify-content-space-around">
+        <div class="flex-center-around">
             <div class="arrow arrow-right"></div>
         </div>
-        <div class="d-flex align-items-center justify-content-space-around">
-            <div class="timeouts-left">
-                <div class="timeout-text">Осталось таймаутов</div>
-                <div class="timeout">2</div>
-            </div>
+        <div class="flex-center-around">
             <div class="fouls-left">
                 <div class="foul-text">Фолы</div>
-                <div class="foul">0</div>
+                <div class="foul">4</div>
             </div>
             <div class="period-wrapper">
                 <div class="quarter-wrapper">
@@ -45,10 +46,6 @@
             <div class="fouls-right">
                 <div class="foul-text">Фолы</div>
                 <div class="foul">0</div>
-            </div>
-            <div class="timeouts-right">
-                <div class="timeout-text">Осталось таймаутов</div>
-                <div class="timeout">2</div>
             </div>
         </div>
     </div>

@@ -1,6 +1,7 @@
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const VueLoaderPlugin = require('vue-loader/lib/plugin');
 
 module.exports = {
     entry: {
@@ -31,25 +32,65 @@ module.exports = {
             template: './src/index.html',
             chunks: ['view'],
         }),
+        new VueLoaderPlugin(),
     ],
     module: {
         rules: [
             {
-                test: /\.css$/i,
-                use: [
-                    MiniCssExtractPlugin.loader,
-                    // 'style-loader',
-                    'css-loader',
-                ],
+                test: /\.css$/,
+                oneOf: [
+                    {
+                        resourceQuery: /module/,
+                        use: [
+                            'vue-style-loader',
+                            'style-loader',
+                            {
+                                loader: 'css-loader',
+                                options: {
+                                    modules: true,
+                                    localIdentName: '[local]_[hash:base64:5]',
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        use: [
+                            'vue-style-loader',
+                            MiniCssExtractPlugin.loader,
+                            'css-loader',
+                        ]
+                    }
+                ]
             },
             {
                 test: /\.s[ac]ss$/i,
-                use: [
-                    MiniCssExtractPlugin.loader,
-                    // 'style-loader',
-                    'css-loader',
-                    'sass-loader',
-                ],
+                oneOf: [
+                    {
+                        resourceQuery: /module/,
+                        use: [
+                            'vue-style-loader',
+                            'style-loader',
+                            {
+                                loader: 'css-loader',
+                                options: {
+                                    modules: true, localIdentName: '[local]_[hash:base64:5]'
+                                }
+                            },
+                            'sass-loader',
+                        ]
+                    },
+                    {
+                        use: [
+                            'vue-style-loader',
+                            MiniCssExtractPlugin.loader,
+                            'css-loader',
+                            'sass-loader',
+                        ]
+                    }
+                ]
+            },
+            {
+                test: /\.vue$/, loader: 'vue-loader'
             },
             {
                 test: /.*/i,

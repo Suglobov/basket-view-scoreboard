@@ -3,12 +3,12 @@ class WebSocketConnect {
         const {
             url,
             reconnectMsTimeout = false, // int | false
-            messageCallback = () => { },
+            messageJSONCallback = () => { },
         } = options;
 
         this.url = url;
         this.reconnectMsTimeout = reconnectMsTimeout;
-        this.messageCallback = messageCallback;
+        this.messageJSONCallback = messageJSONCallback;
 
         this.ws;
 
@@ -39,7 +39,7 @@ class WebSocketConnect {
         });
 
         this.ws.addEventListener('message', (messageEvent) => {
-            this.messageCallback(JSON.parse(messageEvent.data));
+            this.messageJSONCallback(JSON.parse(messageEvent.data));
         });
     }
 

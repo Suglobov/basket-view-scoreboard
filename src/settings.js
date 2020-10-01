@@ -1,6 +1,15 @@
-import './common.js';
+import './js/common.js';
+import WebSocketConnect from './components/WebSocketConnect.js';
 
 const HOST = location.origin.replace(/^http/, 'ws');
+const webSocket = new WebSocketConnect({
+    url: HOST,
+    reconnectMsTimeout: 1000,
+    messageJSONCallback: (message) => {
+        console.log('message', message);
+    },
+});
+
 const ws = new WebSocket(HOST);
 
 ws.onopen = () => {
