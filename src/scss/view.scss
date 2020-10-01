@@ -12,7 +12,7 @@
     background: #000;
 }
 
-.score {
+.view-score {
     font-size: 100px;
 
     text-align: center;
@@ -20,20 +20,20 @@
     color: #e6e00d;
 }
 
-.counter-24 {
+.view-counter-24 {
     font-size: 150px;
 
     color: #e03838;
 }
 
-.time {
+.view-time {
     font-size: 150px;
 
     color: #e03838;
 }
 
-.period,
-.foul {
+.view-period,
+.view-foul {
     font-size: 150px;
 
     text-align: center;
@@ -41,34 +41,34 @@
     color: #1bda5f;
 }
 
-.period-wrapper {
-    &.show-overtime {
-        .quarter-wrapper {
+.view-period-wrapper {
+    &.view-show-overtime {
+        .view-quarter-wrapper {
             display: none;
         }
     }
 
-    &:not(.show-overtime) {
-        .overtime-wrapper {
+    &:not(.view-show-overtime) {
+        .view-overtime-wrapper {
             display: none;
         }
     }
 }
 
-.team {
+.view-team {
     font-size: 50px;
 
     text-align: center;
 }
 
-.period-text,
-.foul-text {
+.view-period-text,
+.view-foul-text {
     font-size: 30px;
 
     text-align: center;
 }
 
-.arrow {
+.view-arrow {
     position: relative;
 
     width: 50px;
@@ -94,7 +94,7 @@
         border-left-color: transparent;
     }
 
-    &.arrow-right {
+    &.view-arrow-right {
         &:before {
             left: 100%;
 
