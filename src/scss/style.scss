@@ -15,10 +15,54 @@ body {
     justify-content: space-around;
 }
 
+.flex-auto {
+    flex: auto;
+}
+
+
+
 .border {
-    border: 1px solid #000;
+    border: 1px solid rgba($color: #000, $alpha: .2);
 }
 
 @import './settings.scss';
 
 @import './view.scss';
+
+.arrow {
+    position: relative;
+
+    width: 50px;
+    height: 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+
+    background: #e6e00d;
+
+    &:before {
+        position: absolute;
+        top: 50%;
+        right: 100%;
+
+        content: '';
+        transform: translate(0%, -50%);
+
+        border-width: 30px;
+        border-style: solid;
+        border-top-color: transparent;
+        border-right-color: #e6e00d;
+        border-bottom-color: transparent;
+        border-left-color: transparent;
+    }
+
+    &.arrow-right {
+        &:before {
+            left: 100%;
+
+            border-top-color: transparent;
+            border-right-color: transparent;
+            border-bottom-color: transparent;
+            border-left-color: #e6e00d;
+        }
+    }
+}

@@ -1,5 +1,8 @@
 import './js/common.js';
 import WebSocketConnect from './components/WebSocketConnect.js';
+import TimeTicker from './components/TimeTicker.js';
+import TimeObject from './components/TimeObject.js';
+
 
 const HOST = location.origin.replace(/^http/, 'ws');
 const webSocket = new WebSocketConnect({
@@ -10,109 +13,162 @@ const webSocket = new WebSocketConnect({
     },
 });
 
-const ws = new WebSocket(HOST);
+const timeTicker = new TimeTicker({
+    callbackTiс: () => {
+        timeObjectMinusSecond({ timeObject, stopTimer });
+        saveTimeFromObjectToDom({ timeObject, dom });
+        saveCounter24({ timeObject, dom, newValue: Number(dom.counter24.value) - 1 });
+        sendTime({ timeObject, webSocket });
+        webSocket.sendJSON({ name: 'counter24', value: dom.counter24.value });
+    },
+});
+const timeObject = new TimeObject();
 
-ws.onopen = () => {
-    console.log('WebSocket connection established');
-};
-ws.onclose = (event) => {
-    console.log('event', event);
-};
-ws.onerror = (error) => {
-    console.log('WebSocket connection error:', error);
-};
-ws.onmessage = (event) => {
-    console.log('event', JSON.parse(event.data));
+const dom = {
+    listenContainer: document.querySelector('.listen-container'),
+    buttons: document.querySelectorAll('.score-add'),
+    counter24: document.querySelector('.counter-24'),
+    minutes: document.querySelector('.minutes'),
+    seconds: document.querySelector('.seconds'),
+    startTimer: document.querySelector('.start-timer'),
+    stopTimer: document.querySelector('.stop-timer'),
+    set5: document.querySelector('.set-5'),
+    set10: document.querySelector('.set-10'),
+    set14: document.querySelector('.set-14'),
+    set24: document.querySelector('.set-24'),
+    clockControl: document.querySelector('.clock-control'),
+    arrow: document.querySelector('.arrow'),
 };
 
-const listenContainer = document.querySelector('.listen-container');
+const stopTimer = function () {
+    timeTicker.stopTimer();
+    dom.clockControl.classList.remove('time-running');
+};
+const startTimer = function () {
+    timeTicker.startTimer();
+    dom.clockControl.classList.add('time-running');
+};
+
+const timeObjectMinusSecond = ({ timeObject, stopTimer }) => {
+    const fullSeconds = timeObject.getFullSeconds();
+    if (fullSeconds <= 0) {
+        stopTimer();
+        return;
+    }
+    timeObject.setFullSeconds(fullSeconds - 1);
+};
+
+const saveTimeFromDomToObject = ({ timeObject, dom }) => {
+    const minutes = Number(dom.minutes.value);
+    const seconds = Number(dom.seconds.value);
+    timeObject.setTime(minutes, seconds);
+};
+const saveTimeFromObjectToDom = ({ timeObject, dom }) => {
+    dom.minutes.value = timeObject.getMinutes();
+    dom.seconds.value = timeObject.getSeconds();
+};
+
+const saveCounter24 = ({ newValue, dom, timeObject }) => {
+    if (newValue < 0) {
+        return;
+    }
+    const fullSeconds = timeObject.getFullSeconds();
+    dom.counter24.value = (fullSeconds < newValue) ? fullSeconds : newValue;
+};
+const getLeadingZeroNumber = (number) => {
+    return number < 10 ? `0${number}` : `${number}`;
+};
+const sendTime = function ({ timeObject, webSocket }) {
+    const minutes = timeObject.getMinutes();
+    const seconds = timeObject.getSeconds();
+    webSocket.sendJSON({ name: 'time', value: `${getLeadingZeroNumber(minutes)}:${getLeadingZeroNumber(seconds)}` });
+};
+
+
+saveTimeFromDomToObject({ timeObject, dom });
+
 let timer;
-listenContainer.addEventListener('input', function (event) {
+dom.listenContainer.addEventListener('input', function (event) {
     const { target } = event;
-    const inputName = target.dataset.inputName;
 
     clearInterval(timer);
     timer = setTimeout(() => {
         const { value } = target;
-        ws.send(JSON.stringify({ field: inputName, value }));
+        const { name, direction } = target.dataset;
+
+        if (!name) {
+            console.log('не обнаружен data-name', target);
+            return;
+        }
+        if (name === 'minutes' || name === 'seconds') {
+            saveTimeFromDomToObject({ timeObject, dom });
+            sendTime({ timeObject, webSocket });
+            return;
+        }
+        if (name === 'mirror') {
+            webSocket.sendJSON({ name, value: target.checked });
+            return;
+        }
+
+        webSocket.sendJSON({ name, direction, value });
     }, 300);
 });
 
-const buttons = document.querySelectorAll('.score-add');
-buttons.forEach((button) => {
-    const addScore = button.dataset.scoreAdd;
-    const direction = button.dataset.direction;
-    const scoreInput = document.querySelector(`.score-${direction}`);
+dom.buttons.forEach((button) => {
+    const { add, direction } = button.dataset;
+    const score = document.querySelector(`.score-${direction}`);
+    const name = score.dataset.name;
+
     button.addEventListener('click', () => {
-        scoreInput.value = Number(scoreInput.value) + Number(addScore);
-        ws.send(JSON.stringify({ field: scoreInput.dataset.inputName, value: Number(scoreInput.value) }));
+        score.value = Number(score.value) + Number(add);
+        const value = Number(score.value);
+        webSocket.sendJSON({ name, direction, value });
     });
 });
 
-let isTimeRunning = false;
-const timeMessage = document.querySelector('.time-message');
-const stopTimer = function () {
-    isTimeRunning = false;
-    timeMessage.classList.remove('time-running');
-};
-const startTimer = function () {
-    isTimeRunning = true;
-    timeMessage.classList.add('time-running');
-};
-
-const counter24Input = document.querySelector('.counter-24');
-const minutesInput = document.querySelector('.minutes');
-const secundesInput = document.querySelector('.seconds');
-
-setInterval(() => {
-    if (isTimeRunning) {
-        const counterNewValue = Number(counter24Input.value) - 1;
-        counter24Input.value = counterNewValue < 0 ? 0 : counterNewValue;
-        ws.send(JSON.stringify({ field: 'counter24', value: Number(counter24Input.value) }));
-
-        const secundesNewValue = Number(secundesInput.value) - 1;
-        if (secundesNewValue < 0) {
-            const minutesNewValue = Number(minutesInput.value) - 1;
-            if (minutesNewValue < 0) {
-                stopTimer();
-                return;
-            }
-
-            minutesInput.value = minutesNewValue < 0 ? 0 : minutesNewValue;
-            ws.send(JSON.stringify({ field: 'minutes', value: Number(minutesInput.value) }));
-        }
-
-        secundesInput.value = secundesNewValue < 0 ? 59 : secundesNewValue;
-        ws.send(JSON.stringify({ field: 'seconds', value: Number(secundesInput.value) }));
-    }
-}, 1000);
-
-const startTimerButton = document.querySelector('.start-timer');
-startTimerButton.addEventListener('click', function () {
+dom.set5.addEventListener('click', () => {
+    dom.minutes.value = 5;
+    dom.seconds.value = 0;
+    saveTimeFromDomToObject({ timeObject, dom });
+    sendTime({ timeObject, webSocket });
+});
+dom.set10.addEventListener('click', () => {
+    dom.minutes.value = 10;
+    dom.seconds.value = 0;
+    saveTimeFromDomToObject({ timeObject, dom });
+    sendTime({ timeObject, webSocket });
+});
+dom.set14.addEventListener('click', () => {
+    saveCounter24({ timeObject, dom, newValue: 14 });
+    webSocket.sendJSON({ name: 'counter24', value: dom.counter24.value });
+});
+dom.set24.addEventListener('click', () => {
+    saveCounter24({ timeObject, dom, newValue: 24 });
+    webSocket.sendJSON({ name: 'counter24', value: dom.counter24.value });
+});
+dom.startTimer.addEventListener('click', function () {
     startTimer();
 });
-const stopTimerButton = document.querySelector('.stop-timer');
-stopTimerButton.addEventListener('click', function () {
+dom.stopTimer.addEventListener('click', function () {
     stopTimer();
 });
-
-const resetCounter = document.querySelector('.reset-counter');
-resetCounter.addEventListener('click', function () {
-    counter24Input.value = 24;
-    ws.send(JSON.stringify({ field: 'counter24', value: Number(counter24Input.value) }));
+dom.arrow.addEventListener('click', function () {
+    dom.arrow.classList.toggle('arrow-right');
+    webSocket.sendJSON({
+        name: 'arrow',
+        value: dom.arrow.classList.contains('arrow-right') ? 'right' : 'left',
+    });
 });
-
-const timeSet10Minute = document.querySelector('.time-set-10-minute');
-timeSet10Minute.addEventListener('click', function () {
-    minutesInput.value = 10;
-    secundesInput.value = 0;
-    ws.send(JSON.stringify({ field: 'minutes', value: Number(minutesInput.value) }));
-    ws.send(JSON.stringify({ field: 'seconds', value: Number(secundesInput.value) }));
-});
-const timeSet5Minute = document.querySelector('.time-set-5-minute');
-timeSet5Minute.addEventListener('click', function () {
-    minutesInput.value = 5;
-    secundesInput.value = 0;
-    ws.send(JSON.stringify({ field: 'minutes', value: Number(minutesInput.value) }));
-    ws.send(JSON.stringify({ field: 'seconds', value: Number(secundesInput.value) }));
-});
+document.body.addEventListener('keydown', (event) => {
+    const { target, code } = event;
+    if (target.nodeName === 'INPUT') {
+        return;
+    }
+    if (code === 'Space') {
+        if (timeTicker.isTimerRunning) {
+            stopTimer();
+        } else {
+            startTimer();
+        }
+    }
+}, { capture: true });

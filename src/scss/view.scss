@@ -12,6 +12,18 @@
     background: #000;
 }
 
+.mirror .need-to-rotate-when-mirroring {
+    flex-direction: row-reverse;
+
+    .arrow {
+        transform: rotateY(180deg);
+    }
+}
+
+.view-score-wrapper {
+    min-width: 200px;
+}
+
 .view-score {
     font-size: 100px;
 
@@ -23,36 +35,28 @@
 .view-counter-24 {
     font-size: 150px;
 
+    min-width: 250px;
+
+    text-align: center;
+
     color: #e03838;
 }
 
 .view-time {
     font-size: 150px;
 
+    min-width: 550px;
+
     color: #e03838;
 }
 
-.view-period,
+.view-period-value,
 .view-foul {
     font-size: 150px;
 
     text-align: center;
 
     color: #1bda5f;
-}
-
-.view-period-wrapper {
-    &.view-show-overtime {
-        .view-quarter-wrapper {
-            display: none;
-        }
-    }
-
-    &:not(.view-show-overtime) {
-        .view-overtime-wrapper {
-            display: none;
-        }
-    }
 }
 
 .view-team {
@@ -66,42 +70,4 @@
     font-size: 30px;
 
     text-align: center;
-}
-
-.view-arrow {
-    position: relative;
-
-    width: 50px;
-    height: 20px;
-    margin-top: 20px;
-    margin-bottom: 20px;
-
-    background: #e6e00d;
-
-    &:before {
-        position: absolute;
-        top: 50%;
-        right: 100%;
-
-        content: '';
-        transform: translate(0%, -50%);
-
-        border-width: 30px;
-        border-style: solid;
-        border-top-color: transparent;
-        border-right-color: #e6e00d;
-        border-bottom-color: transparent;
-        border-left-color: transparent;
-    }
-
-    &.view-arrow-right {
-        &:before {
-            left: 100%;
-
-            border-top-color: transparent;
-            border-right-color: transparent;
-            border-bottom-color: transparent;
-            border-left-color: #e6e00d;
-        }
-    }
 }

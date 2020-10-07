@@ -1,11 +1,11 @@
-.time-message:not(.time-running) {
-    .message-time-running {
+.clock-control:not(.time-running) {
+    .stop-timer {
         display: none;
     }
 }
 
-.time-running {
-    .message-time-stop {
+.clock-control.time-running {
+    .start-timer {
         display: none;
     }
 }

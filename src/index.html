@@ -9,38 +9,34 @@
 
 <body>
     <div class="view-container" id="app">
-        <div class="flex-center-around">
+        <div class="flex-center-around need-to-rotate-when-mirroring">
             <div class="view-team view-team-left">Команда Л</div>
             <div class="view-time">10:00</div>
             <div class="view-team view-team-right">Команда П</div>
         </div>
-        <div class="flex-center-around">
-            <div>
+        <div class="flex-center-around need-to-rotate-when-mirroring">
+            <div class="view-score-wrapper">
                 <div class="view-score view-score-left">0</div>
                 <timeouts :count-elements="leftTimeoutsCount" :count-active="leftTimeoutsActives"></timeouts>
             </div>
-            <div class="view-counter-24 counter-24">24</div>
-            <div>
+            <div class="view-counter-24">24</div>
+            <div class="view-score-wrapper">
                 <div class="view-score view-score-right">0</div>
                 <timeouts :count-elements="rightTimeoutsCount" :count-active="rightTimeoutsActives"></timeouts>
             </div>
         </div>
-        <div class="flex-center-around">
-            <div class="view-arrow view-arrow-right"></div>
+        <div class="flex-center-around need-to-rotate-when-mirroring">
+            <div class="arrow arrow-right"></div>
         </div>
-        <div class="flex-center-around">
+        <div class="flex-center-around need-to-rotate-when-mirroring">
             <div class="view-fouls-left">
                 <div class="view-foul-text">Фолы</div>
                 <div class="view-foul">4</div>
             </div>
             <div class="view-period-wrapper">
                 <div class="view-quarter-wrapper">
-                    <div class="view-period-text view-quarter-text">Четверть</div>
-                    <div class="view-period view-quarter">1</div>
-                </div>
-                <div class="view-overtime-wrapper">
-                    <div class="view-period-text view-overtime-text">Овертайм</div>
-                    <div class="view-period view-overtime">0</div>
+                    <div class="view-period-text">Четверть</div>
+                    <div class="view-period-value">1</div>
                 </div>
             </div>
             <div class="view-fouls-right">
