@@ -15,6 +15,18 @@ body {
     justify-content: space-around;
 }
 
+.flex-center-between {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.flex-center-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .flex-auto {
     flex: auto;
 }

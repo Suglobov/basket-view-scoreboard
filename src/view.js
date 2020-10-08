@@ -12,7 +12,10 @@ new WebSocketConnect({
     messageJSONCallback: (message) => {
         console.log('message', message);
 
-        if (message.name === 'arrow') {
+        if (message.name === 'time') {
+            dom.minutes.textContent = message.value.minutes;
+            dom.seconds.textContent = message.value.seconds < 10 ? `0${message.value.seconds}` : message.value.seconds;
+        } else if (message.name === 'arrow') {
             if (message.value === 'left') {
                 dom.arrow.classList.remove('arrow-right');
             } else if (message.value === 'right') {
@@ -56,6 +59,8 @@ const vueInstance = new Vue({
 const dom = {
     viewContainer: document.querySelector('.view-container'),
     time: document.querySelector('.view-time'),
+    minutes: document.querySelector('.view-minutes'),
+    seconds: document.querySelector('.view-seconds'),
     teamLeft: document.querySelector('.view-team-left'),
     teamRight: document.querySelector('.view-team-right'),
     scoreLeft: document.querySelector('.view-score-left'),
