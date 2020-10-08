@@ -145,6 +145,17 @@ const debounce = (func, delay) => {
 
 
 saveTimeFromDomToObject({ timeObject, dom });
+// listeners
+let timer1;
+[dom.minutes, dom.seconds,].forEach((element) => {
+    element.addEventListener('input', () => {
+        clearInterval(timer1);
+        timer1 = setTimeout(() => {
+            saveTimeFromDomToObject({ timeObject, dom });
+            sendTime({ timeObject, webSocket });
+        }, setTimeoutTimeout);
+    });
+});
 
 // listeners
 dom.minutes.addEventListener('input', debounce((event) => {
@@ -191,13 +202,40 @@ dom.mirror.addEventListener('input', debounce((event) => {
         const { target } = event;
         const { value } = target;
         const { name } = target.dataset;
+        webSocket.sendJSON({ name, value: target.checked });
+    }, setTimeoutTimeout);
+});
 
-        if (!name) {
-            console.log('не обнаружен data-name', target);
-            return;
-        }
-        webSocket.sendJSON({ name, value });
-    }, listenersDelay));
+let timer3;
+[
+    dom.teamLeft,
+    dom.teamRight,
+    dom.scoreLeft,
+    dom.scoreRight,
+    dom.folsLeft,
+    dom.folsRight,
+    dom.timeoutsLeft,
+    dom.timeoutsRight,
+    dom.spentTimeoutsLeft,
+    dom.spentTimeoutsRight,
+    dom.quarter,
+    dom.overtime,
+    dom.counter24,
+].forEach((element) => {
+    element.addEventListener('input', (event) => {
+        const { target } = event;
+        clearInterval(timer3);
+        timer3 = setTimeout(() => {
+            const { value } = target;
+            const { name } = target.dataset;
+
+            if (!name) {
+                console.log('не обнаружен data-name', target);
+                return;
+            }
+            webSocket.sendJSON({ name, value });
+        }, setTimeoutTimeout);
+    });
 });
 
 // buttons add
