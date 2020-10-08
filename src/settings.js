@@ -81,7 +81,7 @@ const getLeadingZeroNumber = (number) => {
 const sendTime = function ({ timeObject, webSocket }) {
     const minutes = timeObject.getMinutes();
     const seconds = timeObject.getSeconds();
-    webSocket.sendJSON({ name: 'time', value: `${getLeadingZeroNumber(minutes)}:${getLeadingZeroNumber(seconds)}` });
+    webSocket.sendJSON({ name: 'time', value: `${minutes}:${getLeadingZeroNumber(seconds)}` });
 };
 
 
@@ -94,7 +94,7 @@ dom.listenContainer.addEventListener('input', function (event) {
     clearInterval(timer);
     timer = setTimeout(() => {
         const { value } = target;
-        const { name, direction } = target.dataset;
+        const { name } = target.dataset;
 
         if (!name) {
             console.log('не обнаружен data-name', target);
@@ -110,19 +110,18 @@ dom.listenContainer.addEventListener('input', function (event) {
             return;
         }
 
-        webSocket.sendJSON({ name, direction, value });
+        webSocket.sendJSON({ name, value });
     }, 300);
 });
 
 dom.buttons.forEach((button) => {
-    const { add, direction } = button.dataset;
-    const score = document.querySelector(`.score-${direction}`);
-    const name = score.dataset.name;
+    const { add, targetName } = button.dataset;
+    const score = document.querySelector(`[data-name="${targetName}"]`);
 
     button.addEventListener('click', () => {
         score.value = Number(score.value) + Number(add);
         const value = Number(score.value);
-        webSocket.sendJSON({ name, direction, value });
+        webSocket.sendJSON({ name: targetName, value });
     });
 });
 

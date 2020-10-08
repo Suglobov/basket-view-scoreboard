@@ -17,12 +17,12 @@
         <div class="flex-center-around need-to-rotate-when-mirroring">
             <div class="view-score-wrapper">
                 <div class="view-score view-score-left">0</div>
-                <timeouts :count-elements="leftTimeoutsCount" :count-active="leftTimeoutsActives"></timeouts>
+                <timeouts :count-elements="timeoutsLeft" :count-active="spentTimeoutsLeft"></timeouts>
             </div>
             <div class="view-counter-24">24</div>
             <div class="view-score-wrapper">
                 <div class="view-score view-score-right">0</div>
-                <timeouts :count-elements="rightTimeoutsCount" :count-active="rightTimeoutsActives"></timeouts>
+                <timeouts :count-elements="timeoutsRight" :count-active="spentTimeoutsRight"></timeouts>
             </div>
         </div>
         <div class="flex-center-around need-to-rotate-when-mirroring">
@@ -31,7 +31,7 @@
         <div class="flex-center-around need-to-rotate-when-mirroring">
             <div class="view-fouls-left">
                 <div class="view-foul-text">Фолы</div>
-                <div class="view-foul">4</div>
+                <div class="view-foul">0</div>
             </div>
             <div class="view-period-wrapper">
                 <div class="view-quarter-wrapper">

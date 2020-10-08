@@ -11,31 +11,12 @@ new WebSocketConnect({
     reconnectMsTimeout: 1000,
     messageJSONCallback: (message) => {
         console.log('message', message);
-        if (message.name === 'time') {
-            dom.time.textContent = message.value;
-        } else if (message.name === 'arrow') {
+
+        if (message.name === 'arrow') {
             if (message.value === 'left') {
                 dom.arrow.classList.remove('arrow-right');
             } else if (message.value === 'right') {
                 dom.arrow.classList.add('arrow-right');
-            }
-        } else if (message.name === 'quarter') {
-            dom.periodText.textContent = 'Четверть';
-            dom.periodValue.textContent = message.value;
-        } else if (message.name === 'overtime') {
-            dom.periodText.textContent = 'Овертайм';
-            dom.periodValue.textContent = message.value;
-        } else if (message.name === 'timeouts') {
-            if (message.direction === 'left') {
-                vueInstance.leftTimeoutsCount = Number(message.value);
-            } else if (message.direction === 'right') {
-                vueInstance.rightTimeoutsCount = Number(message.value);
-            }
-        } else if (message.name === 'spentTimeouts') {
-            if (message.direction === 'left') {
-                vueInstance.leftTimeoutsActives = Number(message.value);
-            } else if (message.direction === 'right') {
-                vueInstance.rightTimeoutsActives = Number(message.value);
             }
         } else if (message.name === 'mirror') {
             if (message.value) {
@@ -43,15 +24,16 @@ new WebSocketConnect({
             } else {
                 dom.viewContainer.classList.remove('mirror');
             }
+        } else if (message.name === 'quarter') {
+            dom.periodText.textContent = 'Четверть';
+            dom.periodValue.textContent = message.value;
+        } else if (message.name === 'overtime') {
+            dom.periodText.textContent = 'Овертайм';
+            dom.periodValue.textContent = message.value;
+        } else if (vueInstance[message.name] !== undefined) {
+            vueInstance[message.name] = Number(message.value);
         } else if (dom[message.name]) {
             dom[message.name].textContent = message.value;
-        } else if (message.name && message.direction) {
-            const domName = `${message.name}${message.direction[0].toUpperCase()}${message.direction.slice(1)}`;
-            if (dom[domName]) {
-                dom[domName].textContent = message.value;
-            } else {
-                console.log('domName error', domName);
-            }
         } else {
             console.log('message error', message);
         }
@@ -64,10 +46,10 @@ const vueInstance = new Vue({
         timeouts,
     },
     data: {
-        leftTimeoutsCount: 2,
-        leftTimeoutsActives: 0,
-        rightTimeoutsCount: 2,
-        rightTimeoutsActives: 0,
+        timeoutsLeft: 2,
+        spentTimeoutsLeft: 0,
+        timeoutsRight: 2,
+        spentTimeoutsRight: 0,
     },
 });
 
