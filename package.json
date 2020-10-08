@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "server": "npx nodemon webServer.js",
-    "watch": "npx webpack --mode development --watch --progress"
+    "watch": "npx webpack --mode development --watch --progress",
+    "build": "npx webpack --mode production --progress"
   },
   "keywords": [],
   "author": "",
