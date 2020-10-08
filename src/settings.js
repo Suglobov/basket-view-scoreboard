@@ -4,6 +4,7 @@ import TimeTicker from './components/TimeTicker.js';
 import TimeObject from './components/TimeObject.js';
 
 
+const setTimeoutTimeout = 300;
 const HOST = location.origin.replace(/^http/, 'ws');
 const webSocket = new WebSocketConnect({
     url: HOST,
@@ -14,7 +15,11 @@ const webSocket = new WebSocketConnect({
 });
 
 const timeTicker = new TimeTicker({
-    callbackTiс: () => {
+    callback100ms: () => {
+        console.log('callback100ms', timeTicker.count100ms);
+    },
+    callbackSeconds: () => {
+        console.log('callbackSeconds');
         timeObjectMinusSecond({ timeObject, stopTimer });
         saveTimeFromObjectToDom({ timeObject, dom });
         saveCounter24({ timeObject, dom, newValue: Number(dom.counter24.value) - 1 });
@@ -50,8 +55,8 @@ const dom = {
     counter24: document.querySelector('.counter-24'),
     minutes: document.querySelector('.minutes'),
     seconds: document.querySelector('.seconds'),
+    mirror: document.querySelector('[data-name="mirror"]'),
 };
-console.log('dom', dom);
 
 const stopTimer = function () {
     timeTicker.stopTimer();
@@ -82,13 +87,13 @@ const saveTimeFromObjectToDom = ({ timeObject, dom }) => {
 };
 
 const saveCounter24 = ({ newValue, dom, timeObject }) => {
-    const newNewValue = newValue < 0 ? 24 : newValue;
+    if (newValue < 0) {
+        return;
+    }
     const fullSeconds = timeObject.getFullSeconds();
-    dom.counter24.value = (fullSeconds < newNewValue) ? fullSeconds : newNewValue;
+    dom.counter24.value = (fullSeconds < newValue) ? fullSeconds : newValue;
 };
-const getLeadingZeroNumber = (number) => {
-    return number < 10 ? `0${number}` : `${number}`;
-};
+
 const sendTime = function ({ timeObject, webSocket }) {
     const minutes = timeObject.getMinutes();
     const seconds = timeObject.getSeconds();
@@ -99,42 +104,61 @@ const sendTime = function ({ timeObject, webSocket }) {
 
 
 saveTimeFromDomToObject({ timeObject, dom });
-
-// [
-//     counter24,
-//     minutes,
-//     seconds,
-// ].forEach((element) => {
-
-// });
-
-let timer;
-dom.listenContainer.addEventListener('input', function (event) {
-    const { target } = event;
-
-    clearInterval(timer);
-    timer = setTimeout(() => {
-        const { value } = target;
-        const { name } = target.dataset;
-
-        if (!name) {
-            console.log('не обнаружен data-name', target);
-            return;
-        }
-        if (name === 'minutes' || name === 'seconds') {
+// listeners
+let timer1;
+[dom.minutes, dom.seconds,].forEach((element) => {
+    element.addEventListener('input', () => {
+        clearInterval(timer1);
+        timer1 = setTimeout(() => {
             saveTimeFromDomToObject({ timeObject, dom });
             sendTime({ timeObject, webSocket });
-            return;
-        }
-        if (name === 'mirror') {
-            webSocket.sendJSON({ name, value: target.checked });
-            return;
-        }
-
-        webSocket.sendJSON({ name, value });
-    }, 300);
+        }, setTimeoutTimeout);
+    });
 });
 
+let timer2;
+dom.mirror.addEventListener('input', (event) => {
+    const { target } = event;
+    clearInterval(timer2);
+    timer2 = setTimeout(() => {
+        const { name } = target.dataset;
+        webSocket.sendJSON({ name, value: target.checked });
+    }, setTimeoutTimeout);
+});
+
+let timer3;
+[
+    dom.teamLeft,
+    dom.teamRight,
+    dom.scoreLeft,
+    dom.scoreRight,
+    dom.folsLeft,
+    dom.folsRight,
+    dom.timeoutsLeft,
+    dom.timeoutsRight,
+    dom.spentTimeoutsLeft,
+    dom.spentTimeoutsRight,
+    dom.quarter,
+    dom.overtime,
+    dom.counter24,
+].forEach((element) => {
+    element.addEventListener('input', (event) => {
+        const { target } = event;
+        clearInterval(timer3);
+        timer3 = setTimeout(() => {
+            const { value } = target;
+            const { name } = target.dataset;
+
+            if (!name) {
+                console.log('не обнаружен data-name', target);
+                return;
+            }
+            webSocket.sendJSON({ name, value });
+        }, setTimeoutTimeout);
+    });
+});
+
+// buttons add
 dom.buttons.forEach((button) => {
     const { add, targetName } = button.dataset;
     const score = document.querySelector(`[data-name="${targetName}"]`);
@@ -146,6 +170,7 @@ dom.buttons.forEach((button) => {
     });
 });
 
+// set number
 dom.set5.addEventListener('click', () => {
     dom.minutes.value = 5;
     dom.seconds.value = 0;
@@ -166,6 +191,8 @@ dom.set24.addEventListener('click', () => {
     saveCounter24({ timeObject, dom, newValue: 24 });
     webSocket.sendJSON({ name: 'counter24', value: dom.counter24.value });
 });
+
+
 dom.startTimer.addEventListener('click', function () {
     startTimer();
 });
@@ -179,6 +206,8 @@ dom.arrow.addEventListener('click', function () {
         value: dom.arrow.classList.contains('arrow-right') ? 'right' : 'left',
     });
 });
+
+// space
 document.body.addEventListener('keydown', (event) => {
     const { target, code } = event;
     if (code !== 'Space') {
