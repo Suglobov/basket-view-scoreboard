@@ -9,7 +9,7 @@
 </head>
 
 <body>
-    <div class="settings-container uk-background-secondary uk-light">
+    <div class="uk-container listen-container uk-background-secondary uk-light">
         <div class="h2 uk-text-center">Настройки для отображения</div>
         <section class="uk-flex uk-flex-around uk-flex-middle">
             <div class="">
@@ -152,7 +152,7 @@
                     <label class="uk-form-label">
                         Счетчик 24 секунд
                         <div class="uk-form-controls">
-                            <input data-name="counter24" class="uk-input uk-form-width-small" type="number" value="24" min="0" max="24">
+                            <input data-name="counter24" class="uk-input uk-form-width-small counter-24" type="number" value="24" min="0" max="24">
                         </div>
                     </label>
                     <button class="uk-button uk-button-small uk-button-default set-14"> = 14</button>
@@ -163,19 +163,13 @@
                         <label class="uk-form-label">
                             Минуты
                             <div class="uk-form-controls">
-                                <input data-name="minutes" class="uk-input uk-form-width-small" type="number" value="10" min="0" max="10">
+                                <input data-name="minutes" class="uk-input uk-form-width-small minutes" type="number" value="10" min="0" max="10">
                             </div>
                         </label>
                         <label class="uk-form-label">
                             Секунды
                             <div class="uk-form-controls">
-                                <input data-name="seconds" class="uk-input uk-form-width-small" type="number" value="0" min="0" max="59">
-                            </div>
-                        </label>
-                        <label class="uk-form-label">
-                            100мс
-                            <div class="uk-form-controls">
-                                <input data-name="ms100" class="uk-input uk-form-width-small" type="number" value="0" min="0" max="9">
+                                <input data-name="seconds" class="uk-input uk-form-width-small seconds" type="number" value="0" min="0" max="59">
                             </div>
                         </label>
                     </div>
