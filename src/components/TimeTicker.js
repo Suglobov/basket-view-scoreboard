@@ -1,24 +1,24 @@
 class TimeTicker {
     constructor({
-        callbackTiс = () => { },
+        delayMs = 10,
+        callback = () => { },
     }) {
-        this.callbackTiс = callbackTiс;
-
+        this.interval;
+        this.delayMs = delayMs;
+        this.callback = callback;
         this.isTimerRunning = false;
-
-        setInterval(() => {
-            if (this.isTimerRunning) {
-                this.callbackTiс();
-            }
-        }, 1000);
     }
 
     startTimer() {
         this.isTimerRunning = true;
+        this.interval = setInterval(this.callback, this.delayMs);
+        return this;
     }
 
     stopTimer() {
         this.isTimerRunning = false;
+        clearInterval(this.interval);
+        return this;
     }
 }
 
