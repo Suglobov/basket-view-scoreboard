@@ -146,16 +146,16 @@ const debounce = (func, delay) => {
 
 saveTimeFromDomToObject({ timeObject, dom });
 // listeners
-let timer1;
-[dom.minutes, dom.seconds,].forEach((element) => {
-    element.addEventListener('input', () => {
-        clearInterval(timer1);
-        timer1 = setTimeout(() => {
-            saveTimeFromDomToObject({ timeObject, dom });
-            sendTime({ timeObject, webSocket });
-        }, setTimeoutTimeout);
-    });
-});
+// let timer1;
+// [dom.minutes, dom.seconds,].forEach((element) => {
+//     element.addEventListener('input', () => {
+//         clearInterval(timer1);
+//         timer1 = setTimeout(() => {
+//             saveTimeFromDomToObject({ timeObject, dom });
+//             sendTime({ timeObject, webSocket });
+//         }, listenersDelay);
+//     });
+// });
 
 // listeners
 dom.minutes.addEventListener('input', debounce((event) => {
@@ -203,7 +203,7 @@ dom.mirror.addEventListener('input', debounce((event) => {
         const { value } = target;
         const { name } = target.dataset;
         webSocket.sendJSON({ name, value: target.checked });
-    }, setTimeoutTimeout);
+    }, listenersDelay));
 });
 
 let timer3;
@@ -234,7 +234,7 @@ let timer3;
                 return;
             }
             webSocket.sendJSON({ name, value });
-        }, setTimeoutTimeout);
+        }, listenersDelay);
     });
 });
 
