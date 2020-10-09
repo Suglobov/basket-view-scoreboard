@@ -187,6 +187,7 @@ document.body.addEventListener('keydown', (event) => {
     if (target.nodeName === 'INPUT' && target.type !== 'number') {
         return;
     }
+    event.preventDefault();
     if (timeTicker.isTimerRunning) {
         stopTimer();
     } else {
