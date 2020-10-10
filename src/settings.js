@@ -51,7 +51,6 @@ const dom = {
     minutes: document.querySelector('.minutes'),
     seconds: document.querySelector('.seconds'),
 };
-console.log('dom', dom);
 
 const stopTimer = function () {
     timeTicker.stopTimer();
