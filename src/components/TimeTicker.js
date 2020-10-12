@@ -8,7 +8,7 @@ class TimeTicker {
         this.delayMs = delayMs;
         this.isTimerRunning = false;
 
-        this.events = new EventsStorage(['tick', 'stopTick', 'startTick']);
+        this.events = new EventsStorage(['tick', 'startTimer', 'stopTimer']);
     }
 
     startTimer() {
@@ -16,14 +16,14 @@ class TimeTicker {
         this.interval = setInterval(() => {
             this.events.trigger('tick');
         }, this.delayMs);
-        this.events.trigger('startTick');
+        this.events.trigger('startTimer');
         return this;
     }
 
     stopTimer() {
         this.isTimerRunning = false;
         clearInterval(this.interval);
-        this.events.trigger('stopTick');
+        this.events.trigger('stopTimer');
         return this;
     }
 }

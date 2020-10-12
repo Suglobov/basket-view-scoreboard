@@ -1,7 +1,8 @@
 import './js/common.js';
 import WebSocketConnect from './components/WebSocketConnect.js';
 import TimeTicker from './components/TimeTicker.js';
-import TimeComponent from './components/TimeComponent.js';
+import TimeObject from './components/TimeObject.js';
+// import TimeComponent from './components/TimeComponent.js';
 
 const listenersDelay = 500;
 
@@ -14,14 +15,6 @@ const debounce = (func, delay) => {
 };
 
 
-const stopTimer = function () {
-    timeTicker.stopTimer();
-    dom.clockControl.classList.remove('time-running');
-};
-const startTimer = function () {
-    timeTicker.startTimer();
-    dom.clockControl.classList.add('time-running');
-};
 const timeTicker = new TimeTicker({ delayMs: 100 });
 timeTicker.events.on('tick', () => {
     minusTime({
@@ -37,11 +30,18 @@ timeTicker.events.on('tick', () => {
             }
         },
         cbZero() {
-            stopTimer();
+            timeTicker.stopTimer();
             sendTime({ timeObject, counter24Object });
         },
     });
 });
+timeTicker.events.on('startTimer', () => {
+    dom.clockControl.classList.add('time-running');
+});
+timeTicker.events.on('stopTimer', () => {
+    dom.clockControl.classList.remove('time-running');
+});
+
 
 const webSocket = new WebSocketConnect({
     url: location.origin.replace(/^http/, 'ws'),
@@ -238,10 +238,10 @@ dom.set24.addEventListener('click', () => {
 
 
 dom.startTimer.addEventListener('click', function () {
-    startTimer();
+    timeTicker.startTimer();
 });
 dom.stopTimer.addEventListener('click', function () {
-    stopTimer();
+    timeTicker.stopTimer();
 });
 dom.arrow.addEventListener('click', function () {
     dom.arrow.classList.toggle('arrow-right');
@@ -260,8 +260,8 @@ document.body.addEventListener('keydown', (event) => {
     }
     event.preventDefault();
     if (timeTicker.isTimerRunning) {
-        stopTimer();
+        timeTicker.stopTimer();
     } else {
-        startTimer();
+        timeTicker.startTimer();
     }
 }, { capture: true });
