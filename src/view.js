@@ -11,35 +11,44 @@ new WebSocketConnect({
     reconnectMsTimeout: 1000,
     messageJSONCallback: (message) => {
         console.log('message', message);
-
-        if (message.name === 'time') {
-            dom.minutes.textContent = message.value.minutes;
-            dom.seconds.textContent = message.value.seconds < 10 ? `0${message.value.seconds}` : message.value.seconds;
-        } else if (message.name === 'arrow') {
-            if (message.value === 'left') {
-                dom.arrow.classList.remove('arrow-right');
-            } else if (message.value === 'right') {
-                dom.arrow.classList.add('arrow-right');
-            }
-        } else if (message.name === 'mirror') {
-            if (message.value) {
-                dom.viewContainer.classList.add('mirror');
+        Object.entries(message).forEach(([field, value]) => {
+            if (field === 'time') {
+                console.log('value', value);
+                dom.minutes.textContent = value.minutes;
+                dom.seconds.textContent = value.seconds < 10 ? `0${value.seconds}` : value.seconds;
+                dom.counter24.textContent = value.counter24;
+                if (value.tenthsOfSecond === undefined) {
+                    dom.counter24TenthsOfSecond.hidden = true;
+                } else {
+                    dom.counter24TenthsOfSecond.hidden = false;
+                    dom.counter24TenthsOfSecond.textContent = `.${value.tenthsOfSecond}`;
+                }
+            } else if (field === 'arrow') {
+                if (value === 'left') {
+                    dom.arrowLeft.classList.remove('arrow-right');
+                } else if (value === 'right') {
+                    dom.arrowLeft.classList.add('arrow-right');
+                }
+            } else if (field === 'mirror') {
+                if (value) {
+                    dom.viewContainer.classList.add('mirror');
+                } else {
+                    dom.viewContainer.classList.remove('mirror');
+                }
+            } else if (field === 'quarter') {
+                dom.periodText.textContent = 'Четверть';
+                dom.periodValue.textContent = value;
+            } else if (field === 'overtime') {
+                dom.periodText.textContent = 'Овертайм';
+                dom.periodValue.textContent = value;
+            } else if (vueInstance[field] !== undefined) {
+                vueInstance[field] = Number(value);
+            } else if (dom[field]) {
+                dom[field].textContent = value;
             } else {
-                dom.viewContainer.classList.remove('mirror');
+                console.log('message error', message);
             }
-        } else if (message.name === 'quarter') {
-            dom.periodText.textContent = 'Четверть';
-            dom.periodValue.textContent = message.value;
-        } else if (message.name === 'overtime') {
-            dom.periodText.textContent = 'Овертайм';
-            dom.periodValue.textContent = message.value;
-        } else if (vueInstance[message.name] !== undefined) {
-            vueInstance[message.name] = Number(message.value);
-        } else if (dom[message.name]) {
-            dom[message.name].textContent = message.value;
-        } else {
-            console.log('message error', message);
-        }
+        });
     },
 });
 
@@ -66,7 +75,8 @@ const dom = {
     scoreLeft: document.querySelector('.view-score-left'),
     scoreRight: document.querySelector('.view-score-right'),
     counter24: document.querySelector('.view-counter-24'),
-    arrow: document.querySelector('.arrow'),
+    counter24TenthsOfSecond: document.querySelector('.view-counter-24-tenths-of-second'),
+    arrowLeft: document.querySelector('.arrow-left'),
     folsLeft: document.querySelector('.view-fouls-left .view-foul'),
     folsRight: document.querySelector('.view-fouls-right .view-foul'),
     periodText: document.querySelector('.view-period-text'),

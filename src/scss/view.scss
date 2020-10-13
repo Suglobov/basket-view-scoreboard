@@ -3,13 +3,12 @@
 
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
+    justify-content: space-between;
 
     box-sizing: border-box;
     width: 100%;
     height: 100%;
-    padding-right: 2%;
-    padding-left: 2%;
+    padding: 2%;
 
     color: #fff;
     background: #000;
@@ -18,7 +17,27 @@
 .mirror .need-to-rotate-when-mirroring {
     flex-direction: row-reverse;
 
-    .arrow {
+    .arrow-left {
+        transform: rotateY(180deg);
+
+        &.arrow-right {
+            transform: rotateY(0deg);
+        }
+    }
+}
+
+.view-arrow-wrapper {
+    width: 500px;
+    height: 50px;
+}
+
+.arrow-left {
+    width: 100%;
+    height: 100%;
+
+    fill: #e6e00d;
+
+    &.arrow-right {
         transform: rotateY(180deg);
     }
 }
