@@ -2,54 +2,77 @@ import TimeComponent from './TimeComponent.js';
 import EventsStorage from './EventsStorage.js';
 
 class TimeObject {
-    constructor(defaultValues = {
-        tenthsOfSecond: 0,
-        seconds: 0,
-        minutes: 10,
-        counter24: 24,
-    }) {
+    constructor() {
         this.tenthsOfSecond = new TimeComponent({
-            value: defaultValues.tenthsOfSecond,
-            min: 0, max: 9, higher: 'seconds',
+            value: 0, min: 0, max: 9,
         });
         this.seconds = new TimeComponent({
-            value: defaultValues.seconds,
-            min: 0, max: 59, higher: 'minutes',
+            value: 0, min: 0, max: 59,
         });
         this.minutes = new TimeComponent({
-            value: defaultValues.minutes,
-            min: 0, max: 10,
+            value: 0, min: 0, max: 10,
         });
         this.counter24 = new TimeComponent({
-            value: defaultValues.counter24,
-            min: 0, max: 24,
+            value: 0, min: 0, max: 24,
         });
 
         this.events = new EventsStorage([
-            'minusTenthsOfSecond',
-            'minusSecond',
-            'minusMinutes',
-            'minusCounter24',
+            'timeZero',
+            'timeChanged',
         ]);
     }
-
+    changeTime({ tenthsOfSecond, seconds, minutes, counter24 }) {
+        Object.entries({ tenthsOfSecond, seconds, minutes, counter24 })
+            .filter(([, value]) => value !== undefined)
+            .forEach(([field, value]) => {
+                this[field].setValue(value);
+            });
+        this.testCaounter24();
+        this.events.trigger('timeChanged');
+        // TODO надо отправлять список полей, которые поменялись, чтоб можно было выборочно запрос отсылать
+    }
+    testCaounter24() {
+        if (
+            this.minutes.value <= 0
+            && this.seconds.value < this.counter24.value
+        ) {
+            this.counter24.setValue(this.seconds.value);
+        }
+    }
     minusTime() {
-        // part: 'tenthsOfSecond',
-        // cbSuccess() {
-        //     timeObjectToDom({ timeObject, dom, fields: ['tenthsOfSecond', 'seconds', 'minutes'] });
-        //     if (timeObject.tenthsOfSecond.value === timeObject.tenthsOfSecond.max) {
-        //         setCounter24NewValue({ timeObject, counter24Object, value: counter24Object.value - 1 });
-        //     }
-        //     if (counter24Object.value < 9 && counter24Object.value !== 0) {
-        //         sendTime({ timeObject, counter24Object });
-        //     }
-        // },
-        // cbZero() {
-        //     timeTicker.stopTimer();
-        //     sendTime({ timeObject, counter24Object });
-        // },
-
-    };
+        if (
+            this.tenthsOfSecond.value === this.tenthsOfSecond.min
+            && this.seconds.value === this.seconds.min
+            && this.minutes.value === this.minutes.min
+        ) {
+            this.events.trigger('timeZero');
+        } else if (
+            this.tenthsOfSecond.value === this.tenthsOfSecond.min + 1
+            && this.seconds.value === this.seconds.min
+            && this.minutes.value === this.minutes.min
+        ) {
+            this.tenthsOfSecond.setValue(this.tenthsOfSecond.value - 1);
+            this.events.trigger('timeChanged');
+            this.events.trigger('timeZero');
+        } else if (this.tenthsOfSecond.value > this.tenthsOfSecond.min) {
+            this.tenthsOfSecond.setValue(this.tenthsOfSecond.value - 1);
+            this.events.trigger('timeChanged');
+        } else if (this.seconds.value > this.seconds.min) {
+            this.testCaounter24();
+            this.counter24.setValue(this.counter24.value - 1);
+            this.tenthsOfSecond.setValue(this.tenthsOfSecond.max);
+            this.seconds.setValue(this.seconds.value - 1);
+            this.events.trigger('timeChanged');
+        } else if (this.minutes.value > this.minutes.min) {
+            this.testCaounter24();
+            this.counter24.setValue(this.counter24.value - 1);
+            this.seconds.setValue(this.seconds.max);
+            this.minutes.setValue(this.minutes.value - 1);
+            this.events.trigger('timeChanged');
+        } else {
+            console.log('imposible');
+        }
+    }
 }
 
 export default TimeObject;

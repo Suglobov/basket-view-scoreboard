@@ -7,19 +7,20 @@ class EventsStorage {
     }
     on(eventName, eventHandler) {
         if (this.events[eventName] === undefined) {
-            console.log('not posible eventName');
+            console.log('not posible eventName', eventName);
         }
         this.events[eventName].push(eventHandler);
     }
     off(eventName, eventHandler) {
         if (this.events[eventName] === undefined) {
-            console.log('not posible eventName');
+            console.log('not posible eventName', eventName);
         }
-        this.events[eventName].filter((handler) => handler !== eventHandler);
+        this.events[eventName] = this.events[eventName]
+            .filter((handler) => handler !== eventHandler);
     }
     trigger(eventName, ...args) {
         if (this.events[eventName] === undefined) {
-            console.log('not posible eventName');
+            console.log('not posible eventName', eventName);
         }
         this.events[eventName].forEach((handler) => handler(...args));
     }

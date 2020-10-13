@@ -3,16 +3,13 @@ class TimeComponent {
         value = 0,
         min = 0,
         max = 0,
-        higher,
     }) {
-        this.value = value;
         this.min = min;
         this.max = max;
-        this.higher = higher;
+        this.setValue(value);
     }
-
     setValue(value) {
-        if (value >= this.min && value <= this.max) { 
+        if (value >= this.min && value <= this.max) {
             this.value = value;
         } else if (value < this.min) {
             this.value = this.min;

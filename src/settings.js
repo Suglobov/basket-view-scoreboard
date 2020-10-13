@@ -2,10 +2,9 @@ import './js/common.js';
 import WebSocketConnect from './components/WebSocketConnect.js';
 import TimeTicker from './components/TimeTicker.js';
 import TimeObject from './components/TimeObject.js';
-// import TimeComponent from './components/TimeComponent.js';
+
 
 const listenersDelay = 500;
-
 const debounce = (func, delay) => {
     let timeout;
     return function () {
@@ -13,35 +12,6 @@ const debounce = (func, delay) => {
         timeout = setTimeout(() => func.apply(this, arguments), delay);
     };
 };
-
-
-const timeTicker = new TimeTicker({ delayMs: 100 });
-timeTicker.events.on('tick', () => {
-    minusTime({
-        timeObject,
-        part: 'tenthsOfSecond',
-        cbSuccess() {
-            timeObjectToDom({ timeObject, dom, fields: ['tenthsOfSecond', 'seconds', 'minutes'] });
-            if (timeObject.tenthsOfSecond.value === timeObject.tenthsOfSecond.max) {
-                setCounter24NewValue({ timeObject, counter24Object, value: counter24Object.value - 1 });
-            }
-            if (counter24Object.value < 9 && counter24Object.value !== 0) {
-                sendTime({ timeObject, counter24Object });
-            }
-        },
-        cbZero() {
-            timeTicker.stopTimer();
-            sendTime({ timeObject, counter24Object });
-        },
-    });
-});
-timeTicker.events.on('startTimer', () => {
-    dom.clockControl.classList.add('time-running');
-});
-timeTicker.events.on('stopTimer', () => {
-    dom.clockControl.classList.remove('time-running');
-});
-
 
 const webSocket = new WebSocketConnect({
     url: location.origin.replace(/^http/, 'ws'),
@@ -53,17 +23,17 @@ const webSocket = new WebSocketConnect({
 const sendWSData = (objectToSend) => {
     webSocket.sendJSON(objectToSend);
 };
-const sendTime = ({ timeObject, counter24Object }) => {
-    const value = {
-        seconds: timeObject.seconds.value,
-        minutes: timeObject.minutes.value,
-        counter24: counter24Object.value,
-    };
-    if (counter24Object.value < 9 && counter24Object.value !== 0) {
-        value.tenthsOfSecond = timeObject.tenthsOfSecond.value;
-    }
-    webSocket.sendJSON({ time: value });
-};
+// const sendTime = ({ timeObject, counter24Object }) => {
+//     const value = {
+//         seconds: timeObject.seconds.value,
+//         minutes: timeObject.minutes.value,
+//         counter24: counter24Object.value,
+//     };
+//     if (counter24Object.value < 9 && counter24Object.value !== 0) {
+//         value.tenthsOfSecond = timeObject.tenthsOfSecond.value;
+//     }
+//     webSocket.sendJSON({ time: value });
+// };
 
 const dom = {
     startTimer: document.querySelector('.start-timer'),
@@ -95,81 +65,65 @@ const dom = {
     mirror: document.querySelector('[data-name="mirror"]'),
 };
 
-
-const minusTime = ({
-    timeObject,
-    part,
-    cbSuccess = () => { },
-    cbZero = () => { },
-}) => {
-    const { min, value, max, higher } = timeObject[part];
-    if (value > min) {
-        timeObject[part].setValue(value - 1);
-        cbSuccess();
-        return;
-    }
-    if (higher === undefined) {
-        cbZero();
-        return;
-    }
-    minusTime({
-        timeObject,
-        part: higher,
-        cbSuccess() {
-            timeObject[part].setValue(max);
-            cbSuccess();
-        },
-        cbZero() {
-            cbZero();
-        },
+const timeObject = new TimeObject();
+timeObject.events.on('timeZero', () => {
+    timeTicker.stopTimer();
+});
+timeObject.events.on('timeChanged', () => {
+    dom.tenthsOfSecond.value = timeObject.tenthsOfSecond.value;
+    dom.seconds.value = timeObject.seconds.value;
+    dom.minutes.value = timeObject.minutes.value;
+    dom.counter24.value = timeObject.counter24.value;
+    console.log({
+        tenthsOfSecond: timeObject.tenthsOfSecond.value,
+        seconds: timeObject.seconds.value,
+        minutes: timeObject.minutes.value,
+        counter24: timeObject.counter24.value,
     });
-};
+});
+timeObject.changeTime({ tenthsOfSecond: 5, seconds: 1, minutes: 1, counter24: 10 });
+timeObject.changeTime({ tenthsOfSecond: 9 });
 
-
-const setTimeNewValue = ({ timeObject, values }) => {
-    Object.entries(values).forEach(([field, value]) => {
-        timeObject[field].setValue(value);
-    });
-
-    timeObjectToDom({ timeObject, dom, fields: Object.keys(values) });
-    sendTime({ timeObject, counter24Object });
-};
-const timeObjectToDom = ({ timeObject, dom, fields }) => {
-    fields.forEach((field) => {
-        dom[field].value = timeObject[field].value;
-    });
-};
-
-const setCounter24NewValue = ({ counter24Object, value }) => {
-    counter24Object.setValue(value);
-    fixCounter24();
-    counter24ToDom({ counter24Object, dom });
-    sendTime({ timeObject, counter24Object });
-};
-const counter24ToDom = ({ counter24Object, dom }) => {
-    dom.counter24.value = counter24Object.value;
-};
-const fixCounter24 = () => {
-    if (
-        timeObject.minutes.value <= 0
-        && timeObject.seconds.value < counter24Object.value
-    ) {
-        counter24Object.setValue(timeObject.seconds.value);
-    }
-};
-
-
-const counter24Object = new TimeComponent({ value: 24, min: 0, max: 24, });
-const timeObject = {
-    tenthsOfSecond: new TimeComponent({ value: 0, min: 0, max: 9, higher: 'seconds', }),
-    seconds: new TimeComponent({ value: 0, min: 0, max: 59, higher: 'minutes', }),
-    minutes: new TimeComponent({ value: 1, min: 0, max: 10, }),
-};
-timeObjectToDom({ timeObject, dom, fields: ['tenthsOfSecond', 'seconds', 'minutes'] });
-
+const timeTicker = new TimeTicker({ delayMs: 100 });
+timeTicker.events.on('tick', () => {
+    timeObject.minusTime({ part: 'tenthsOfSecond' });
+});
+timeTicker.events.on('startTimer', () => {
+    dom.clockControl.classList.add('time-running');
+});
+timeTicker.events.on('stopTimer', () => {
+    dom.clockControl.classList.remove('time-running');
+});
 
 
 // listeners
+dom.tenthsOfSecond.addEventListener('input', debounce((event) => {
+    timeObject.changeTime({ tenthsOfSecond: Number(event.target.value) });
+}, listenersDelay));
+dom.seconds.addEventListener('input', debounce((event) => {
+    timeObject.changeTime({ seconds: Number(event.target.value) });
+}, listenersDelay));
+dom.minutes.addEventListener('input', debounce((event) => {
+    timeObject.changeTime({ minutes: Number(event.target.value) });
+}, listenersDelay));
+dom.counter24.addEventListener('input', debounce((event) => {
+    timeObject.changeTime({ counter24Object: Number(event.target.value) });
+}, listenersDelay));
+
+dom.set5.addEventListener('click', () => {
+    timeObject.changeTime({ tenthsOfSecond: 0, seconds: 0, minutes: 5, });
+});
+dom.set10.addEventListener('click', () => {
+    timeObject.changeTime({ tenthsOfSecond: 0, seconds: 0, minutes: 10, });
+});
+dom.set14.addEventListener('click', () => {
+    timeObject.changeTime({ counter24: 14 });
+});
+dom.set24.addEventListener('click', () => {
+    timeObject.changeTime({ counter24: 24 });
+});
+
+
 dom.mirror.addEventListener('input', debounce((event) => {
     const { target } = event;
     const { name } = target.dataset;
@@ -207,33 +161,8 @@ dom.buttons.forEach((button) => {
         score.value = Number(score.value) + Number(add);
         const value = Number(score.value);
         sendWSData({ [targetName]: value });
+        timeObject.changeTime({ counter24: 24 });
     });
-});
-
-dom.tenthsOfSecond.addEventListener('input', debounce((event) => {
-    setTimeNewValue({ timeObject, values: { tenthsOfSecond: Number(event.target.value) } });
-}, listenersDelay));
-dom.seconds.addEventListener('input', debounce((event) => {
-    setTimeNewValue({ timeObject, values: { seconds: Number(event.target.value) } });
-}, listenersDelay));
-dom.minutes.addEventListener('input', debounce((event) => {
-    setTimeNewValue({ timeObject, values: { minutes: Number(event.target.value) } });
-}, listenersDelay));
-dom.set5.addEventListener('click', () => {
-    setTimeNewValue({ timeObject, values: { tenthsOfSecond: 0, seconds: 0, minutes: 5, }, });
-});
-dom.set10.addEventListener('click', () => {
-    setTimeNewValue({ timeObject, values: { tenthsOfSecond: 0, seconds: 0, minutes: 10, }, });
-});
-
-dom.counter24.addEventListener('input', debounce((event) => {
-    setCounter24NewValue({ timeObject, counter24Object, value: Number(event.target.value) });
-}, listenersDelay));
-dom.set14.addEventListener('click', () => {
-    setCounter24NewValue({ timeObject, counter24Object, value: 14 });
-});
-dom.set24.addEventListener('click', () => {
-    setCounter24NewValue({ timeObject, counter24Object, value: 24 });
 });
 
 
