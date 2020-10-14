@@ -20,6 +20,7 @@
   },
   "devDependencies": {
     "css-loader": "^4.3.0",
+    "editorconfig": "^0.15.3",
     "eslint": "^7.9.0",
     "eslint-plugin-vue": "^6.2.2",
     "file-loader": "^6.1.0",
