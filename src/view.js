@@ -50,6 +50,9 @@ webSocket.events.on('messageJSON', (message) => {
         } else if (field === 'overtime') {
             dom.periodText.textContent = 'Овертайм';
             dom.periodValue.textContent = value;
+        } else if (field === 'timeouts') {
+            vueInstance.timeoutsLeft = Number(value);
+            vueInstance.timeoutsRight = Number(value);
         } else if (vueInstance[field] !== undefined) {
             vueInstance[field] = Number(value);
         } else if (dom[field]) {

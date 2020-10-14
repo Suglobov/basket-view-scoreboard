@@ -1,5 +1,8 @@
 .settings-container {
     height: 100%;
+
+    color: #fff;
+    background: #000;
 }
 
 .clock-control:not(.time-running) {
@@ -12,4 +15,62 @@
     .start-timer {
         display: none;
     }
+}
+
+.score-add {
+    font-size: 50px;
+
+    background: rgb(134, 150, 240);
+}
+
+.set-5,
+.set-10,
+.set-14,
+.set-24 {
+    font-size: 30px;
+
+    background: rgb(192, 236, 192);
+}
+
+.teamLeft,
+.teamRight,
+.scoreLeft,
+.scoreRight,
+.timeouts,
+.spentTimeoutsLeft,
+.spentTimeoutsRight,
+.folsLeft,
+.folsRight,
+.tenthsOfSecond,
+.seconds,
+.minutes,
+.quarter,
+.overtime {
+    font-size: 50px;
+}
+
+.counter24 {
+    font-size: 100px;
+}
+
+.start-timer,
+.stop-timer {
+    font-size: 50px;
+
+    padding: 10px;
+}
+
+.start-timer {
+    color: #fff;
+    background-color: #1e87f0;
+}
+
+.stop-timer {
+    color: #fff;
+    background-color: #f0506e;
+}
+
+.mirror {
+    width: 50px;
+    height: 50px;
 }

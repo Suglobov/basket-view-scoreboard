@@ -33,7 +33,7 @@ webSocket.events.on('error', (error) => {
     console.log('WebSocket connection error:', error);
 });
 webSocket.events.on('messageJSON', (message) => {
-    console.log('message', message);
+    // console.log('message', message);
 });
 const sendWSData = (objectToSend) => {
     if (wsOpen === false) {
@@ -61,9 +61,7 @@ const dom = {
     scoreRight: document.querySelector('[data-name="scoreRight"]'),
     folsLeft: document.querySelector('[data-name="folsLeft"]'),
     folsRight: document.querySelector('[data-name="folsRight"]'),
-    timeoutsLeft: document.querySelector('[data-name="timeoutsLeft"]'),
     spentTimeoutsLeft: document.querySelector('[data-name="spentTimeoutsLeft"]'),
-    timeoutsRight: document.querySelector('[data-name="timeoutsRight"]'),
     spentTimeoutsRight: document.querySelector('[data-name="spentTimeoutsRight"]'),
     quarter: document.querySelector('[data-name="quarter"]'),
     overtime: document.querySelector('[data-name="overtime"]'),
@@ -72,6 +70,7 @@ const dom = {
     seconds: document.querySelector('[data-name="seconds"]'),
     tenthsOfSecond: document.querySelector('[data-name="tenthsOfSecond"]'),
     mirror: document.querySelector('[data-name="mirror"]'),
+    timeouts: document.querySelector('[data-name="timeouts"]'),
 };
 
 const timeObject = new TimeObject();
@@ -83,13 +82,6 @@ timeObject.events.on('timeChanged', (changedFields) => {
     dom.seconds.value = timeObject.seconds.value;
     dom.minutes.value = timeObject.minutes.value;
     dom.counter24.value = timeObject.counter24.value;
-    console.log({
-        tenthsOfSecond: timeObject.tenthsOfSecond.value,
-        seconds: timeObject.seconds.value,
-        minutes: timeObject.minutes.value,
-        counter24: timeObject.counter24.value,
-        changedFields,
-    });
     if (timeObject.counter24.value < 10) {
         sendWSData({
             time: {
@@ -170,8 +162,7 @@ dom.mirror.addEventListener('input', debounce((event) => {
     dom.scoreRight,
     dom.folsLeft,
     dom.folsRight,
-    dom.timeoutsLeft,
-    dom.timeoutsRight,
+    dom.timeouts,
     dom.spentTimeoutsLeft,
     dom.spentTimeoutsRight,
     dom.quarter,
