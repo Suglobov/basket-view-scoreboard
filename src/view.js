@@ -5,51 +5,59 @@ import timeouts from './components/timeouts.vue';
 
 global.Vue = Vue;
 
-const HOST = location.origin.replace(/^http/, 'ws');
-new WebSocketConnect({
-    url: HOST,
+const webSocket = new WebSocketConnect({
+    url: location.origin.replace(/^http/, 'ws'),
     reconnectMsTimeout: 1000,
-    messageJSONCallback: (message) => {
-        console.log('message', message);
-        Object.entries(message).forEach(([field, value]) => {
-            if (field === 'time') {
-                console.log('value', value);
-                dom.minutes.textContent = value.minutes;
-                dom.seconds.textContent = value.seconds < 10 ? `0${value.seconds}` : value.seconds;
-                dom.counter24.textContent = value.counter24;
-                if (value.tenthsOfSecond === undefined) {
-                    dom.counter24TenthsOfSecond.hidden = true;
-                } else {
-                    dom.counter24TenthsOfSecond.hidden = false;
-                    dom.counter24TenthsOfSecond.textContent = `.${value.tenthsOfSecond}`;
-                }
-            } else if (field === 'arrow') {
-                if (value === 'left') {
-                    dom.arrowLeft.classList.remove('arrow-right');
-                } else if (value === 'right') {
-                    dom.arrowLeft.classList.add('arrow-right');
-                }
-            } else if (field === 'mirror') {
-                if (value) {
-                    dom.viewContainer.classList.add('mirror');
-                } else {
-                    dom.viewContainer.classList.remove('mirror');
-                }
-            } else if (field === 'quarter') {
-                dom.periodText.textContent = 'Четверть';
-                dom.periodValue.textContent = value;
-            } else if (field === 'overtime') {
-                dom.periodText.textContent = 'Овертайм';
-                dom.periodValue.textContent = value;
-            } else if (vueInstance[field] !== undefined) {
-                vueInstance[field] = Number(value);
-            } else if (dom[field]) {
-                dom[field].textContent = value;
+});
+webSocket.events.on('open', () => {
+    console.log('WebSocket connection open');
+});
+webSocket.events.on('close', () => {
+    console.log('WebSocket connection close');
+});
+webSocket.events.on('error', (error) => {
+    console.log('WebSocket connection error:', error);
+});
+webSocket.events.on('messageJSON', (message) => {
+    console.log('message', message);
+    Object.entries(message).forEach(([field, value]) => {
+        if (field === 'time') {
+            console.log('value', value);
+            dom.minutes.textContent = value.minutes;
+            dom.seconds.textContent = value.seconds < 10 ? `0${value.seconds}` : value.seconds;
+            dom.counter24.textContent = value.counter24;
+            if (value.tenthsOfSecond === undefined) {
+                dom.counter24TenthsOfSecond.hidden = true;
             } else {
-                console.log('message error', message);
+                dom.counter24TenthsOfSecond.hidden = false;
+                dom.counter24TenthsOfSecond.textContent = `.${value.tenthsOfSecond}`;
             }
-        });
-    },
+        } else if (field === 'arrow') {
+            if (value === 'left') {
+                dom.arrowLeft.classList.remove('arrow-right');
+            } else if (value === 'right') {
+                dom.arrowLeft.classList.add('arrow-right');
+            }
+        } else if (field === 'mirror') {
+            if (value) {
+                dom.viewContainer.classList.add('mirror');
+            } else {
+                dom.viewContainer.classList.remove('mirror');
+            }
+        } else if (field === 'quarter') {
+            dom.periodText.textContent = 'Четверть';
+            dom.periodValue.textContent = value;
+        } else if (field === 'overtime') {
+            dom.periodText.textContent = 'Овертайм';
+            dom.periodValue.textContent = value;
+        } else if (vueInstance[field] !== undefined) {
+            vueInstance[field] = Number(value);
+        } else if (dom[field]) {
+            dom[field].textContent = value;
+        } else {
+            console.log('message error', message);
+        }
+    });
 });
 
 const vueInstance = new Vue({

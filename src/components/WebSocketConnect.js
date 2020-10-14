@@ -1,16 +1,23 @@
+import EventsStorage from './EventsStorage.js';
+
 class WebSocketConnect {
     constructor(options = {}) {
         const {
             url,
             reconnectMsTimeout = false, // int | false
-            messageJSONCallback = () => { },
         } = options;
 
         this.url = url;
         this.reconnectMsTimeout = reconnectMsTimeout;
-        this.messageJSONCallback = messageJSONCallback;
 
         this.ws;
+
+        this.events = new EventsStorage([
+            'error',
+            'open',
+            'close',
+            'messageJSON',
+        ]);
 
         this.connect();
     }
@@ -23,14 +30,15 @@ class WebSocketConnect {
 
     listen() {
         this.ws.addEventListener('error', (error) => {
-            console.log('WebSocketConnect error:', error);
+            this.events.trigger('error', error);
         });
 
         this.ws.addEventListener('open', () => {
-            console.log('WebSocket connection established');
+            this.events.trigger('open');
         });
 
         this.ws.addEventListener('close', () => {
+            this.events.trigger('close');
             if (this.reconnectMsTimeout === false) {
                 return;
             }
@@ -39,7 +47,7 @@ class WebSocketConnect {
         });
 
         this.ws.addEventListener('message', (messageEvent) => {
-            this.messageJSONCallback(JSON.parse(messageEvent.data));
+            this.events.trigger('messageJSON', JSON.parse(messageEvent.data));
         });
     }
 

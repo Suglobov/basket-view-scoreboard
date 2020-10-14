@@ -22,14 +22,15 @@ class TimeObject {
         ]);
     }
     changeTime({ tenthsOfSecond, seconds, minutes, counter24 }) {
+        const changedFields = [];
         Object.entries({ tenthsOfSecond, seconds, minutes, counter24 })
             .filter(([, value]) => value !== undefined)
             .forEach(([field, value]) => {
                 this[field].setValue(value);
+                changedFields.push(field);
             });
         this.testCaounter24();
-        this.events.trigger('timeChanged');
-        // TODO надо отправлять список полей, которые поменялись, чтоб можно было выборочно запрос отсылать
+        this.events.trigger('timeChanged', changedFields);
     }
     testCaounter24() {
         if (
@@ -46,32 +47,50 @@ class TimeObject {
             && this.minutes.value === this.minutes.min
         ) {
             this.events.trigger('timeZero');
-        } else if (
+            return;
+        }
+        if (
             this.tenthsOfSecond.value === this.tenthsOfSecond.min + 1
             && this.seconds.value === this.seconds.min
             && this.minutes.value === this.minutes.min
         ) {
             this.tenthsOfSecond.setValue(this.tenthsOfSecond.value - 1);
-            this.events.trigger('timeChanged');
+            this.events.trigger('timeChanged', ['tenthsOfSecond']);
             this.events.trigger('timeZero');
-        } else if (this.tenthsOfSecond.value > this.tenthsOfSecond.min) {
+            return;
+        }
+        if (this.tenthsOfSecond.value > this.tenthsOfSecond.min) {
             this.tenthsOfSecond.setValue(this.tenthsOfSecond.value - 1);
-            this.events.trigger('timeChanged');
-        } else if (this.seconds.value > this.seconds.min) {
+            this.events.trigger('timeChanged', ['tenthsOfSecond']);
+            return;
+        }
+        if (this.seconds.value > this.seconds.min) {
+            const changedFields = ['tenthsOfSecond', 'seconds'];
             this.testCaounter24();
-            this.counter24.setValue(this.counter24.value - 1);
+            if (this.counter24.value > 0) {
+                changedFields.push('counter24');
+                this.counter24.setValue(this.counter24.value - 1);
+            }
             this.tenthsOfSecond.setValue(this.tenthsOfSecond.max);
             this.seconds.setValue(this.seconds.value - 1);
-            this.events.trigger('timeChanged');
-        } else if (this.minutes.value > this.minutes.min) {
+            this.events.trigger('timeChanged', changedFields);
+            return;
+        }
+        if (this.minutes.value > this.minutes.min) {
+            const changedFields = ['tenthsOfSecond', 'seconds', 'minutes'];
             this.testCaounter24();
-            this.counter24.setValue(this.counter24.value - 1);
+            if (this.counter24.value > 0) {
+                changedFields.push('counter24');
+                this.counter24.setValue(this.counter24.value - 1);
+            }
+            this.tenthsOfSecond.setValue(this.tenthsOfSecond.max);
             this.seconds.setValue(this.seconds.max);
             this.minutes.setValue(this.minutes.value - 1);
-            this.events.trigger('timeChanged');
-        } else {
-            console.log('imposible');
+            this.events.trigger('timeChanged', changedFields);
+            return;
         }
+
+        console.log('imposible');
     }
 }
 
