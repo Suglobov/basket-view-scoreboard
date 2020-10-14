@@ -8,321 +8,158 @@
         content="width=device-width, initial-scale=1.0"
     >
     <title>settings</title>
-    <link
-        href="/settings.css"
-        rel="stylesheet"
-    >
 </head>
 
 <body>
-    <div class="settings-container listen-container uk-background-secondary uk-light">
-        <div class="uk-h2 uk-text-center">Настройки для отображения</div>
+    <div class="settings-container">
         <div class="uk-flex uk-flex-around uk-flex-wrap">
-            <div class="uk-flex">
+            <div>
                 <div>
-                    <div>Левая команда</div>
-                    <div>
-                        <label class="uk-form-label">
-                            Название
-                            <div class="uk-form-controls">
-                                <input
-                                    class="uk-input"
-                                    data-name="teamLeft"
-                                    type="text"
-                                >
-                            </div>
-                        </label>
-                    </div>
-                    <div>
-                        <label class="uk-form-label">
-                            Счет
-                            <div class="uk-form-controls">
-                                <input
-                                    class="uk-input uk-form-width-small score-left"
-                                    data-name="scoreLeft"
-                                    type="number"
-                                    value="0"
-                                    min="0"
-                                >
-                            </div>
-                        </label>
-                        <div>
-                            <button
-                                class="uk-button uk-button-small uk-button-default score-add"
-                                data-add="1"
-                                data-target-name="scoreLeft"
-                            >+1</button>
-                            <button
-                                class="uk-button uk-button-small uk-button-default score-add"
-                                data-add="2"
-                                data-target-name="scoreLeft"
-                            >+2</button>
-                            <button
-                                class="uk-button uk-button-small uk-button-default score-add"
-                                data-add="3"
-                                data-target-name="scoreLeft"
-                            >+3</button>
+                    <label class="">
+                        Название
+                        <div class="">
+                            <input data-name="teamLeft" class="teamLeft" type="text">
                         </div>
-                    </div>
+                    </label>
+                </div>
+                <div class="uk-flex uk-flex-bottom">
+                    <label class="">
+                        Счет
+                        <div class="">
+                            <input data-name="scoreLeft" class="scoreLeft" type="number" value="0" min="0" max="1000">
+                        </div>
+                    </label>
                     <div>
-                        <label class="uk-form-label">
-                            Фолы
-                            <div class="uk-form-controls">
-                                <input
-                                    class="uk-input uk-form-width-small"
-                                    data-name="folsLeft"
-                                    type="number"
-                                    value="0"
-                                    min="0"
-                                >
-                            </div>
-                        </label>
-                    </div>
-                    <div class="uk-flex">
-                        <label class="uk-form-label">
-                            Всего таймаутов
-                            <div class="uk-form-controls">
-                                <input
-                                    class="uk-input uk-form-width-small"
-                                    data-name="timeoutsLeft"
-                                    type="number"
-                                    value="2"
-                                    min="2"
-                                    max="3"
-                                >
-                            </div>
-                        </label>
-                        <label class="uk-form-label">
-                            Израсходованные
-                            <div class="uk-form-controls">
-                                <input
-                                    class="uk-input uk-form-width-small"
-                                    data-name="spentTimeoutsLeft"
-                                    type="number"
-                                    value="0"
-                                    min="0"
-                                    max="3"
-                                >
-                            </div>
-                        </label>
+                        <button data-add="1" data-target-name="scoreLeft" class="score-add">+1</button>
+                        <button data-add="2" data-target-name="scoreLeft" class="score-add">+2</button>
+                        <button data-add="3" data-target-name="scoreLeft" class="score-add">+3</button>
                     </div>
                 </div>
-                <div>
-                    <div class="">Правая команда</div>
-                    <div>
-                        <label class="uk-form-label">
-                            Название
-                            <div class="uk-form-controls">
-                                <input
-                                    class="uk-input"
-                                    data-name="teamRight"
-                                    type="text"
-                                >
-                            </div>
-                        </label>
-                    </div>
-                    <div>
-                        <label class="uk-form-label">
-                            Счет
-                            <div class="uk-form-controls">
-                                <input
-                                    class="uk-input uk-form-width-small score-right"
-                                    data-name="scoreRight"
-                                    type="number"
-                                    value="0"
-                                    min="0"
-                                >
-                            </div>
-                        </label>
-                        <div>
-                            <button
-                                class="uk-button uk-button-small uk-button-default score-add"
-                                data-add="1"
-                                data-target-name="scoreRight"
-                            >+1</button>
-                            <button
-                                class="uk-button uk-button-small uk-button-default score-add"
-                                data-add="2"
-                                data-target-name="scoreRight"
-                            >+2</button>
-                            <button
-                                class="uk-button uk-button-small uk-button-default score-add"
-                                data-add="3"
-                                data-target-name="scoreRight"
-                            >+3</button>
+                <div class="uk-flex">
+                    <label class="">
+                        <div>таймауты</div>
+                        <div class="">
+                            <input data-name="spentTimeoutsLeft" class="spentTimeoutsLeft" type="number" value="0" min="0" max="3">
                         </div>
-                    </div>
-                    <div>
-                        <label class="uk-form-label">
-                            Фолы
-                            <div class="uk-form-controls">
-                                <input
-                                    class="uk-input uk-form-width-small"
-                                    data-name="folsRight"
-                                    type="number"
-                                    value="0"
-                                    min="0"
-                                >
-                            </div>
-                        </label>
-                    </div>
-                    <div class="uk-flex">
-                        <label class="uk-form-label">
-                            Всего таймаутов
-                            <div class="uk-form-controls">
-                                <input
-                                    class="uk-input uk-form-width-small"
-                                    data-name="timeoutsRight"
-                                    type="number"
-                                    value="2"
-                                    min="2"
-                                    max="3"
-                                >
-                            </div>
-                        </label>
-                        <label class="uk-form-label">
-                            Израсходованные
-                            <div class="uk-form-controls">
-                                <input
-                                    class="uk-input uk-form-width-small"
-                                    data-name="spentTimeoutsRight"
-                                    type="number"
-                                    value="0"
-                                    min="0"
-                                    max="3"
-                                >
-                            </div>
-                        </label>
-                    </div>
+                    </label>
+                    <label class="">
+                        Фолы
+                        <div class="">
+                            <input data-name="folsLeft" class="folsLeft" type="number" value="0" min="0" max="100">
+                        </div>
+                    </label>
                 </div>
             </div>
             <div>
-                <div class="uk-flex uk-flex-middle">
-                    <label class="uk-form-label">
-                        Четверть
-                        <div class="uk-form-controls">
-                            <input
-                                class="uk-input uk-form-width-small quarter"
-                                data-name="quarter"
-                                type="number"
-                                value="1"
-                                min="1"
-                                max="4"
-                            >
+                <div class="uk-flex">
+                    <label class="">
+                        Минуты
+                        <div class="">
+                            <input data-name="minutes" class="minutes" type="number" value="10" min="0" max="10">
                         </div>
                     </label>
-                    <label class="uk-form-label">
-                        Овертайм
-                        <div class="uk-form-controls">
-                            <input
-                                class="uk-input uk-form-width-small overtime"
-                                data-name="overtime"
-                                type="number"
-                                value="0"
-                                min="0"
-                            >
+                    <label class="">
+                        Секунды
+                        <div class="">
+                            <input data-name="seconds" class="seconds" type="number" value="0" min="0" max="59">
                         </div>
                     </label>
-                    <label class="uk-margin-left"><input
-                            class="uk-checkbox"
-                            data-name="mirror"
-                            type="checkbox"
-                        >Зеркалить табло</label>
+                    <label class="">
+                        Десятые
+                        <div class="">
+                            <input data-name="tenthsOfSecond" class="tenthsOfSecond" type="number" value="0" min="0" max="59">
+                        </div>
+                    </label>
                 </div>
-                <div class="uk-flex uk-flex-middle uk-margin">
-                    <div class="clock-control">
-                        <div>(реагирует на "пробел")</div>
-                        <button class="uk-button uk-button-small uk-button-primary uk-button-large start-timer"> Старт </button>
-                        <button class="uk-button uk-button-small uk-button-danger uk-button-large stop-timer"> Пауза </button>
-                    </div>
-                    <div class="uk-margin-top uk-flex uk-flex-center uk-flex-middle">
-                        <a class="arrow arrow-right"></a>
-                    </div>
+                <div>
+                    <button class="set-5"> = 5 минут </button>
+                    <button class="set-10"> = 10 минут </button>
                 </div>
-                <section class="uk-margin-top uk-flex uk-flex-middle">
-                    <div class="uk-flex">
+                <div class="uk-flex uk-flex-bottom">
+                    <label class="">
+                        Счетчик 24 секунд
+                        <div class="">
+                            <input data-name="counter24" class="counter24" type="number" value="24" min="0" max="24">
+                        </div>
+                    </label>
+                    <div>
                         <div>
-                            <label class="uk-form-label">
-                                Счетчик 24 секунд
-                                <div class="uk-form-controls">
-                                    <input
-                                        class="uk-input uk-form-width-small uk-form-large"
-                                        data-name="counter24"
-                                        type="number"
-                                        value="24"
-                                        min="0"
-                                        max="24"
-                                    >
-                                </div>
-                            </label>
-                            <button
-                                class="uk-button uk-button-small uk-button-default set-value set-14"
-                                data-set="14"
-                                data-target-name="counter24"
-                            > = 14</button>
-                            <button
-                                class="uk-button uk-button-small uk-button-default set-value set-24"
-                                data-set="24"
-                                data-target-name="counter24"
-                            > = 24</button>
+                            <button class="set-14"> = 14</button>
                         </div>
-                        <div class="uk-margin-left">
-                            <div class="uk-flex">
-                                <label class="uk-form-label">
-                                    Минуты
-                                    <div class="uk-form-controls">
-                                        <input
-                                            class="uk-input uk-form-width-small"
-                                            data-name="minutes"
-                                            type="number"
-                                            value="10"
-                                            min="0"
-                                            max="10"
-                                        >
-                                    </div>
-                                </label>
-                                <label class="uk-form-label">
-                                    Секунды
-                                    <div class="uk-form-controls">
-                                        <input
-                                            class="uk-input uk-form-width-small"
-                                            data-name="seconds"
-                                            type="number"
-                                            value="0"
-                                            min="0"
-                                            max="59"
-                                        >
-                                    </div>
-                                </label>
-                                <label class="uk-form-label">
-                                    100мс
-                                    <div class="uk-form-controls">
-                                        <input
-                                            class="uk-input uk-form-width-small"
-                                            data-name="tenthsOfSecond"
-                                            type="number"
-                                            value="0"
-                                            min="0"
-                                            max="9"
-                                        >
-                                    </div>
-                                </label>
-                            </div>
-                            <div>
-                                <button
-                                    class="uk-button uk-button-small uk-button-default set-value set-5"
-                                    data-set="5"
-                                    data-target-name="minutes"
-                                > = 5 минут </button>
-                                <button
-                                    class="uk-button uk-button-small uk-button-default set-value set-10"
-                                    data-set="10"
-                                    data-target-name="minutes"
-                                > = 10 минут </button>
-                            </div>
+                        <div>
+                            <button class="set-24"> = 24</button>
                         </div>
                     </div>
-                </section>
+                </div>
+                <div class="uk-flex uk-flex-bottom uk-margin-top uk-margin-bottom">
+                    <div class="clock-control" uk-tooltip="реагирует на пробел. Если нажимать пробел в поле ввода, то таймер не среагирует">
+                        <button class="start-timer">Старт</button>
+                        <button class="stop-timer">Пауза</button>
+                    </div>
+                    <div><a class="arrow arrow-right"></a></div>
+                </div>
+                <div class="uk-flex uk-flex-bottom">
+                    <div>
+                        <label class="">
+                            <div>Четверть</div>
+                            <input data-name="quarter" class="quarter" type="number" value="1" min="1" max="4">
+                        </label>
+                    </div>
+                    <div>
+                        <label class="">
+                            <div>Овертайм</div>
+                            <input data-name="overtime" class="overtime" type="number" value="0" min="0" max="1000">
+                        </label>
+                    </div>
+                    <div>
+                        <label><input class="mirror" type="checkbox" data-name="mirror">Зеркалить табло</label>
+                    </div>
+                </div>
+                <div>
+                    <label class="">
+                        <div>Всего таймаутов</div>
+                        <div class="">
+                            <input data-name="timeouts" class="timeouts" type="number" value="2" min="2" max="3">
+                        </div>
+                    </label>
+                </div>
+            </div>
+            <div>
+                <div>
+                    <label class="">
+                        Название
+                        <div class="">
+                            <input data-name="teamRight" class="teamRight" type="text">
+                        </div>
+                    </label>
+                </div>
+                <div class="uk-flex uk-flex-bottom">
+                    <label class="">
+                        Счет
+                        <div class="">
+                            <input data-name="scoreRight" class="scoreRight" type="number" value="0" min="0" max="1000">
+                        </div>
+                    </label>
+                    <div>
+                        <button data-add="1" data-target-name="scoreRight" class="score-add">+1</button>
+                        <button data-add="2" data-target-name="scoreRight" class="score-add">+2</button>
+                        <button data-add="3" data-target-name="scoreRight" class="score-add">+3</button>
+                    </div>
+                </div>
+                <div class="uk-flex">
+                    <label class="">
+                        <div>таймауты</div>
+                        <div class="">
+                            <input data-name="spentTimeoutsRight" class="spentTimeoutsRight" type="number" value="0" min="0" max="3">
+                        </div>
+                    </label>
+                    <label class="">
+                        Фолы
+                        <div class="">
+                            <input data-name="folsRight" class="folsRight" type="number" value="0" min="0" max="100">
+                        </div>
+                    </label>
+                </div>
             </div>
         </div>
     </div>
