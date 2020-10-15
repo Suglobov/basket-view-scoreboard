@@ -1,47 +1,32 @@
-@font-face {
-    font-family: 'Orbitron';
-    font-weight: 100 1000;
-    font-stretch: 25% 151%;
+$fontsList: (
+    'Orbitron': 'Orbitron/Orbitron-VariableFont_wght.ttf',
+    'MajorMonoDisplay': 'Major_Mono_Display/MajorMonoDisplay-Regular.ttf',
+    'NovaMono': 'Nova_Mono/NovaMono-Regular.ttf',
+    'Aldrich': 'Aldrich/Aldrich-Regular.ttf',
+    'Buran_USSR': 'Buran_USSR/Buran_USSR.ttf',
+    'Exo_2': 'Exo_2/Exo2-VariableFont_wght.ttf',
+    'Nunito': 'Nunito/Nunito-Regular.ttf',
+    'Play': 'Play/Play-Regular.ttf',
+    'Roboto': 'Roboto/Roboto-Regular.ttf',
+    'Rubik': 'Rubik/Rubik-VariableFont_wght.ttf',
+    'Rubik_Mono_One': 'Rubik_Mono_One/RubikMonoOne-Regular.ttf',
+    'Electrolize': 'Electrolize/Electrolize-Regular.ttf',
+    'Geo': 'Geo/Geo-Regular.ttf',
+    'Russo_One': 'Russo_One/RussoOne-Regular.ttf',
+    'Saira': 'Saira/Saira-Regular.ttf',
+    'Sarpanch': 'Sarpanch/Sarpanch-Regular.ttf',
+    'Stalinist_One': 'Stalinist_One/StalinistOne-Regular.ttf',
+    'Teko': 'Teko/Teko-Regular.ttf',
+);
 
-    src: url('../fonts/Orbitron/Orbitron-VariableFont_wght.ttf') format('truetype');
-}
-
-.font-Orbitron {
-    font-family: 'Orbitron', sans-serif;
-}
-
-@font-face {
-    font-family: 'MajorMonoDisplay-Regular';
-    font-weight: 100 1000;
-    font-stretch: 25% 151%;
-
-    src: url('../fonts/Major_Mono_Display/MajorMonoDisplay-Regular.ttf') format('truetype');
-}
-
-.font-MajorMonoDisplay-Regular {
-    font-family: 'MajorMonoDisplay-Regular', sans-serif;
-}
-
-@font-face {
-    font-family: 'NovaMono-Regular';
-    font-weight: 100 1000;
-    font-stretch: 25% 151%;
-
-    src: url('../fonts/Nova_Mono/NovaMono-Regular.ttf') format('truetype');
-}
-
-.font-NovaMono-Regular {
-    font-family: 'NovaMono-Regular', sans-serif;
-}
-
-@font-face {
-    font-family: 'Aldrich-Regular';
-    font-weight: 100 1000;
-    font-stretch: 25% 151%;
-
-    src: url('../fonts/Aldrich/Aldrich-Regular.ttf') format('truetype');
-}
-
-.font-Aldrich-Regular {
-    font-family: 'Aldrich-Regular', sans-serif;
+@each $name, $path in $fontsList {
+    @font-face {
+        font-family: $name;
+        font-stretch: 25% 151%;
+        font-weight: 100 1000;
+        src: url('../fonts/#{$path}') format('truetype');
+    }
+    .font-#{$name} {
+        font-family: $name, sans-serif;
+    }
 }
