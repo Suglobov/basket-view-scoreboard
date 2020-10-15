@@ -10,7 +10,7 @@ const server = http.createServer(app);
 const webSocketServer = new WebSocket.Server({ server });
 
 server.listen(PORT, function () {
-    console.log(`Server was started.`);
+    console.log('Server was started.');
     console.log(`View page  http://localhost:${PORT}/`);
     console.log(`Settings page  http://localhost:${PORT}/settings`);
 });
@@ -37,23 +37,23 @@ webSocketServer.on('connection', (client) => {
     });
 });
 
-const sendJson = (client, data) => {
-    const dataJson = JSON.stringify(data);
-    client.send(dataJson);
-};
+// const sendJson = (client, data) => {
+//     const dataJson = JSON.stringify(data);
+//     client.send(dataJson);
+// };
 
-const broadcastJson = (clients, data) => {
-    clients.forEach((client) => {
-        if (client.readyState === WebSocket.OPEN) {
-            sendJson(client, data);
-        }
-    });
-};
+// const broadcastJson = (clients, data) => {
+//     clients.forEach((client) => {
+//         if (client.readyState === WebSocket.OPEN) {
+//             sendJson(client, data);
+//         }
+//     });
+// };
 
-const broadcast = (clients, data) => {
-    clients.forEach((client) => {
-        if (client.readyState === WebSocket.OPEN) {
-            sendJson(client, data);
-        }
-    });
-};
+// const broadcast = (clients, data) => {
+//     clients.forEach((client) => {
+//         if (client.readyState === WebSocket.OPEN) {
+//             sendJson(client, data);
+//         }
+//     });
+// };

@@ -8,7 +8,7 @@
     "watch": "npx webpack --mode development --watch --progress",
     "build": "npx webpack --mode production --progress",
     "stylelint-fix": "npx stylelint ./src/**/*.scss --fix",
-    "eslint-fix": "npx eslint ./src --fix"
+    "eslint-fix": "npx eslint . --fix"
   },
   "keywords": [],
   "author": "",
