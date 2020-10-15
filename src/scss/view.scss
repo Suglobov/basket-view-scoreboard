@@ -1,17 +1,15 @@
 .view-container {
-    font-family: 'Orbitron', sans-serif;
-
+    background: #000;
+    box-sizing: border-box;
+    color: #fff;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-
-    box-sizing: border-box;
-    width: 100%;
+    font-family: 'Orbitron', sans-serif;
     height: 100%;
+    justify-content: space-between;
+    min-height: 100vh;
     padding: 2%;
-
-    color: #fff;
-    background: #000;
+    width: 100%;
 }
 
 .mirror .need-to-rotate-when-mirroring {
@@ -20,22 +18,22 @@
     .arrow-left {
         transform: rotateY(180deg);
 
-        &.arrow-right {
-            transform: rotateY(0deg);
-        }
+    }
+
+    .arrow-left.arrow-right {
+        transform: rotateY(0deg);
     }
 }
 
 .view-arrow-wrapper {
-    width: 500px;
     height: 50px;
+    width: 500px;
 }
 
 .arrow-left {
-    width: 100%;
-    height: 100%;
-
     fill: #e6e00d;
+    height: 100%;
+    width: 100%;
 
     &.arrow-right {
         transform: rotateY(180deg);
@@ -43,26 +41,20 @@
 }
 
 .view-team {
-    font-size: 50px;
-
-    overflow: hidden;
     flex: auto;
-
-    width: 29%;
-
+    font-size: 50px;
+    overflow: hidden;
     text-align: center;
-    white-space: nowrap;
     text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 29%;
 }
 
 .view-time {
-    font-size: 200px;
-
-    display: flex;
-
-    width: 42%;
-
     color: #e03838;
+    display: flex;
+    font-size: 200px;
+    width: 42%;
 }
 
 .view-minutes,
@@ -75,9 +67,8 @@
 }
 
 .view-time-colon {
-    width: 10%;
-
     text-align: center;
+    width: 10%;
 }
 
 // .view-time-test {
@@ -103,35 +94,27 @@
 }
 
 .view-score {
-    font-size: 100px;
-
-    text-align: center;
-
     color: #e6e00d;
+    font-size: 100px;
+    text-align: center;
 }
 
 .view-counter-24 {
-    font-size: 150px;
-
-    min-width: 250px;
-
-    text-align: center;
-
     color: #e03838;
+    font-size: 150px;
+    min-width: 250px;
+    text-align: center;
 }
 
 .view-period-value,
 .view-foul {
-    font-size: 150px;
-
-    text-align: center;
-
     color: #1bda5f;
+    font-size: 150px;
+    text-align: center;
 }
 
 .view-period-text,
 .view-foul-text {
     font-size: 30px;
-
     text-align: center;
 }

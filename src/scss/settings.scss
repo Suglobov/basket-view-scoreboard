@@ -1,35 +1,22 @@
 .settings-container {
-    height: 100%;
-
-    color: #fff;
     background: #000;
-}
-
-.clock-control:not(.time-running) {
-    .stop-timer {
-        display: none;
-    }
-}
-
-.clock-control.time-running {
-    .start-timer {
-        display: none;
-    }
+    color: #fff;
+    height: 100%;
+    min-height: 100vh;
+    padding: 2%;
 }
 
 .score-add {
-    font-size: 50px;
-
     background: rgb(134, 150, 240);
+    font-size: 50px;
 }
 
 .set-5,
 .set-10,
 .set-14,
 .set-24 {
-    font-size: 30px;
-
     background: rgb(192, 236, 192);
+    font-size: 30px;
 }
 
 .teamLeft,
@@ -56,21 +43,32 @@
 .start-timer,
 .stop-timer {
     font-size: 50px;
-
     padding: 10px;
 }
 
 .start-timer {
-    color: #fff;
     background-color: #1e87f0;
+    color: #fff;
 }
 
 .stop-timer {
-    color: #fff;
     background-color: #f0506e;
+    color: #fff;
+}
+
+.clock-control:not(.time-running) {
+    .stop-timer {
+        display: none;
+    }
+}
+
+.clock-control.time-running {
+    .start-timer {
+        display: none;
+    }
 }
 
 .mirror {
-    width: 50px;
     height: 50px;
+    width: 50px;
 }

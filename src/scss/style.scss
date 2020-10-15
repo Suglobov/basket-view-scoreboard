@@ -2,7 +2,7 @@
 
 html,
 body {
-    height: 100%;
+    min-height: 100vh;
 }
 
 .d-flex {
@@ -10,20 +10,20 @@ body {
 }
 
 .flex-center-around {
-    display: flex;
     align-items: center;
+    display: flex;
     justify-content: space-around;
 }
 
 .flex-center-between {
-    display: flex;
     align-items: center;
+    display: flex;
     justify-content: space-between;
 }
 
 .flex-center-center {
-    display: flex;
     align-items: center;
+    display: flex;
     justify-content: center;
 }
 
@@ -32,65 +32,56 @@ body {
 }
 
 .border {
-    border: 1px solid rgba($color: #000, $alpha: .2);
+    border: 1px solid rgba($color: #000, $alpha: 0.2);
 }
 
 @import './settings.scss';
-
 @import './view.scss';
 
 .arrow {
-    position: relative;
-
+    background: #e6e00d;
     display: block;
-
-    width: 50px;
     height: 20px;
-    margin-top: 20px;
-    margin-right: 40px;
     margin-bottom: 20px;
     margin-left: 40px;
+    margin-right: 40px;
+    margin-top: 20px;
+    position: relative;
+    width: 50px;
 
-    background: #e6e00d;
-
-    &:before {
-        position: absolute;
-        top: 50%;
-        right: 100%;
-
-        content: '';
-        transform: translate(0%, -50%);
-
-        border-width: 30px;
-        border-style: solid;
-        border-top-color: transparent;
-        border-right-color: #e6e00d;
+    &::before {
         border-bottom-color: transparent;
         border-left-color: transparent;
+        border-right-color: #e6e00d;
+        border-style: solid;
+        border-top-color: transparent;
+        border-width: 30px;
+        content: '';
+        position: absolute;
+        right: 100%;
+        top: 50%;
+        transform: translate(0%, -50%);
     }
 
-    &.arrow-right {
-        &:before {
-            left: 100%;
+}
 
-            border-top-color: transparent;
-            border-right-color: transparent;
-            border-bottom-color: transparent;
-            border-left-color: #e6e00d;
-        }
+.arrow.arrow-right {
+    &::before {
+        border-bottom-color: transparent;
+        border-left-color: #e6e00d;
+        border-right-color: transparent;
+        border-top-color: transparent;
+        left: 100%;
     }
 }
 
 .icon-question {
-    font-size: 20px;
-
-    display: inline-flex;
     align-items: center;
-    justify-content: center;
-
-    width: 20px;
-    height: 20px;
-
     border: 2px solid #ccc;
     border-radius: 50%;
+    display: inline-flex;
+    font-size: 20px;
+    height: 20px;
+    justify-content: center;
+    width: 20px;
 }
