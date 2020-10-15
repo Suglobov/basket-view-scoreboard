@@ -6,7 +6,8 @@
   "scripts": {
     "server": "npx nodemon webServer.js",
     "watch": "npx webpack --mode development --watch --progress",
-    "build": "npx webpack --mode production --progress"
+    "build": "npx webpack --mode production --progress",
+    "stylelint-fix": "npx stylelint ./src/**/*.scss --fix"
   },
   "keywords": [],
   "author": "",
@@ -29,6 +30,10 @@
     "node-sass": "^4.14.1",
     "sass-loader": "^10.0.2",
     "style-loader": "^1.2.1",
+    "stylelint": "^13.7.2",
+    "stylelint-config-sass-guidelines": "^7.1.0",
+    "stylelint-order": "^4.1.0",
+    "stylelint-scss": "^3.18.0",
     "vue-loader": "^15.9.3",
     "vue-template-compiler": "^2.6.12",
     "webpack": "^4.44.2",
