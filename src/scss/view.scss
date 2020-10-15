@@ -16,7 +16,7 @@
     width: 100%;
 }
 
-.arrow-left {
+.view-arrow-left {
     fill: #e6e00d;
     height: 100%;
     width: 100%;
@@ -24,18 +24,18 @@
     &.arrow-right {
         transform: rotateY(180deg);
     }
+
+    .mirror .need-to-rotate-when-mirroring & {
+        transform: rotateY(180deg);
+    }
+
+    .mirror .need-to-rotate-when-mirroring &.arrow-right {
+        transform: rotateY(0deg);
+    }
 }
 
 .mirror .need-to-rotate-when-mirroring {
     flex-direction: row-reverse;
-
-    .arrow-left {
-        transform: rotateY(180deg);
-    }
-
-    .arrow-left.arrow-right {
-        transform: rotateY(0deg);
-    }
 }
 
 .view-arrow-wrapper {

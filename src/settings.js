@@ -52,7 +52,7 @@ const dom = {
     set14: document.querySelector('.set-14'),
     set24: document.querySelector('.set-24'),
     clockControl: document.querySelector('.clock-control'),
-    arrow: document.querySelector('.arrow'),
+    arrow: document.querySelector('.settings-arrow-left'),
     sets: document.querySelectorAll('.set-value'),
     buttons: document.querySelectorAll('.score-add'),
     teamLeft: document.querySelector('[data-name="teamLeft"]'),

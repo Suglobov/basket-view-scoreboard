@@ -72,3 +72,18 @@
     height: 50px;
     width: 50px;
 }
+
+.settings-arrow-wrapper {
+    height: 100px;
+    width: 200px;
+}
+
+.settings-arrow-left {
+    fill: #e6e00d;
+    height: 100%;
+    width: 100%;
+
+    &.arrow-right {
+        transform: rotateY(180deg);
+    }
+}

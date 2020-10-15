@@ -89,7 +89,7 @@ const dom = {
     scoreRight: document.querySelector('.view-score-right'),
     counter24: document.querySelector('.view-counter-24'),
     counter24TenthsOfSecond: document.querySelector('.view-counter-24-tenths-of-second'),
-    arrowLeft: document.querySelector('.arrow-left'),
+    arrowLeft: document.querySelector('.view-arrow-left'),
     folsLeft: document.querySelector('.view-fouls-left .view-foul'),
     folsRight: document.querySelector('.view-fouls-right .view-foul'),
     periodText: document.querySelector('.view-period-text'),
