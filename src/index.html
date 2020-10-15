@@ -3,18 +3,12 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>view</title>
 </head>
 
 <body>
-    <div
-        class="view-container"
-        id="app"
-    >
+    <div class="view-container font-Orbitron" id="app">
         <div class="flex-center-between need-to-rotate-when-mirroring">
             <div class="view-team view-team-left">Команда Л</div>
             <div class="view-time">
@@ -37,28 +31,16 @@
             </div>
         </div>
         <div class="flex-center-around need-to-rotate-when-mirroring">
-            <timeouts
-                :count-elements="timeouts"
-                :count-active="spentTimeoutsLeft"
-            ></timeouts>
+            <timeouts :count-elements="timeouts" :count-active="spentTimeoutsLeft"></timeouts>
             <div class="view-arrow-wrapper">
-                <svg
-                    class="arrow-left"
-                    preserveAspectRatio="none"
-                    version="1.1"
-                    xmlns="http://www.w3.org/2000/svg"
-                    xmlns:xlink="http://www.w3.org/1999/xlink"
-                    x="0px"
-                    y="0px"
-                    viewBox="0 0 561.803 561.802"
-                >
-                    <polygon points="240.773,521.674 240.773,411.322 561.803,411.322 561.803,152.994 240.773,152.994 240.773,40.128 0,280.905 "></polygon>
+                <svg class="arrow-left" preserveAspectRatio="none" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 561.803 561.802">
+                    <polygon
+                        points="240.773,521.674 240.773,411.322 561.803,411.322 561.803,152.994 240.773,152.994 240.773,40.128 0,280.905 ">
+                    </polygon>
                 </svg>
             </div>
-            <timeouts
-                :count-elements="timeouts"
-                :count-active="spentTimeoutsRight"
-            ></timeouts>
+            <timeouts :count-elements="timeouts" :count-active="spentTimeoutsRight"></timeouts>
         </div>
         <div class="flex-center-around need-to-rotate-when-mirroring">
             <div class="view-fouls-left">

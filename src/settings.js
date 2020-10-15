@@ -71,6 +71,8 @@ const dom = {
     tenthsOfSecond: document.querySelector('[data-name="tenthsOfSecond"]'),
     mirror: document.querySelector('[data-name="mirror"]'),
     timeouts: document.querySelector('[data-name="timeouts"]'),
+
+    font: document.querySelector('.font'),
 };
 
 const timeObject = new TimeObject();
@@ -218,3 +220,7 @@ document.body.addEventListener('keydown', (event) => {
         timeTicker.startTimer();
     }
 }, { capture: true });
+
+dom.font.addEventListener('change', (event) => {
+    sendWSData({ font: event.target.value });
+});

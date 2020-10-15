@@ -22,7 +22,6 @@ webSocket.events.on('messageJSON', (message) => {
     console.log('message', message);
     Object.entries(message).forEach(([field, value]) => {
         if (field === 'time') {
-            console.log('value', value);
             dom.minutes.textContent = value.minutes;
             dom.seconds.textContent = value.seconds < 10 ? `0${value.seconds}` : value.seconds;
             dom.counter24.textContent = value.counter24;
@@ -54,6 +53,13 @@ webSocket.events.on('messageJSON', (message) => {
             vueInstance[field] = Number(value);
         } else if (dom[field]) {
             dom[field].textContent = value;
+        } else if (field === 'font') {
+            dom.viewContainer.classList.forEach((cls) => {
+                if (cls.startsWith('font-')) {
+                    dom.viewContainer.classList.remove(cls);
+                }
+            });
+            dom.viewContainer.classList.add(`font-${value}`);
         } else {
             console.log('message error', message);
         }
