@@ -5,10 +5,17 @@ module.exports = {
     ],
     extends: 'stylelint-config-sass-guidelines',
     rules: {
-        'indentation': 4,
+        'scss/at-import-partial-extension-blacklist': [''],
+        'scss/dollar-variable-pattern': /.*/,
+        indentation: 4,
         'max-empty-lines': 1,
         'selector-class-pattern': /.*/,
-        'at-rule-no-unknown': true,
+        'at-rule-no-unknown': [
+            true,
+            {
+                ignoreAtRules: ['each'],
+            },
+        ],
         'block-no-empty': true,
         'color-no-invalid-hex': true,
         'comment-no-empty': true,
@@ -166,7 +173,5 @@ module.exports = {
         'value-list-comma-space-after': 'always-single-line',
         'value-list-comma-space-before': 'never',
         'value-list-max-empty-lines': 0,
-        'scss/at-import-partial-extension-blacklist': [''],
-        'scss/dollar-variable-pattern': /.*/,
     },
 };
