@@ -32,7 +32,7 @@ webSocket.events.on('close', () => {
 webSocket.events.on('error', (error) => {
     console.log('WebSocket connection error:', error);
 });
-webSocket.events.on('messageJSON', (message) => {
+webSocket.events.on('messageJSON', () => {
     // console.log('message', message);
 });
 const sendWSData = (objectToSend) => {
@@ -84,7 +84,10 @@ timeObject.events.on('timeChanged', (changedFields) => {
     dom.seconds.value = timeObject.seconds.value;
     dom.minutes.value = timeObject.minutes.value;
     dom.counter24.value = timeObject.counter24.value;
-    if (timeObject.counter24.value < 10) {
+    if (
+        timeObject.counter24.value < 10
+        && timeObject.counter24.value > 0
+    ) {
         sendWSData({
             time: {
                 tenthsOfSecond: timeObject.tenthsOfSecond.value,
