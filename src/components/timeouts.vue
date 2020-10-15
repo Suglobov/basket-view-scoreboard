@@ -18,19 +18,18 @@ export default {
 
 <style lang="scss" scoped>
 .timeouts {
-    display: flex;
+    display: inline-flex;
     justify-content: center;
 }
 
 .timeout-ball {
-    box-sizing: border-box;
-    width: 30px;
-    height: 30px;
-    margin-right: 10px;
-    margin-left: 10px;
-
     border: 3px solid #1bda5f;
     border-radius: 50%;
+    box-sizing: border-box;
+    height: 50px;
+    margin-left: 10px;
+    margin-right: 10px;
+    width: 50px;
 }
 
 .timeout-ball--active {

@@ -8,54 +8,75 @@
 </head>
 
 <body>
-    <div class="view-container font-Orbitron" id="app">
+    <div class="view-container font-Aldrich" id="app">
         <div class="flex-center-between need-to-rotate-when-mirroring">
-            <div class="view-team view-team-left">Команда Л</div>
-            <div class="view-time">
-                <span class="view-minutes">10</span>
-                <span class="view-time-colon">:</span>
-                <span class="view-seconds">00</span>
+            <div class="uk-width-1-4">
+                <div class="view-team view-team-left">Космические волки</div>
+
             </div>
-            <div class="view-team view-team-right">Команда П</div>
+            <div class="uk-width-expand">
+                <div class="view-time">
+                    <span class="view-minutes">10</span>
+                    <span class="view-time-colon">:</span>
+                    <span class="view-seconds">00</span>
+                </div>
+            </div>
+            <div class="uk-width-1-4">
+                <div class="view-team view-team-right">Команда П</div>
+            </div>
         </div>
         <div class="flex-center-around need-to-rotate-when-mirroring">
-            <div class="view-score-wrapper">
-                <div class="view-score view-score-left">0</div>
+            <div class="uk-width-1-3">
+                <div class="view-score view-score-left">100</div>
             </div>
-            <div class="counter24-wrapper">
-                <div class="view-counter-24">24</div>
-                <div class="view-counter-24-tenths-of-second">.9</div>
+            <div class="uk-width-expand uk-flex uk-flex-center">
+                <div class="view-counter24-wrapper uk-flex uk-flex-bottom">
+                    <div class="view-counter-24">24</div>
+                    <div class="view-counter-24-tenths-of-second">.9</div>
+                </div>
             </div>
-            <div class="view-score-wrapper">
+            <div class="uk-width-1-3">
                 <div class="view-score view-score-right">0</div>
             </div>
         </div>
         <div class="flex-center-around need-to-rotate-when-mirroring">
-            <timeouts :count-elements="timeouts" :count-active="spentTimeoutsLeft"></timeouts>
-            <div class="view-arrow-wrapper">
-                <svg class="arrow-left" preserveAspectRatio="none" version="1.1" xmlns="http://www.w3.org/2000/svg"
-                    xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 561.803 561.802">
-                    <polygon
-                        points="240.773,521.674 240.773,411.322 561.803,411.322 561.803,152.994 240.773,152.994 240.773,40.128 0,280.905 ">
-                    </polygon>
-                </svg>
+            <div class="uk-width-1-4 uk-text-center">
+                <timeouts :count-elements="timeouts" :count-active="spentTimeoutsLeft"></timeouts>
             </div>
-            <timeouts :count-elements="timeouts" :count-active="spentTimeoutsRight"></timeouts>
-        </div>
-        <div class="flex-center-around need-to-rotate-when-mirroring">
-            <div class="view-fouls-left">
-                <div class="view-foul-text">Фолы</div>
-                <div class="view-foul">0</div>
-            </div>
-            <div class="view-period-wrapper">
-                <div class="view-quarter-wrapper">
-                    <div class="view-period-text">Четверть</div>
-                    <div class="view-period-value">1</div>
+            <div class="uk-width-expand uk-flex uk-flex-center">
+                <div class="view-arrow-wrapper">
+                    <svg class="arrow-left" preserveAspectRatio="none" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 561.803 561.802">
+                        <polygon
+                            points="240.773,521.674 240.773,411.322 561.803,411.322 561.803,152.994 240.773,152.994 240.773,40.128 0,280.905 ">
+                        </polygon>
+                    </svg>
                 </div>
             </div>
-            <div class="view-fouls-right">
-                <div class="view-foul-text">Фолы</div>
-                <div class="view-foul">0</div>
+            <div class="uk-width-1-4 uk-text-center">
+                <timeouts :count-elements="timeouts" :count-active="spentTimeoutsRight"></timeouts>
+            </div>
+        </div>
+        <div class="flex-center-around need-to-rotate-when-mirroring">
+            <div class="uk-width-1-3">
+                <div class="view-fouls-left">
+                    <div class="view-foul-text">Фолы</div>
+                    <div class="view-foul">0</div>
+                </div>
+            </div>
+            <div class="uk-width-expand uk-flex uk-flex-center">
+                <div class="view-period-wrapper">
+                    <div class="view-quarter-wrapper">
+                        <div class="view-period-text">Четверть</div>
+                        <div class="view-period-value">1</div>
+                    </div>
+                </div>
+            </div>
+            <div class="uk-width-1-3">
+                <div class="view-fouls-right">
+                    <div class="view-foul-text">Фолы</div>
+                    <div class="view-foul">0</div>
+                </div>
             </div>
         </div>
     </div>

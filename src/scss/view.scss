@@ -1,3 +1,7 @@
+// * {
+//     outline: 1px solid;
+// }
+
 .view-container {
     background: #000;
     box-sizing: border-box;
@@ -6,27 +10,10 @@
     flex-direction: column;
     height: 100%;
     justify-content: space-between;
+    line-height: 1;
     min-height: 100vh;
     padding: 2%;
     width: 100%;
-}
-
-.mirror .need-to-rotate-when-mirroring {
-    flex-direction: row-reverse;
-
-    .arrow-left {
-        transform: rotateY(180deg);
-
-    }
-
-    .arrow-left.arrow-right {
-        transform: rotateY(0deg);
-    }
-}
-
-.view-arrow-wrapper {
-    height: 50px;
-    width: 500px;
 }
 
 .arrow-left {
@@ -39,21 +26,34 @@
     }
 }
 
+.mirror .need-to-rotate-when-mirroring {
+    flex-direction: row-reverse;
+
+    .arrow-left {
+        transform: rotateY(180deg);
+    }
+
+    .arrow-left.arrow-right {
+        transform: rotateY(0deg);
+    }
+}
+
+.view-arrow-wrapper {
+    height: 15vh;
+    width: 15vw;
+}
+
 .view-team {
     flex: auto;
-    font-size: 50px;
+    font-size: 3vw;
     overflow: hidden;
     text-align: center;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    width: 29%;
 }
 
 .view-time {
     color: #e03838;
     display: flex;
-    font-size: 200px;
-    width: 42%;
+    font-size: 12vw;
 }
 
 .view-minutes,
@@ -70,50 +70,37 @@
     width: 10%;
 }
 
-// .view-time-test {
-//     display: flex;
-
-//     width: 50%;
-
-//     .number {
-//         width: 45%;
-
-//         text-align: center;
-//     }
-
-//     .colon {
-//         width: 10%;
-
-//         text-align: center;
-//     }
-// }
-
-.view-score-wrapper {
-    min-width: 200px;
-}
-
 .view-score {
     color: #e6e00d;
-    font-size: 100px;
+    font-size: 12vw;
     text-align: center;
+}
+
+.view-counter24-wrapper {
+    width: 100%;
 }
 
 .view-counter-24 {
     color: #e03838;
-    font-size: 150px;
-    min-width: 250px;
-    text-align: center;
+    font-size: 10vw;
+    text-align: right;
+    width: 60%;
+}
+
+.view-counter-24-tenths-of-second {
+    color: #e03838;
+    font-size: 10vw;
 }
 
 .view-period-value,
 .view-foul {
     color: #1bda5f;
-    font-size: 150px;
+    font-size: 10vw;
     text-align: center;
 }
 
 .view-period-text,
 .view-foul-text {
-    font-size: 30px;
+    font-size: 3vw;
     text-align: center;
 }
