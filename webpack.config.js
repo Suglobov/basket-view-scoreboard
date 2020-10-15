@@ -43,13 +43,9 @@ module.exports = {
                         resourceQuery: /module/,
                         use: [
                             'vue-style-loader',
-                            'style-loader',
                             {
                                 loader: 'css-loader',
-                                options: {
-                                    modules: true,
-                                    localIdentName: '[local]_[hash:base64:5]',
-                                }
+                                options: { modules: true, localIdentName: '[local]_[hash:base64:5]' }
                             }
                         ]
                     },
@@ -69,12 +65,9 @@ module.exports = {
                         resourceQuery: /module/,
                         use: [
                             'vue-style-loader',
-                            'style-loader',
                             {
                                 loader: 'css-loader',
-                                options: {
-                                    modules: true, localIdentName: '[local]_[hash:base64:5]'
-                                }
+                                options: { modules: true, localIdentName: '[local]_[hash:base64:5]' }
                             },
                             'sass-loader',
                         ]
