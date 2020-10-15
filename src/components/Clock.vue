@@ -25,7 +25,7 @@ export default {
             return this.timeObject.minutes % 10;
         },
         secondsDozens() {
-            const dozens = Math.floor(this.timeObject.seconds / 10)
+            const dozens = Math.floor(this.timeObject.seconds / 10);
             return dozens;
         },
         secondsUnits() {
