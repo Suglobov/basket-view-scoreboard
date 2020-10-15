@@ -1,7 +1,8 @@
 import './js/common.js';
 import WebSocketConnect from './components/WebSocketConnect.js';
 import Vue from 'vue/dist/vue.esm.js';
-import timeouts from './components/timeouts.vue';
+import Timeouts from './components/Timeouts.vue';
+import Clock from './components/Clock.vue';
 
 global.Vue = Vue;
 
@@ -22,15 +23,18 @@ webSocket.events.on('messageJSON', (message) => {
     console.log('message', message);
     Object.entries(message).forEach(([field, value]) => {
         if (field === 'time') {
-            dom.minutes.textContent = value.minutes;
-            dom.seconds.textContent = value.seconds < 10 ? `0${value.seconds}` : value.seconds;
-            dom.counter24.textContent = value.counter24;
+            // dom.minutes.textContent = value.minutes;
+            // dom.seconds.textContent = value.seconds < 10 ? `0${value.seconds}` : value.seconds;
+            // dom.counter24.textContent = value.counter24;
             if (value.tenthsOfSecond === undefined) {
                 dom.counter24TenthsOfSecond.hidden = true;
             } else {
                 dom.counter24TenthsOfSecond.hidden = false;
                 dom.counter24TenthsOfSecond.textContent = `.${value.tenthsOfSecond}`;
             }
+            vueInstance.timeObject.seconds = value.seconds;
+            vueInstance.timeObject.minutes = value.minutes;
+            console.log('vueInstance.timeObject', vueInstance.timeObject);
         } else if (field === 'arrow') {
             if (value === 'left') {
                 dom.arrowLeft.classList.remove('arrow-right');
@@ -69,9 +73,14 @@ webSocket.events.on('messageJSON', (message) => {
 const vueInstance = new Vue({
     el: '#app',
     components: {
-        timeouts,
+        Clock,
+        Timeouts,
     },
     data: {
+        timeObject: {
+            seconds: 0,
+            minutes: 0,
+        },
         timeouts: 2,
         spentTimeoutsLeft: 0,
         spentTimeoutsRight: 0,

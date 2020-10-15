@@ -32,8 +32,8 @@ webSocket.events.on('close', () => {
 webSocket.events.on('error', (error) => {
     console.log('WebSocket connection error:', error);
 });
-webSocket.events.on('messageJSON', () => {
-    // console.log('message', message);
+webSocket.events.on('messageJSON', (message) => {
+    console.log('message', message);
 });
 const sendWSData = (objectToSend) => {
     if (wsOpen === false) {

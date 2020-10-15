@@ -15,10 +15,13 @@
 
             </div>
             <div class="uk-width-expand">
-                <div class="view-time">
+                <!-- <div class="view-time">
                     <span class="view-minutes">10</span>
                     <span class="view-time-colon">:</span>
                     <span class="view-seconds">00</span>
+                </div> -->
+                <div class="view-time">
+                    <clock :time-object="timeObject"></clock>
                 </div>
             </div>
             <div class="uk-width-1-4">
@@ -41,7 +44,7 @@
         </div>
         <div class="flex-center-around need-to-rotate-when-mirroring">
             <div class="uk-width-1-4 uk-text-center">
-                <timeouts :count-elements="timeouts" :count-active="spentTimeoutsLeft"></timeouts>
+                <Timeouts :count-elements="timeouts" :count-active="spentTimeoutsLeft"></Timeouts>
             </div>
             <div class="uk-width-expand uk-flex uk-flex-center">
                 <div class="view-arrow-wrapper">
@@ -54,7 +57,7 @@
                 </div>
             </div>
             <div class="uk-width-1-4 uk-text-center">
-                <timeouts :count-elements="timeouts" :count-active="spentTimeoutsRight"></timeouts>
+                <Timeouts :count-elements="timeouts" :count-active="spentTimeoutsRight"></Timeouts>
             </div>
         </div>
         <div class="flex-center-around need-to-rotate-when-mirroring">
