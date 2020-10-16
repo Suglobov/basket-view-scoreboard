@@ -13,9 +13,6 @@ export default {
     props: {
         timeObject: Object,
     },
-    data() {
-        return {};
-    },
     computed: {
         minutesDozens() {
             const dozens = Math.floor(this.timeObject.minutes / 10);
