@@ -15,6 +15,7 @@ class TimeObject {
         this.counter24 = new TimeComponent({
             value: 0, min: 0, max: 24,
         });
+        this.isCounter24Zero = true;
 
         this.events = new EventsStorage([
             'timeZero',
@@ -27,12 +28,17 @@ class TimeObject {
             .filter(([, value]) => value !== undefined)
             .forEach(([field, value]) => {
                 this[field].setValue(value);
+                if (field === 'counter24') {
+                    if (value > 0) {
+                        this.isCounter24Zero = false;
+                    }
+                }
                 changedFields.push(field);
             });
-        this.testCaounter24();
+        this.testCounter24();
         this.events.trigger('timeChanged', changedFields);
     }
-    testCaounter24() {
+    testCounter24() {
         if (
             this.minutes.value <= 0
             && this.seconds.value < this.counter24.value
@@ -65,24 +71,24 @@ class TimeObject {
             return;
         }
         if (this.seconds.value > this.seconds.min) {
-            const changedFields = ['tenthsOfSecond', 'seconds'];
-            this.testCaounter24();
-            if (this.counter24.value > 0) {
-                changedFields.push('counter24');
-                this.counter24.setValue(this.counter24.value - 1);
+            if (this.tenthsOfSecond.value === 0 && this.counter24.value === 0) {
+                this.isCounter24Zero = true;
             }
+            this.counter24.setValue(this.counter24.value - 1);
+            this.testCounter24();
+            const changedFields = ['tenthsOfSecond', 'seconds'];
             this.tenthsOfSecond.setValue(this.tenthsOfSecond.max);
             this.seconds.setValue(this.seconds.value - 1);
             this.events.trigger('timeChanged', changedFields);
             return;
         }
         if (this.minutes.value > this.minutes.min) {
-            const changedFields = ['tenthsOfSecond', 'seconds', 'minutes'];
-            this.testCaounter24();
-            if (this.counter24.value > 0) {
-                changedFields.push('counter24');
-                this.counter24.setValue(this.counter24.value - 1);
+            if (this.tenthsOfSecond.value === 0 && this.counter24.value === 0) {
+                this.isCounter24Zero = true;
             }
+            this.counter24.setValue(this.counter24.value - 1);
+            this.testCounter24();
+            const changedFields = ['tenthsOfSecond', 'seconds', 'minutes'];
             this.tenthsOfSecond.setValue(this.tenthsOfSecond.max);
             this.seconds.setValue(this.seconds.max);
             this.minutes.setValue(this.minutes.value - 1);

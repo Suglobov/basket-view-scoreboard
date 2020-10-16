@@ -18,6 +18,16 @@ class TimeComponent {
         }
         return this;
     }
+    setToMax() {
+        this.setValue(this.max);
+        return this;
+    }
+    // minus1() {
+    //     if (this.value > this.min) {
+    //         this.setValue(this.value - 1);
+    //     }
+    //     return this;
+    // }
 }
 
 export default TimeComponent;

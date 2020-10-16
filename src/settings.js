@@ -32,8 +32,8 @@ webSocket.events.on('close', () => {
 webSocket.events.on('error', (error) => {
     console.log('WebSocket connection error:', error);
 });
-webSocket.events.on('messageJSON', (message) => {
-    console.log('message', message);
+webSocket.events.on('messageJSON', (/* message */) => {
+    // console.log('message', message.time);
 });
 const sendWSData = (objectToSend) => {
     if (wsOpen === false) {
@@ -86,7 +86,7 @@ timeObject.events.on('timeChanged', (changedFields) => {
     dom.counter24.value = timeObject.counter24.value;
     if (
         timeObject.counter24.value < 10
-        && timeObject.counter24.value > 0
+        && !timeObject.isCounter24Zero
     ) {
         sendWSData({
             time: {
@@ -96,11 +96,7 @@ timeObject.events.on('timeChanged', (changedFields) => {
                 counter24: timeObject.counter24.value,
             },
         });
-    } else if (
-        changedFields.includes('seconds')
-        || changedFields.includes('minutes')
-        || changedFields.includes('counter24')
-    ) {
+    } else if (changedFields.includes('seconds') || changedFields.includes('minutes')) {
         sendWSData({
             time: {
                 seconds: timeObject.seconds.value,
@@ -112,6 +108,7 @@ timeObject.events.on('timeChanged', (changedFields) => {
 });
 timeObject.changeTime({ tenthsOfSecond: 5, seconds: 1, minutes: 1, counter24: 10 });
 timeObject.changeTime({ tenthsOfSecond: 9 });
+timeObject.changeTime({ counter24: 1 });
 
 
 const timeTicker = new TimeTicker({ delayMs: 100 });
