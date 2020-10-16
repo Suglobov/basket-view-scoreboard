@@ -21,6 +21,7 @@
     "ws": "^7.3.1"
   },
   "devDependencies": {
+    "@vue/composition-api": "^1.0.0-beta.16",
     "css-loader": "^5.0.0",
     "editorconfig": "^0.15.3",
     "eslint": "^7.9.0",
