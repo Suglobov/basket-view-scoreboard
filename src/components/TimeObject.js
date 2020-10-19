@@ -1,20 +1,12 @@
-import TimeComponent from './TimeComponent.js';
+import ValueComponent from './ValueComponent.js';
 import EventsStorage from './EventsStorage.js';
 
 class TimeObject {
     constructor() {
-        this.tenthsOfSecond = new TimeComponent({
-            value: 0, min: 0, max: 9,
-        });
-        this.seconds = new TimeComponent({
-            value: 0, min: 0, max: 59,
-        });
-        this.minutes = new TimeComponent({
-            value: 0, min: 0, max: 10,
-        });
-        this.counter24 = new TimeComponent({
-            value: 0, min: 0, max: 24,
-        });
+        this.tenthsOfSecond = new ValueComponent({ value: 0, min: 0, max: 9, });
+        this.seconds = new ValueComponent({ value: 0, min: 0, max: 59, });
+        this.minutes = new ValueComponent({ value: 0, min: 0, max: 10, });
+        this.counter24 = new ValueComponent({ value: 0, min: 0, max: 24, });
         this.isCounter24Zero = true;
 
         this.events = new EventsStorage([

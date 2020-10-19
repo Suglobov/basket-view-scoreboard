@@ -1,4 +1,4 @@
-class TimeComponent {
+class ValueComponent {
     constructor({
         value = 0,
         min = 0,
@@ -12,22 +12,20 @@ class TimeComponent {
         if (value >= this.min && value <= this.max) {
             this.value = value;
         } else if (value < this.min) {
-            this.value = this.min;
+            this.setToMin();
         } else if (value > this.max) {
-            this.value = this.max;
+            this.setToMax();
         }
         return this;
     }
     setToMax() {
-        this.setValue(this.max);
+        this.value = this.max;
         return this;
     }
-    // minus1() {
-    //     if (this.value > this.min) {
-    //         this.setValue(this.value - 1);
-    //     }
-    //     return this;
-    // }
+    setToMin() {
+        this.value = this.min;
+        return this;
+    }
 }
 
-export default TimeComponent;
+export default ValueComponent;
