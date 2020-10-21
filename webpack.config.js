@@ -6,6 +6,11 @@ const VueLoaderPlugin = require('vue-loader/lib/plugin');
 module.exports = {
     target: 'electron-renderer',
     devtool: 'source-map',
+    resolve: {
+        alias: {
+            'vue$': 'vue/dist/vue.runtime.js',
+        },
+    },
     entry: {
         view: './src/view.js',
         settings: './src/settings.js',

@@ -2,15 +2,15 @@
     "name": "basket-view-scoreboard",
     "version": "1.0.0",
     "description": "",
-    "main": "mainElectron.js",
+    "main": "./src/electron/main.js",
     "scripts": {
         "server": "npx nodemon ./src/backend/webServer.js",
-        "watch": "npx webpack --mode development --watch --progress",
-        "build": "npx webpack --mode production --progress",
+        "webpack-watch": "npx webpack --mode development --watch --progress",
+        "webpack-build": "npx webpack --mode production --progress",
         "stylelint-fix": "npx stylelint ./src/**/*.scss --fix",
         "eslint": "npx eslint .",
         "eslint-fix": "npx eslint . --fix",
-        "electron": "electron mainElectron.js"
+        "electron": "electron ./src/electron/main.js"
     },
     "keywords": [],
     "author": "",

@@ -3,11 +3,6 @@ import WebSocketConnect from './components/WebSocketConnect.js';
 import TimeTicker from './components/TimeTicker.js';
 import CountdownObject from './components/CountdownObject.js';
 
-// const ipc = require('electron').ipcRenderer;
-
-window.ipcRenderer.on('reply', (event, message) => console.log(message));
-window.ipcRenderer.on('messageFromMain', (event, message) => console.log(message));
-
 
 const listenersDelay = 500;
 const debounce = (func, delay) => {
@@ -18,44 +13,12 @@ const debounce = (func, delay) => {
     };
 };
 
-const webSocket = {
-    events: {
-        on: () => { },
-    },
-    sendJSON: () => { },
-};
-// const webSocket = new WebSocketConnect({
-//     url: location.origin.replace(/^http/, 'ws'),
-//     reconnectMsTimeout: 1000,
-// });
-let wsOpen = false;
-const wsQueue = [];
-webSocket.events.on('open', () => {
-    wsOpen = true;
-    console.log('WebSocket connection open');
-    wsQueue.forEach((elem) => {
-        sendWSData(elem);
-    });
-});
-webSocket.events.on('close', () => {
-    console.log('WebSocket connection close');
-});
-webSocket.events.on('error', (error) => {
-    console.log('WebSocket connection error:', error);
-});
-webSocket.events.on('messageJSON', (message) => {
-    console.log('message', message.time);
+window.electron.receiveSettings((message) => {
+    console.log('message', message);
 });
 const sendWSData = (objectToSend) => {
-    window.ipcRenderer.send('reply', objectToSend);
-    if (wsOpen === false) {
-        wsQueue.push(objectToSend);
-        return;
-    }
-    webSocket.sendJSON(objectToSend);
+    window.electron.sendSettings(objectToSend);
 };
-
-
 
 const dom = {
     startTimer: document.querySelector('.start-timer'),
@@ -246,6 +209,6 @@ document.body.addEventListener('keydown', (event) => {
     }
 }, { capture: true });
 
-dom.font.addEventListener('change', (event) => {
-    sendWSData({ font: event.target.value });
-});
+// dom.font.addEventListener('change', (event) => {
+//     sendWSData({ font: event.target.value });
+// });
