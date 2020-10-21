@@ -5,28 +5,28 @@ import EventsStorage from './EventsStorage.js';
 class CountdownObject {
     constructor() {
         this.time = new CountdownTimer([
-            new ValueComponent({ value: 0, min: 0, max: 9, }),
-            new ValueComponent({ value: 0, min: 0, max: 59, }),
-            new ValueComponent({ value: 0, min: 0, max: 10, }),
-        ]);
+            new ValueComponent({ value: 0, min: 0, max: 9, },),
+            new ValueComponent({ value: 0, min: 0, max: 59, },),
+            new ValueComponent({ value: 0, min: 0, max: 10, },),
+        ],);
         this.counter24 = new CountdownTimer([
-            new ValueComponent({ value: 0, min: 0, max: 9, }),
-            new ValueComponent({ value: 0, min: 0, max: 24, }),
-        ]);
+            new ValueComponent({ value: 0, min: 0, max: 9, },),
+            new ValueComponent({ value: 0, min: 0, max: 24, },),
+        ],);
         this.events = new EventsStorage([
             'changed',
             'zero',
-        ]);
+        ],);
     }
-    change({ tenthsOfSecond, seconds, minutes, counter24 }) {
-        this.time.change([tenthsOfSecond, seconds, minutes]);
-        this.counter24.change([tenthsOfSecond, counter24]);
+    change({ tenthsOfSecond, seconds, minutes, counter24, },) {
+        this.time.change([tenthsOfSecond, seconds, minutes,],);
+        this.counter24.change([tenthsOfSecond, counter24,],);
         this.correctCounter24();
         const maxChangedIndex = Math.max(
-            [tenthsOfSecond, seconds, minutes].reduce((acc, elem, index) => elem === undefined ? acc : index, 0),
-            [tenthsOfSecond, counter24].reduce((acc, elem, index) => elem === undefined ? acc : index, 0),
+            [tenthsOfSecond, seconds, minutes,].reduce((acc, elem, index,) => elem === undefined ? acc : index, 0,),
+            [tenthsOfSecond, counter24,].reduce((acc, elem, index,) => elem === undefined ? acc : index, 0,),
         );
-        this.events.trigger('changed', maxChangedIndex);
+        this.events.trigger('changed', maxChangedIndex,);
         return this;
     }
     give() {
@@ -42,14 +42,14 @@ class CountdownObject {
             times[2].value === times[2].min
             && times[1].value < counter24s[1].value
         ) {
-            counter24s[1].setValue(times[1].value);
+            counter24s[1].setValue(times[1].value,);
         }
         return this;
     }
     checkForZero() {
         const isZero = this.time.isZero();
         if (isZero) {
-            this.events.trigger('zero');
+            this.events.trigger('zero',);
         }
         return this;
     }
@@ -58,7 +58,7 @@ class CountdownObject {
         this.counter24.minus1();
 
         if (maxChangedIndex !== -1) {
-            this.events.trigger('changed', maxChangedIndex);
+            this.events.trigger('changed', maxChangedIndex,);
         }
         return this;
     }

@@ -3,12 +3,12 @@ class ValueComponent {
         value = 0,
         min = 0,
         max = 0,
-    }) {
+    },) {
         this.min = min;
         this.max = max;
-        this.setValue(value);
+        this.setValue(value,);
     }
-    setValue(value) {
+    setValue(value,) {
         if (value >= this.min && value <= this.max) {
             this.value = value;
         } else if (value < this.min) {

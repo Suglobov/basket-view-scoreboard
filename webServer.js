@@ -1,41 +1,41 @@
-const express = require('express');
-const path = require('path');
-const http = require('http');
-const WebSocket = require('ws');
+const express = require('express',);
+const path = require('path',);
+const http = require('http',);
+const WebSocket = require('ws',);
 
 const PORT = 8000;
 const app = express();
 
-const server = http.createServer(app);
-const webSocketServer = new WebSocket.Server({ server });
+const server = http.createServer(app,);
+const webSocketServer = new WebSocket.Server({ server, },);
 
 server.listen(PORT, function () {
-    console.log('Server was started.');
-    console.log(`View page  http://localhost:${PORT}/`);
-    console.log(`Settings page  http://localhost:${PORT}/settings`);
-});
+    console.log('Server was started.',);
+    console.log(`View page  http://localhost:${PORT}/`,);
+    console.log(`Settings page  http://localhost:${PORT}/settings`,);
+},);
 
-app.use(express.static(path.resolve(__dirname, './dist')));
+app.use(express.static(path.resolve(__dirname, './dist',),),);
 
-app.get('/', function (req, res) {
-    res.sendFile(path.join(__dirname + '/dist/index.html'));
-});
-app.get('/settings', function (req, res) {
-    res.sendFile(path.join(__dirname + '/dist/settings.html'));
-});
+app.get('/', function (req, res,) {
+    res.sendFile(path.join(__dirname + '/dist/index.html',),);
+},);
+app.get('/settings', function (req, res,) {
+    res.sendFile(path.join(__dirname + '/dist/settings.html',),);
+},);
 
-webSocketServer.on('connection', (client) => {
-    client.on('message', (message) => {
-        console.log('message', message);
-        webSocketServer.clients.forEach((client) => {
-            client.send(message);
-        });
-    });
+webSocketServer.on('connection', (client,) => {
+    client.on('message', (message,) => {
+        console.log('message', message,);
+        webSocketServer.clients.forEach((client,) => {
+            client.send(message,);
+        },);
+    },);
 
-    client.on('close', (close) => {
-        console.log('close', close);
-    });
-});
+    client.on('close', (close,) => {
+        console.log('close', close,);
+    },);
+},);
 
 // const sendJson = (client, data) => {
 //     const dataJson = JSON.stringify(data);

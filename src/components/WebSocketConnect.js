@@ -1,7 +1,7 @@
 import EventsStorage from './EventsStorage.js';
 
 class WebSocketConnect {
-    constructor(options = {}) {
+    constructor(options = {},) {
         const {
             url,
             reconnectMsTimeout = false, // int | false
@@ -17,43 +17,43 @@ class WebSocketConnect {
             'open',
             'close',
             'messageJSON',
-        ]);
+        ],);
 
         this.connect();
     }
 
     connect() {
-        this.ws = new WebSocket(this.url);
+        this.ws = new WebSocket(this.url,);
 
         this.listen();
     }
 
     listen() {
-        this.ws.addEventListener('error', (error) => {
-            this.events.trigger('error', error);
-        });
+        this.ws.addEventListener('error', (error,) => {
+            this.events.trigger('error', error,);
+        },);
 
         this.ws.addEventListener('open', () => {
-            this.events.trigger('open');
-        });
+            this.events.trigger('open',);
+        },);
 
         this.ws.addEventListener('close', () => {
-            this.events.trigger('close');
+            this.events.trigger('close',);
             if (this.reconnectMsTimeout === false) {
                 return;
             }
 
-            setTimeout(() => this.connect(this.url), this.reconnectMsTimeout);
-        });
+            setTimeout(() => this.connect(this.url,), this.reconnectMsTimeout,);
+        },);
 
-        this.ws.addEventListener('message', (messageEvent) => {
-            this.events.trigger('messageJSON', JSON.parse(messageEvent.data));
-        });
+        this.ws.addEventListener('message', (messageEvent,) => {
+            this.events.trigger('messageJSON', JSON.parse(messageEvent.data,),);
+        },);
     }
 
-    sendJSON(data) {
-        const dataJSON = JSON.stringify(data);
-        this.ws.send(dataJSON);
+    sendJSON(data,) {
+        const dataJSON = JSON.stringify(data,);
+        this.ws.send(dataJSON,);
     }
 }
 

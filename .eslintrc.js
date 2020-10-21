@@ -2,35 +2,42 @@ module.exports = {
     'env': {
         'browser': true,
         'es2020': true,
-        'node': true
+        'node': true,
     },
     'extends': [
         'eslint:recommended',
-        'plugin:vue/essential'
+        'plugin:vue/essential',
     ],
     'parserOptions': {
         'ecmaVersion': 11,
-        'sourceType': 'module'
+        'sourceType': 'module',
     },
     'plugins': [
-        'vue'
+        'vue',
     ],
     'rules': {
         'indent': [
             'error',
-            4
+            4,
         ],
         'linebreak-style': [
             'error',
-            'unix'
+            'unix',
         ],
         'quotes': [
             'error',
-            'single'
+            'single',
         ],
         'semi': [
             'error',
-            'always'
+            'always',
         ],
-    }
+        'comma-dangle': ['error', {
+            'arrays': 'always',
+            'objects': 'always',
+            'imports': 'always',
+            'exports': 'always',
+            'functions': 'always',
+        },],
+    },
 };
