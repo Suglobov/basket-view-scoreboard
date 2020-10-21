@@ -5,7 +5,7 @@ module.exports = {
     ],
     extends: 'stylelint-config-sass-guidelines',
     rules: {
-        'scss/at-import-partial-extension-blacklist': ['',],
+        'scss/at-import-partial-extension-blacklist': [''],
         'scss/dollar-variable-pattern': /.*/,
         indentation: 4,
         'max-empty-lines': 1,
@@ -13,7 +13,7 @@ module.exports = {
         'at-rule-no-unknown': [
             true,
             {
-                ignoreAtRules: ['each',],
+                ignoreAtRules: ['each'],
             },
         ],
         'block-no-empty': true,

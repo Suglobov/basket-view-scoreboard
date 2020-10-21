@@ -1,16 +1,17 @@
-const path = require('path',);
-const MiniCssExtractPlugin = require('mini-css-extract-plugin',);
-const HtmlWebpackPlugin = require('html-webpack-plugin',);
-const VueLoaderPlugin = require('vue-loader/lib/plugin',);
+const path = require('path');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const VueLoaderPlugin = require('vue-loader/lib/plugin');
 
 module.exports = {
     target: 'electron-renderer',
+    devtool: 'source-map',
     entry: {
         view: './src/view.js',
         settings: './src/settings.js',
     },
     output: {
-        path: path.resolve(__dirname, 'dist',),
+        path: path.resolve(__dirname, 'dist'),
         filename: './[name].js',
         chunkFilename: './[name].js',
         publicPath: '',
@@ -20,85 +21,87 @@ module.exports = {
             filename: '[name].css',
             chunkFilename: '[id].css',
             ignoreOrder: false,
-        },),
+        }),
         new HtmlWebpackPlugin({
             title: 'settings',
             filename: 'settings.html',
             template: 'src/settings.html',
-            chunks: ['settings',],
+            chunks: ['settings'],
             publicPath: '',
-        },),
+            meta: {
+                'Content-Security-Policy': {
+                    'http-equiv': 'Content-Security-Policy',
+                    'content': 'script-src *',
+                },
+            },
+        }),
         new HtmlWebpackPlugin({
             title: 'view',
             filename: 'index.html',
             template: 'src/index.html',
-            chunks: ['view',],
+            chunks: ['view'],
             publicPath: '',
-        },),
+            meta: {
+                'Content-Security-Policy': {
+                    'http-equiv': 'Content-Security-Policy',
+                    'content': 'script-src *',
+                },
+            },
+        }),
         new VueLoaderPlugin(),
     ],
     module: {
-        rules: [
-            {
-                test: /\.css$/,
-                oneOf: [
+        rules: [{
+            test: /\.css$/,
+            oneOf: [{
+                resourceQuery: /module/,
+                use: [
+                    'vue-style-loader',
                     {
-                        resourceQuery: /module/,
-                        use: [
-                            'vue-style-loader',
-                            {
-                                loader: 'css-loader',
-                                options: { modules: true, localIdentName: '[local]_[hash:base64:5]', },
-                            },
-                        ],
-                    },
-                    {
-                        use: [
-                            'vue-style-loader',
-                            MiniCssExtractPlugin.loader,
-                            'css-loader',
-                        ],
+                        loader: 'css-loader',
+                        options: { modules: true, localIdentName: '[local]_[hash:base64:5]' },
                     },
                 ],
-            },
-            {
-                test: /\.s[ac]ss$/i,
-                oneOf: [
-                    {
-                        resourceQuery: /module/,
-                        use: [
-                            'vue-style-loader',
-                            {
-                                loader: 'css-loader',
-                                options: { modules: true, localIdentName: '[local]_[hash:base64:5]', },
-                            },
-                            'sass-loader',
-                        ],
-                    },
-                    {
-                        use: [
-                            'vue-style-loader',
-                            MiniCssExtractPlugin.loader,
-                            'css-loader',
-                            'sass-loader',
-                        ],
-                    },
+            }, {
+                use: [
+                    'vue-style-loader',
+                    MiniCssExtractPlugin.loader,
+                    'css-loader',
                 ],
-            },
-            {
-                test: /\.vue$/, loader: 'vue-loader',
-            },
-            {
-                test: /.*/i,
-                include: [
-                    path.resolve(__dirname, 'src/fonts',),
+            }],
+        }, {
+            test: /\.s[ac]ss$/i,
+            oneOf: [{
+                resourceQuery: /module/,
+                use: [
+                    'vue-style-loader',
+                    {
+                        loader: 'css-loader',
+                        options: { modules: true, localIdentName: '[local]_[hash:base64:5]' },
+                    },
+                    'sass-loader',
                 ],
-                loader: 'file-loader',
-                options: {
-                    name: '[name].[ext]',
-                    outputPath: './fonts/',
-                },
+            }, {
+                use: [
+                    'vue-style-loader',
+                    MiniCssExtractPlugin.loader,
+                    'css-loader',
+                    'sass-loader',
+                ],
+            }],
+        }, {
+            test: /\.vue$/,
+            loader: 'vue-loader',
+        }, {
+            test: /.*/i,
+            include: [
+                path.resolve(__dirname, 'src/fonts'),
+            ],
+            loader: 'file-loader',
+            options: {
+                name: '[name].[ext]',
+                outputPath: './fonts/',
             },
-        ],
+        }],
     },
 };
