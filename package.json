@@ -10,7 +10,8 @@
         "stylelint-fix": "npx stylelint ./src/**/*.scss --fix",
         "eslint": "npx eslint .",
         "eslint-fix": "npx eslint . --fix",
-        "electron": "electron ./src/electron/main.js"
+        "electron": "electron .",
+        "electron-packager": "npx electron-packager . --overwrite"
     },
     "keywords": [],
     "author": "",
@@ -28,6 +29,7 @@
         "editorconfig": "^0.15.3",
         "electron": "^10.1.3",
         "electron-builder": "^22.9.1",
+        "electron-packager": "^15.1.0",
         "electron-webpack": "^2.8.2",
         "eslint": "^7.9.0",
         "eslint-plugin-vue": "^6.2.2",

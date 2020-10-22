@@ -4,7 +4,7 @@ const { app, BrowserWindow } = require('electron');
 const { ipcMain } = require('electron');
 
 
-const basePath = path.join(app.getAppPath(), '/../../');
+const basePath = path.join(app.getAppPath());
 
 function createWindows() {
     ipcMain.on('settings', (_event, message) => {
@@ -25,7 +25,7 @@ function createWindows() {
         slashes: true,
         pathname: path.join(basePath, '/dist/settings.html'),
     }));
-    settingsWindow.webContents.openDevTools();
+    // settingsWindow.webContents.openDevTools();
     settingsWindow.maximize();
 
 
@@ -36,13 +36,14 @@ function createWindows() {
             contextIsolation: true,
             preload: preloadPath,
         },
+        autoHideMenuBar: true,
     });
     viewWindow.loadURL(url.format({
         protocol: 'file',
         slashes: true,
         pathname: path.join(basePath, '/dist/index.html'),
     }));
-    viewWindow.webContents.openDevTools();
+    // viewWindow.webContents.openDevTools();
     viewWindow.maximize();
 
 

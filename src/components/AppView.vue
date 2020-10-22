@@ -100,42 +100,17 @@ window.electron.receiveSettings((message) => {
             vueData.periodValue = value;
         } else if (vueData[field] !== undefined) {
             vueData[field] = value;
-        // } else if (field === 'font') {
-        //     dom.viewContainer.classList.forEach((cls) => {
-        //         if (cls.startsWith('font-')) {
-        //             dom.viewContainer.classList.remove(cls);
-        //         }
-        //     });
-        //     dom.viewContainer.classList.add(`font-${value}`);
         } else {
             console.log('message error', message);
         }
     });
 });
 
-const dom = {
-    viewContainer: document.querySelector('.view-container'),
-    time: document.querySelector('.view-time'),
-    minutes: document.querySelector('.view-minutes'),
-    seconds: document.querySelector('.view-seconds'),
-    teamLeft: document.querySelector('.view-team-left'),
-    teamRight: document.querySelector('.view-team-right'),
-    scoreLeft: document.querySelector('.view-score-left'),
-    scoreRight: document.querySelector('.view-score-right'),
-    counter24: document.querySelector('.view-counter-24'),
-    counter24TenthsOfSecond: document.querySelector('.view-counter-24-tenths-of-second'),
-    arrowLeft: document.querySelector('.view-arrow-left'),
-    folsLeft: document.querySelector('.view-fouls-left .view-foul'),
-    folsRight: document.querySelector('.view-fouls-right .view-foul'),
-    periodText: document.querySelector('.view-period-text'),
-    periodValue: document.querySelector('.view-period-value'),
-};
- 
 const vueData = {
     teamLeft: 'Космические волки',
     teamRight: 'Команда П',
-    scoreLeft: 10,
-    scoreRight: 0,
+    scoreLeft: 100,
+    scoreRight: 100,
     counter24: 24,
     tenthsOfSecond: 0,
     folsLeft: 0,
