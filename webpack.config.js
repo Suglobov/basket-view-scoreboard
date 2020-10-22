@@ -1,14 +1,15 @@
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const VueLoaderPlugin = require('vue-loader/lib/plugin');
+// const VueLoaderPlugin = require('vue-loader/lib/plugin');
+const { VueLoaderPlugin } = require('vue-loader');
 
 module.exports = {
     target: 'electron-renderer',
     devtool: 'source-map',
     resolve: {
         alias: {
-            'vue$': 'vue/dist/vue.runtime.js',
+            // 'vue$': 'vue/dist/vue.runtime.js',
         },
     },
     entry: {
@@ -57,11 +58,20 @@ module.exports = {
     ],
     module: {
         rules: [{
+            test: /\.m?js$/,
+            exclude: /node_modules/,
+            use: {
+                loader: 'babel-loader',
+                options: {
+                    presets: ['@babel/preset-env'],
+                },
+            },
+        }, {
             test: /\.css$/,
             oneOf: [{
                 resourceQuery: /module/,
                 use: [
-                    'vue-style-loader',
+                    // 'vue-style-loader',
                     {
                         loader: 'css-loader',
                         options: { modules: true, localIdentName: '[local]_[hash:base64:5]' },
@@ -69,7 +79,7 @@ module.exports = {
                 ],
             }, {
                 use: [
-                    'vue-style-loader',
+                    // 'vue-style-loader',
                     MiniCssExtractPlugin.loader,
                     'css-loader',
                 ],
@@ -79,7 +89,7 @@ module.exports = {
             oneOf: [{
                 resourceQuery: /module/,
                 use: [
-                    'vue-style-loader',
+                    // 'vue-style-loader',
                     {
                         loader: 'css-loader',
                         options: { modules: true, localIdentName: '[local]_[hash:base64:5]' },
@@ -88,7 +98,7 @@ module.exports = {
                 ],
             }, {
                 use: [
-                    'vue-style-loader',
+                    // 'vue-style-loader',
                     MiniCssExtractPlugin.loader,
                     'css-loader',
                     'sass-loader',

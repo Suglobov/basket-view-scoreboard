@@ -1,8 +1,8 @@
 <template>
     <div class="timeouts timeouts-left timeouts-2">
         <template v-for="n in countElements">
-            <div :key="n" v-if="n <= countActive" class="timeout-ball timeout-ball--active"></div>
-            <div :key="n" v-else class="timeout-ball"></div>
+            <div :key="'a' + n" v-if="n <= countActive" class="timeout-ball timeout-ball--active"></div>
+            <div :key="'b' + n" v-else class="timeout-ball"></div>
         </template>
     </div>
 </template>

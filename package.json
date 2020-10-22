@@ -20,17 +20,19 @@
         "express": "^4.17.1",
         "nodemon": "^2.0.4",
         "uikit": "^3.5.7",
-        "vue": "^2.6.12",
+        "vue": "^3.0.2",
         "ws": "^7.3.1"
     },
     "devDependencies": {
-        "@vue/composition-api": "^1.0.0-beta.16",
+        "@babel/core": "^7.12.3",
+        "@babel/preset-env": "^7.12.1",
+        "@vue/compiler-sfc": "^3.0.2",
+        "@vue/composition-api": "^1.0.0-beta.18",
+        "babel-loader": "^8.1.0",
         "css-loader": "^5.0.0",
         "editorconfig": "^0.15.3",
-        "electron": "^10.1.3",
-        "electron-builder": "^22.9.1",
+        "electron": "^10.1.4",
         "electron-packager": "^15.1.0",
-        "electron-webpack": "^2.8.2",
         "eslint": "^7.9.0",
         "eslint-plugin-vue": "^6.2.2",
         "file-loader": "^6.1.0",
@@ -39,23 +41,14 @@
         "node-sass": "^4.14.1",
         "prettier": "2.1.2",
         "sass-loader": "^10.0.2",
-        "style-loader": "^1.2.1",
+        "style-loader": "^1.3.0",
         "stylelint": "^13.7.2",
         "stylelint-config-sass-guidelines": "^7.1.0",
         "stylelint-order": "^4.1.0",
         "stylelint-scss": "^3.18.0",
-        "vue-loader": "^15.9.3",
+        "vue-loader": "^16.0.0-beta.8",
         "vue-template-compiler": "^2.6.12",
         "webpack": "^4.44.2",
         "webpack-cli": "^3.3.12"
-    },
-    "electronWebpack": {
-        "main": {
-            "sourceDirectory": "src/main"
-        },
-        "renderer": {
-            "sourceDirectory": "src",
-            "template": "src/index.html"
-        }
     }
 }

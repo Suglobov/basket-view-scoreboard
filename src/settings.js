@@ -175,7 +175,6 @@ dom.buttons.forEach((button) => {
         score.value = Number(score.value) + Number(add);
         const value = Number(score.value);
         sendWSData({ [targetName]: value });
-        countdownObject.change({ counter24: 24 });
     });
 });
 

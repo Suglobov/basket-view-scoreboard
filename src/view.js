@@ -1,8 +1,4 @@
-import Vue from 'vue/dist/vue.esm.js';
+import { createApp } from 'vue';
 import AppView from './components/AppView.vue';
 
-
-new Vue({
-    el: '#app',
-    render: createElement => createElement(AppView),
-});
+createApp(AppView).mount('#app');

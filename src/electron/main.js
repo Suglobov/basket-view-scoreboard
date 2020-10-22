@@ -25,9 +25,8 @@ function createWindows() {
         slashes: true,
         pathname: path.join(basePath, '/dist/settings.html'),
     }));
-    // settingsWindow.webContents.openDevTools();
-    settingsWindow.maximize();
-
+    settingsWindow.webContents.openDevTools();
+    // settingsWindow.maximize();
 
     const viewWindow = new BrowserWindow({
         webPreferences: {
@@ -43,14 +42,7 @@ function createWindows() {
         slashes: true,
         pathname: path.join(basePath, '/dist/index.html'),
     }));
-    // viewWindow.webContents.openDevTools();
-    viewWindow.maximize();
-
-
-
-    // const viewWindow = new BrowserWindow({    });
-    // viewWindow.loadURL(path.join(__dirname, '/dist/index.html'));
-    // viewWindow.webContents.openDevTools();
+    viewWindow.webContents.openDevTools();
     // viewWindow.maximize();
 }
 
