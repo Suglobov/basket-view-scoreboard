@@ -21,7 +21,7 @@ class CountdownObject {
     change({ tenthsOfSecond, seconds, minutes, counter24 }) {
         this.time.change([tenthsOfSecond, seconds, minutes]);
         this.counter24.change([tenthsOfSecond, counter24]);
-        this.correctCounter24();
+        this.syncTenth().correctCounter24();
         const maxChangedIndex = Math.max(
             [tenthsOfSecond, seconds, minutes].reduce((acc, elem, index) => elem === undefined ? acc : index, 0),
             [tenthsOfSecond, counter24].reduce((acc, elem, index) => elem === undefined ? acc : index, 0),
@@ -34,6 +34,10 @@ class CountdownObject {
             time: this.time.give(),
             counter24: this.counter24.give(),
         };
+    }
+    syncTenth() {
+        this.counter24.change([this.time.give()[0].value]);
+        return this;
     }
     correctCounter24() {
         const times = this.time.give();
