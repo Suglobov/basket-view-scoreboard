@@ -1,17 +1,37 @@
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-// const VueLoaderPlugin = require('vue-loader/lib/plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const { VueLoaderPlugin } = require('vue-loader');
 
-module.exports = {
-    target: 'electron-renderer',
-    devtool: 'source-map',
-    resolve: {
-        alias: {
-            // 'vue$': 'vue/dist/vue.runtime.js',
-        },
+const serverConfig = {
+    target: 'electron-main',
+    entry: {
+        'electron/main': './src/electron/main.js',
+        'electron/preload': './src/electron/preload.js',
     },
+    output: {
+        path: path.resolve(__dirname, 'dist'),
+        filename: './[name].js',
+        chunkFilename: './[name].js',
+    },
+    module: {
+        rules: [{
+            test: /\.m?js$/,
+            exclude: /node_modules/,
+            use: {
+                loader: 'babel-loader',
+                options: {
+                    presets: ['@babel/preset-env'],
+                },
+            },
+        }],
+    },
+};
+
+const clientConfig = {
+    target: 'web',
+    devtool: 'source-map',
     entry: {
         view: './src/view.js',
         settings: './src/settings.js',
@@ -20,7 +40,6 @@ module.exports = {
         path: path.resolve(__dirname, 'dist'),
         filename: './[name].js',
         chunkFilename: './[name].js',
-        publicPath: '',
     },
     plugins: [
         new MiniCssExtractPlugin({
@@ -33,7 +52,6 @@ module.exports = {
             filename: 'settings.html',
             template: 'src/settings.html',
             chunks: ['settings'],
-            publicPath: '',
             meta: {
                 'Content-Security-Policy': {
                     'http-equiv': 'Content-Security-Policy',
@@ -46,7 +64,6 @@ module.exports = {
             filename: 'index.html',
             template: 'src/index.html',
             chunks: ['view'],
-            publicPath: '',
             meta: {
                 'Content-Security-Policy': {
                     'http-equiv': 'Content-Security-Policy',
@@ -55,23 +72,20 @@ module.exports = {
             },
         }),
         new VueLoaderPlugin(),
+        new CleanWebpackPlugin({
+            dry: true,
+            cleanOnceBeforeBuildPatterns: [],
+            cleanAfterEveryBuildPatterns: [
+                './dist/**',
+            ],
+        }),
     ],
     module: {
         rules: [{
-            test: /\.m?js$/,
-            exclude: /node_modules/,
-            use: {
-                loader: 'babel-loader',
-                options: {
-                    presets: ['@babel/preset-env'],
-                },
-            },
-        }, {
             test: /\.css$/,
             oneOf: [{
                 resourceQuery: /module/,
                 use: [
-                    // 'vue-style-loader',
                     {
                         loader: 'css-loader',
                         options: { modules: true, localIdentName: '[local]_[hash:base64:5]' },
@@ -79,7 +93,6 @@ module.exports = {
                 ],
             }, {
                 use: [
-                    // 'vue-style-loader',
                     MiniCssExtractPlugin.loader,
                     'css-loader',
                 ],
@@ -89,7 +102,6 @@ module.exports = {
             oneOf: [{
                 resourceQuery: /module/,
                 use: [
-                    // 'vue-style-loader',
                     {
                         loader: 'css-loader',
                         options: { modules: true, localIdentName: '[local]_[hash:base64:5]' },
@@ -98,7 +110,6 @@ module.exports = {
                 ],
             }, {
                 use: [
-                    // 'vue-style-loader',
                     MiniCssExtractPlugin.loader,
                     'css-loader',
                     'sass-loader',
@@ -120,3 +131,5 @@ module.exports = {
         }],
     },
 };
+
+module.exports = [serverConfig, clientConfig];
