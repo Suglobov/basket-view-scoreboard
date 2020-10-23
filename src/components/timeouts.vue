@@ -1,7 +1,11 @@
 <template>
     <div class="timeouts timeouts-left timeouts-2">
-        <template v-for="n in countElements">
-            <div :key="'a' + n" v-if="n <= countActive" class="timeout-ball timeout-ball--active"></div>
+        <template v-for="n in countElementsNumber">
+            <div
+                :key="'a' + n"
+                v-if="n <= countActiveNumber"
+                class="timeout-ball timeout-ball--active"
+            ></div>
             <div :key="'b' + n" v-else class="timeout-ball"></div>
         </template>
     </div>
@@ -9,9 +13,14 @@
 
 <script>
 export default {
-    props: {
-        countElements: Number,
-        countActive: Number,
+    props: ['countElements', 'countActive'],
+    computed: {
+        countElementsNumber() {
+            return Number(this.countElements);
+        },
+        countActiveNumber() {
+            return Number(this.countActive);
+        },
     },
 };
 </script>

@@ -1,15 +1,12 @@
 <template>
     <div class="view-container font-Aldrich" :class="{ mirror: isMirror }">
-        <button @click="scoreLeft++">
-            You clicked me {{ scoreLeft }} times.
-        </button>
         <div class="flex-center-between need-to-rotate-when-mirroring">
             <div class="uk-width-1-4">
                 <div class="view-team view-team-left">{{ teamLeft }}</div>
             </div>
             <div class="uk-width-expand">
                 <div class="view-time">
-                    <clock :time-object="timeObject"></clock>
+                    <Clock :time-object="timeObject"></Clock>
                 </div>
             </div>
             <div class="uk-width-1-4">
@@ -45,6 +42,7 @@
             <div class="uk-width-expand uk-flex uk-flex-center">
                 <div class="view-arrow-wrapper">
                     <svg
+                        v-show="showArrow"
                         class="view-arrow-left"
                         :class="{ 'arrow-right': arrowDirection === 'right' }"
                         preserveAspectRatio="none"
@@ -101,17 +99,13 @@ import { reactive } from 'vue';
 
 
 window.electron.receiveSettings((message) => {
-    console.log('message', message);
+    // console.log('message', message['time'].tenthsOfSecond);
     Object.entries(message).forEach(([field, value]) => {
         if (field === 'time') {
             vueData.counter24 = value.counter24;
             vueData.tenthsOfSecond = value.tenthsOfSecond;
             vueData.timeObject.seconds = value.seconds;
             vueData.timeObject.minutes = value.minutes;
-        } else if (field === 'arrow') {
-            vueData.arrowDirection = value;
-        } else if (field === 'mirror') {
-            vueData.isMirror = value;
         } else if (field === 'quarter') {
             vueData.periodText = 'Четверть';
             vueData.periodValue = value;
@@ -138,6 +132,7 @@ const vueData = reactive({
     periodText: 'Четверть',
     periodValue: 1,
     isMirror: false,
+    showArrow: false,
     arrowDirection: 'left',
     timeObject: {
         seconds: 0,
@@ -146,12 +141,7 @@ const vueData = reactive({
     timeouts: 2,
     spentTimeoutsLeft: 0,
     spentTimeoutsRight: 0,
-    count: 0,
 });
-setTimeout(() => {
-    vueData.periodValue = '10';
-    console.log('vueData', vueData);
-}, 1000);
 
 export default {
     components: {
@@ -161,18 +151,6 @@ export default {
     setup() {
         return vueData;
     },
-    // mounted() {
-    //     console.log(this);
-    // },
-    // data() {
-    //     return vueData;
-    // },
-    // watch: {
-    //     periodValue(value) {
-    //         console.log('value', value);
-
-    //     },
-    // },
 };
 </script>
 

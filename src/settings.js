@@ -4,7 +4,7 @@ import TimeTicker from './components/TimeTicker.js';
 import CountdownObject from './components/CountdownObject.js';
 
 
-const listenersDelay = 500;
+const listenersDelay = 200;
 const debounce = (func, delay) => {
     let timeout;
     return function () {
@@ -13,9 +13,6 @@ const debounce = (func, delay) => {
     };
 };
 
-window.electron.receiveSettings((message) => {
-    console.log('message', message);
-});
 const sendWSData = (objectToSend) => {
     window.electron.sendSettings(objectToSend);
 };
@@ -44,17 +41,14 @@ const dom = {
     counter24: document.querySelector('[data-name="counter24"]'),
     minutes: document.querySelector('[data-name="minutes"]'),
     seconds: document.querySelector('[data-name="seconds"]'),
-    tenthsOfSecond: document.querySelector('[data-name="tenthsOfSecond"]'),
     mirror: document.querySelector('[data-name="mirror"]'),
+    showArrow: document.querySelector('[data-name="showArrow"]'),
     timeouts: document.querySelector('[data-name="timeouts"]'),
-
-    font: document.querySelector('.font'),
 };
 
 
 const timeTicker = new TimeTicker({ delayMs: 100 });
 timeTicker.events.on('tick', () => {
-    // timeObject.minusTime({ part: 'tenthsOfSecond' });
     countdownObject
         .minus1()
         .checkForZero();
@@ -74,25 +68,19 @@ countdownObject.events.on('zero', () => {
 });
 countdownObject.events.on('changed', (maxChangedIndex) => {
     const cdData = countdownObject.give();
-    dom.tenthsOfSecond.value = cdData.time[0].value;
+    // dom.tenthsOfSecond.value = cdData.time[0].value;
     dom.seconds.value = cdData.time[1].value;
     dom.minutes.value = cdData.time[2].value;
-    dom.counter24.value = cdData.counter24[1].value;
-    console.log(
-        maxChangedIndex,
-        cdData.time.map((elem) => elem.value),
-        cdData.counter24.map((elem) => elem.value),
-        cdData.counter24[1],
-    );
+    dom.counter24.value = `${cdData.counter24[1].value}.${cdData.counter24[0].value}`;
     if (
         cdData.counter24[1].value < 10
         && !(cdData.counter24[0].value === 0 && cdData.counter24[1].value === 0)
     ) {
         sendWSData({
             time: {
-                tenthsOfSecond: cdData.time[0].value,
                 seconds: cdData.time[1].value,
                 minutes: cdData.time[2].value,
+                tenthsOfSecond: cdData.counter24[0].value,
                 counter24: cdData.counter24[1].value,
             },
         });
@@ -107,14 +95,11 @@ countdownObject.events.on('changed', (maxChangedIndex) => {
     }
 });
 countdownObject.change({
-    tenthsOfSecond: 9, seconds: 2, minutes: 0, counter24: 24,
+    tenthsOfSecond: 9, seconds: 10, minutes: 2, counter24: 2,
 });
 
 
 // listeners
-dom.tenthsOfSecond.addEventListener('input', debounce((event) => {
-    countdownObject.change({ tenthsOfSecond: Number(event.target.value) });
-}, listenersDelay));
 dom.seconds.addEventListener('input', debounce((event) => {
     countdownObject.change({ seconds: Number(event.target.value) });
 }, listenersDelay));
@@ -122,7 +107,11 @@ dom.minutes.addEventListener('input', debounce((event) => {
     countdownObject.change({ minutes: Number(event.target.value) });
 }, listenersDelay));
 dom.counter24.addEventListener('input', debounce((event) => {
-    countdownObject.change({ counter24: Number(event.target.value) });
+    const values = event.target.value.split('.');
+    countdownObject.change({
+        tenthsOfSecond: Number(values[1] === undefined ? 0 : values[1]),
+        counter24: Number(values[0]),
+    });
 }, listenersDelay));
 
 dom.set5.addEventListener('click', () => {
@@ -138,12 +127,6 @@ dom.set24.addEventListener('click', () => {
     countdownObject.change({ counter24: 24 });
 });
 
-
-dom.mirror.addEventListener('input', debounce((event) => {
-    const { target } = event;
-    const { name } = target.dataset;
-    sendWSData({ [name]: target.checked });
-}, listenersDelay));
 
 [
     dom.teamLeft,
@@ -187,8 +170,16 @@ dom.stopTimer.addEventListener('click', function () {
 });
 dom.arrow.addEventListener('click', function () {
     dom.arrow.classList.toggle('arrow-right');
-    sendWSData({ arrow: dom.arrow.classList.contains('arrow-right') ? 'right' : 'left' });
+    sendWSData({ arrowDirection: dom.arrow.classList.contains('arrow-right') ? 'right' : 'left' });
 });
+dom.mirror.addEventListener('input', debounce((event) => {
+    const { target } = event;
+    sendWSData({ isMirror: target.checked });
+}, listenersDelay));
+dom.showArrow.addEventListener('input', debounce((event) => {
+    const { target } = event;
+    sendWSData({ showArrow: target.checked });
+}, listenersDelay));
 
 
 // keydown space
@@ -207,7 +198,3 @@ document.body.addEventListener('keydown', (event) => {
         timeTicker.startTimer();
     }
 }, { capture: true });
-
-// dom.font.addEventListener('change', (event) => {
-//     sendWSData({ font: event.target.value });
-// });

@@ -61,13 +61,6 @@
                         <input class="seconds" data-name="seconds" type="number" value="0" min="0" max="59">
                     </div>
                 </label>
-                <label class="">
-                    Десятые
-                    <div class="">
-                        <input class="tenthsOfSecond" data-name="tenthsOfSecond" type="number" value="0" min="0"
-                            max="59">
-                    </div>
-                </label>
             </div>
             <div>
                 <button class="set-5"> = 5 минут </button>
@@ -77,7 +70,8 @@
                 <label class="">
                     Счетчик 24 секунд
                     <div class="">
-                        <input class="counter24" data-name="counter24" type="number" value="24" min="0" max="24">
+                        <input class="counter24" data-name="counter24" type="number" value="24" min="0" max="24"
+                            step="0.1">
                     </div>
                 </label>
                 <div>
@@ -96,9 +90,13 @@
                     <button class="stop-timer">Пауза</button>
                 </div>
                 <div>
+                    <div>
+                        <label><input class="showArrow" data-name="showArrow" type="checkbox">Показывать стрелочку</label>
+                    </div>
                     <div class="settings-arrow-wrapper">
-                        <svg class="settings-arrow-left" preserveAspectRatio="none" version="1.1" xmlns="http://www.w3.org/2000/svg"
-                            xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 561.803 561.802">
+                        <svg class="settings-arrow-left" preserveAspectRatio="none" version="1.1"
+                            xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
+                            y="0px" viewBox="0 0 561.803 561.802">
                             <polygon
                                 points="240.773,521.674 240.773,411.322 561.803,411.322 561.803,152.994 240.773,152.994 240.773,40.128 0,280.905 ">
                             </polygon>
@@ -131,28 +129,6 @@
                     </div>
                 </label>
             </div>
-            <!-- <div>
-                <select name="" id="" class="font" size="10">
-                    <option value="Orbitron">Orbitron</option>
-                    <option value="MajorMonoDisplay">MajorMonoDisplay</option>
-                    <option value="NovaMono">NovaMono</option>
-                    <option value="Aldrich">Aldrich</option>
-                    <option value="Buran_USSR">Buran_USSR</option>
-                    <option value="Exo_2">Exo_2</option>
-                    <option value="Nunito">Nunito</option>
-                    <option value="Play">Play</option>
-                    <option value="Roboto">Roboto</option>
-                    <option value="Rubik">Rubik</option>
-                    <option value="Rubik_Mono_One">Rubik_Mono_One</option>
-                    <option value="Electrolize">Electrolize
-                    <option value="Geo">Geo</option>
-                    <option value="Russo_One">Russo_One</option>
-                    <option value="Saira">Saira</option>
-                    <option value="Sarpanch">Sarpanch</option>
-                    <option value="Stalinist_One">Stalinist_One</option>
-                    <option value="Teko">Teko</option>
-                </select>
-            </div> -->
         </div>
         <div class="">
             <div>
