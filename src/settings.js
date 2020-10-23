@@ -1,5 +1,4 @@
 import './js/common.js';
-import WebSocketConnect from './components/WebSocketConnect.js';
 import TimeTicker from './components/TimeTicker.js';
 import CountdownObject from './components/CountdownObject.js';
 
@@ -13,7 +12,7 @@ const debounce = (func, delay) => {
     };
 };
 
-const sendWSData = (objectToSend) => {
+const sendData = (objectToSend) => {
     window.electron.sendSettings(objectToSend);
 };
 
@@ -68,7 +67,6 @@ countdownObject.events.on('zero', () => {
 });
 countdownObject.events.on('changed', (maxChangedIndex) => {
     const cdData = countdownObject.give();
-    // dom.tenthsOfSecond.value = cdData.time[0].value;
     dom.seconds.value = cdData.time[1].value;
     dom.minutes.value = cdData.time[2].value;
     dom.counter24.value = `${cdData.counter24[1].value}.${cdData.counter24[0].value}`;
@@ -76,21 +74,18 @@ countdownObject.events.on('changed', (maxChangedIndex) => {
         cdData.counter24[1].value < 10
         && !(cdData.counter24[0].value === 0 && cdData.counter24[1].value === 0)
     ) {
-        sendWSData({
-            time: {
-                seconds: cdData.time[1].value,
-                minutes: cdData.time[2].value,
-                tenthsOfSecond: cdData.counter24[0].value,
-                counter24: cdData.counter24[1].value,
-            },
+        sendData({
+            seconds: cdData.time[1].value,
+            minutes: cdData.time[2].value,
+            tenthsOfSecond: cdData.counter24[0].value,
+            counter24: cdData.counter24[1].value,
         });
     } else if (maxChangedIndex > 0 || countdownObject.time.isZero()) {
-        sendWSData({
-            time: {
-                seconds: cdData.time[1].value,
-                minutes: cdData.time[2].value,
-                counter24: cdData.counter24[1].value,
-            },
+        sendData({
+            seconds: cdData.time[1].value,
+            minutes: cdData.time[2].value,
+            tenthsOfSecond: null,
+            counter24: cdData.counter24[1].value,
         });
     }
 });
@@ -127,25 +122,15 @@ dom.set24.addEventListener('click', () => {
     countdownObject.change({ counter24: 24 });
 });
 
-
 [
-    dom.teamLeft,
-    dom.teamRight,
-    dom.scoreLeft,
-    dom.scoreRight,
-    dom.folsLeft,
-    dom.folsRight,
-    dom.timeouts,
-    dom.spentTimeoutsLeft,
-    dom.spentTimeoutsRight,
-    dom.quarter,
-    dom.overtime,
+    dom.teamLeft, dom.teamRight, dom.scoreLeft, dom.scoreRight, dom.folsLeft, dom.folsRight,
+    dom.timeouts, dom.spentTimeoutsLeft, dom.spentTimeoutsRight, dom.quarter, dom.overtime,
 ].forEach((element) => {
     element.addEventListener('input', debounce((event) => {
         const { target } = event;
         const { value } = target;
         const { name } = target.dataset;
-        sendWSData({ [name]: value });
+        sendData({ [name]: value });
     }, listenersDelay));
 });
 
@@ -157,7 +142,7 @@ dom.buttons.forEach((button) => {
     button.addEventListener('click', () => {
         score.value = Number(score.value) + Number(add);
         const value = Number(score.value);
-        sendWSData({ [targetName]: value });
+        sendData({ [targetName]: value });
     });
 });
 
@@ -170,15 +155,15 @@ dom.stopTimer.addEventListener('click', function () {
 });
 dom.arrow.addEventListener('click', function () {
     dom.arrow.classList.toggle('arrow-right');
-    sendWSData({ arrowDirection: dom.arrow.classList.contains('arrow-right') ? 'right' : 'left' });
+    sendData({ arrowDirection: dom.arrow.classList.contains('arrow-right') ? 'right' : 'left' });
 });
 dom.mirror.addEventListener('input', debounce((event) => {
     const { target } = event;
-    sendWSData({ isMirror: target.checked });
+    sendData({ isMirror: target.checked });
 }, listenersDelay));
 dom.showArrow.addEventListener('input', debounce((event) => {
     const { target } = event;
-    sendWSData({ showArrow: target.checked });
+    sendData({ showArrow: target.checked });
 }, listenersDelay));
 
 

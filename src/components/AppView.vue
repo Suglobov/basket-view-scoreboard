@@ -6,7 +6,7 @@
             </div>
             <div class="uk-width-expand">
                 <div class="view-time">
-                    <Clock :time-object="timeObject"></Clock>
+                    <Clock :minutes="minutes" :seconds="seconds"></Clock>
                 </div>
             </div>
             <div class="uk-width-1-4">
@@ -22,7 +22,7 @@
                     <div class="view-counter-24">{{ counter24 }}</div>
                     <div
                         class="view-counter-24-tenths-of-second"
-                        v-if="tenthsOfSecond !== undefined"
+                        v-if="tenthsOfSecond !== null"
                     >
                         .{{ tenthsOfSecond }}
                     </div>
@@ -99,14 +99,8 @@ import { reactive } from 'vue';
 
 
 window.electron.receiveSettings((message) => {
-    // console.log('message', message['time'].tenthsOfSecond);
     Object.entries(message).forEach(([field, value]) => {
-        if (field === 'time') {
-            vueData.counter24 = value.counter24;
-            vueData.tenthsOfSecond = value.tenthsOfSecond;
-            vueData.timeObject.seconds = value.seconds;
-            vueData.timeObject.minutes = value.minutes;
-        } else if (field === 'quarter') {
+        if (field === 'quarter') {
             vueData.periodText = 'Четверть';
             vueData.periodValue = value;
         } else if (field === 'overtime') {
@@ -125,8 +119,6 @@ const vueData = reactive({
     teamRight: 'Команда П',
     scoreLeft: 100,
     scoreRight: 100,
-    counter24: 24,
-    tenthsOfSecond: 0,
     folsLeft: 0,
     folsRight: 0,
     periodText: 'Четверть',
@@ -134,10 +126,10 @@ const vueData = reactive({
     isMirror: false,
     showArrow: false,
     arrowDirection: 'left',
-    timeObject: {
-        seconds: 0,
-        minutes: 0,
-    },
+    seconds: 0,
+    minutes: 0,
+    counter24: 24,
+    tenthsOfSecond: 0,
     timeouts: 2,
     spentTimeoutsLeft: 0,
     spentTimeoutsRight: 0,

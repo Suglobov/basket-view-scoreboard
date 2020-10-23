@@ -11,22 +11,23 @@
 <script>
 export default {
     props: {
-        timeObject: Object,
+        minutes: Number,
+        seconds: Number,
     },
     computed: {
         minutesDozens() {
-            const dozens = Math.floor(this.timeObject.minutes / 10);
+            const dozens = Math.floor(this.minutes / 10);
             return dozens === 0 ? '' : dozens;
         },
         minutesUnits() {
-            return this.timeObject.minutes % 10;
+            return this.minutes % 10;
         },
         secondsDozens() {
-            const dozens = Math.floor(this.timeObject.seconds / 10);
+            const dozens = Math.floor(this.seconds / 10);
             return dozens;
         },
         secondsUnits() {
-            return this.timeObject.seconds % 10;
+            return this.seconds % 10;
         },
     },
 };
