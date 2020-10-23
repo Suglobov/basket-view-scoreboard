@@ -3,28 +3,14 @@ import url from 'url';
 import { app, BrowserWindow, ipcMain } from 'electron';
 
 const basePath = path.join(app.getAppPath());
+const preloadPath = path.join(basePath, 'dist/electron/preload.js');
+const viewHtmlPath = path.join(basePath, '/dist/index.html');
+const settingsHtmlPath = path.join(basePath, '/dist/settings.html');
 
 function createWindows() {
     ipcMain.on('settings', (_event, message) => {
         viewWindow.webContents.send('settings', message);
     });
-
-    const preloadPath = path.join(basePath, 'dist/electron/preload.js');
-    const settingsWindow = new BrowserWindow({
-        webPreferences: {
-            enableRemoteModule: true,
-            worldSafeExecuteJavaScript: true,
-            contextIsolation: true,
-            preload: preloadPath,
-        },
-    });
-    settingsWindow.loadURL(url.format({
-        protocol: 'file',
-        slashes: true,
-        pathname: path.join(basePath, '/dist/settings.html'),
-    }));
-    // settingsWindow.webContents.openDevTools();
-    // settingsWindow.maximize();
 
     const viewWindow = new BrowserWindow({
         webPreferences: {
@@ -38,10 +24,26 @@ function createWindows() {
     viewWindow.loadURL(url.format({
         protocol: 'file',
         slashes: true,
-        pathname: path.join(basePath, '/dist/index.html'),
+        pathname: viewHtmlPath,
     }));
     // viewWindow.webContents.openDevTools();
     // viewWindow.maximize();
+
+    const settingsWindow = new BrowserWindow({
+        webPreferences: {
+            enableRemoteModule: true,
+            worldSafeExecuteJavaScript: true,
+            contextIsolation: true,
+            preload: preloadPath,
+        },
+    });
+    settingsWindow.loadURL(url.format({
+        protocol: 'file',
+        slashes: true,
+        pathname: settingsHtmlPath,
+    }));
+    // settingsWindow.webContents.openDevTools();
+    // settingsWindow.maximize();
 }
 
 app.whenReady().then(() => {
