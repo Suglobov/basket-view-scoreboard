@@ -1,8 +1,6 @@
-const path = require('path');
-const url = require('url');
-const { app, BrowserWindow } = require('electron');
-const { ipcMain } = require('electron');
-
+import path from 'path';
+import url from 'url';
+import { app, BrowserWindow, ipcMain } from 'electron';
 
 const basePath = path.join(app.getAppPath());
 
@@ -11,7 +9,7 @@ function createWindows() {
         viewWindow.webContents.send('settings', message);
     });
 
-    const preloadPath = path.join(__dirname, 'preload.js');
+    const preloadPath = path.join(basePath, 'dist/electron/preload.js');
     const settingsWindow = new BrowserWindow({
         webPreferences: {
             enableRemoteModule: true,
@@ -25,7 +23,7 @@ function createWindows() {
         slashes: true,
         pathname: path.join(basePath, '/dist/settings.html'),
     }));
-    settingsWindow.webContents.openDevTools();
+    // settingsWindow.webContents.openDevTools();
     // settingsWindow.maximize();
 
     const viewWindow = new BrowserWindow({
@@ -42,7 +40,7 @@ function createWindows() {
         slashes: true,
         pathname: path.join(basePath, '/dist/index.html'),
     }));
-    viewWindow.webContents.openDevTools();
+    // viewWindow.webContents.openDevTools();
     // viewWindow.maximize();
 }
 
