@@ -113,6 +113,20 @@
                         />
                     </div>
                 </label>
+                <label class="">
+                    Десятые
+                    <div class="">
+                        <input
+                            class="tenths"
+                            data-name="tenths"
+                            type="number"
+                            value="0"
+                            min="0"
+                            max="9"
+                            step="1"
+                        />
+                    </div>
+                </label>
             </div>
             <div>
                 <button class="set-5">= 5 минут</button>
@@ -326,6 +340,8 @@ import { reactive, onMounted } from 'vue';
 import './../js/common.js';
 import TimeTicker from './TimeTicker.js';
 import CountdownObject from './CountdownObject.js';
+import Countdown from './Countdown.js';
+
 
 const vueData = reactive({
     teamLeft: 'Космические волки',
@@ -347,7 +363,6 @@ const vueData = reactive({
     spentTimeoutsLeft: 0,
     spentTimeoutsRight: 0,
 });
-
 
 const listenersDelay = 200;
 const debounce = (func, delay) => {
@@ -386,20 +401,28 @@ const afterMountedVue = () => {
         counter24: document.querySelector('[data-name="counter24"]'),
         minutes: document.querySelector('[data-name="minutes"]'),
         seconds: document.querySelector('[data-name="seconds"]'),
+        tenths: document.querySelector('[data-name="tenths"]'),
         mirror: document.querySelector('[data-name="mirror"]'),
         showArrow: document.querySelector('[data-name="showArrow"]'),
         timeouts: document.querySelector('[data-name="timeouts"]'),
     };
-
+    // console.log('dom', dom);
 
     const timeTicker = new TimeTicker({ delayMs: 100 });
     timeTicker.events.on('tick', () => {
-        countdownObject
-            .minus1()
+        timer
+            .minusTenth()
             .checkForZero();
+        counter24
+            .minusTenth()
+            .checkForZero();
+        // countdownObject
+        //     .minus1()
+        //     .checkForZero();
     });
     timeTicker.events.on('startTimer', () => {
-        countdownObject.checkForZero();
+        timer.checkForZero();
+        // countdownObject.checkForZero();
         dom.clockControl.classList.add('time-running');
     });
     timeTicker.events.on('stopTimer', () => {
@@ -407,65 +430,131 @@ const afterMountedVue = () => {
     });
 
 
-    const countdownObject = new CountdownObject();
-    countdownObject.events.on('zero', () => {
+    const correctCounter24 = ({ timer, counter24 }) => {
+        if (timer.lessEqualLarger(counter24) === 'larger') {
+            counter24.setValuesFrom(timer);
+        }
+    };
+
+    const timer = new Countdown();
+    timer.events.on('zero', () => {
         timeTicker.stopTimer();
     });
-    countdownObject.events.on('changed', (maxChangedIndex) => {
-        const cdData = countdownObject.give();
-        dom.seconds.value = cdData.time[1].value;
-        dom.minutes.value = cdData.time[2].value;
-        dom.counter24.value = `${cdData.counter24[1].value}.${cdData.counter24[0].value}`;
-        if (
-            cdData.counter24[1].value < 10
-            && !(cdData.counter24[0].value === 0 && cdData.counter24[1].value === 0)
-        ) {
+    timer.events.on('change', (changedFields) => {
+        dom.tenths.value = timer.give().tenths.give().val;
+        dom.seconds.value = timer.give().seconds.give().val;
+        dom.minutes.value = timer.give().minutes.give().val;
+        if (changedFields.includes('seconds')) {
             sendData({
-                seconds: cdData.time[1].value,
-                minutes: cdData.time[2].value,
-                tenthsOfSecond: cdData.counter24[0].value,
-                counter24: cdData.counter24[1].value,
-            });
-        } else if (maxChangedIndex > 0 || countdownObject.time.isZero()) {
-            sendData({
-                seconds: cdData.time[1].value,
-                minutes: cdData.time[2].value,
-                tenthsOfSecond: null,
-                counter24: cdData.counter24[1].value,
+                seconds: timer.give().seconds.give().val,
+                minutes: timer.give().minutes.give().val,
             });
         }
     });
-    countdownObject.change({
-        tenthsOfSecond: 9, seconds: 10, minutes: 2, counter24: 2,
+    timer.setValues({
+        tenths: 9,
+        seconds: 15,
+        minutes: 0,
+    });
+
+    const counter24 = new Countdown();
+    counter24.events.on('change', (changedFields) => {
+        correctCounter24({ timer, counter24 });
+        dom.counter24.value = `${counter24.give().seconds.give().val}.${counter24.give().tenths.give().val}`;
+        const tenthsIntegerNumber = counter24.give().tenths;
+        const secondsIntegerNumber = counter24.give().seconds;
+        if (
+            secondsIntegerNumber.give().val < 10
+            && !(secondsIntegerNumber.give().val === secondsIntegerNumber.give().min
+                && tenthsIntegerNumber.give().val === tenthsIntegerNumber.give().min)
+        ) {
+            sendData({
+                counter24: counter24.give().seconds.give().val,
+                tenthsOfSecond: counter24.give().tenths.give().val,
+            });
+        } else if (
+            secondsIntegerNumber.give().val === secondsIntegerNumber.give().min
+            && tenthsIntegerNumber.give().val === tenthsIntegerNumber.give().min
+        ) {
+            sendData({
+                counter24: counter24.give().seconds.give().val,
+                tenthsOfSecond: null,
+            });
+        } else {
+            sendData({
+                counter24: counter24.give().seconds.give().val,
+                tenthsOfSecond: counter24.give().tenths.give().val,
+            });
+        }
+    });
+    counter24.setValues({
+        tenths: 9,
+        seconds: 15,
     });
 
 
+    const countdownObject = new CountdownObject();
+    // countdownObject.events.on('zero', () => {
+    //     timeTicker.stopTimer();
+    // });
+    // countdownObject.events.on('changed', (maxChangedIndex) => {
+    // const cdData = countdownObject.give();
+    // dom.seconds.value = cdData.time[1].value;
+    // dom.minutes.value = cdData.time[2].value;
+    // dom.counter24.value = `${cdData.counter24[1].value}.${cdData.counter24[0].value}`;
+    // if (
+    //     cdData.counter24[1].value < 10
+    //     && !(cdData.counter24[0].value === 0 && cdData.counter24[1].value === 0)
+    // ) {
+    //     sendData({
+    //         seconds: cdData.time[1].value,
+    //         minutes: cdData.time[2].value,
+    //         tenthsOfSecond: cdData.counter24[0].value,
+    //         counter24: cdData.counter24[1].value,
+    //     });
+    // } else if (maxChangedIndex > 0 || countdownObject.time.isZero()) {
+    //     sendData({
+    //         seconds: cdData.time[1].value,
+    //         minutes: cdData.time[2].value,
+    //         tenthsOfSecond: null,
+    //         counter24: cdData.counter24[1].value,
+    //     });
+    // }
+    // });
+    // countdownObject.change({
+    //     tenthsOfSecond: 9, seconds: 10, minutes: 2, counter24: 2,
+    // });
+
+
     // listeners
+    dom.tenths.addEventListener('input', debounce((event) => {
+        timer.setValues({ tenths: Number(event.target.value) });
+    }, listenersDelay));
     dom.seconds.addEventListener('input', debounce((event) => {
-        countdownObject.change({ seconds: Number(event.target.value) });
+        timer.setValues({ seconds: Number(event.target.value) });
     }, listenersDelay));
     dom.minutes.addEventListener('input', debounce((event) => {
-        countdownObject.change({ minutes: Number(event.target.value) });
+        timer.setValues({ minutes: Number(event.target.value) });
     }, listenersDelay));
     dom.counter24.addEventListener('input', debounce((event) => {
         const values = event.target.value.split('.');
-        countdownObject.change({
-            tenthsOfSecond: Number(values[1] === undefined ? 0 : values[1]),
-            counter24: Number(values[0]),
+        counter24.setValues({
+            tenths: Number(values[1] === undefined ? 0 : values[1]),
+            seconds: Number(values[0]),
         });
     }, listenersDelay));
 
     dom.set5.addEventListener('click', () => {
-        countdownObject.change({ tenthsOfSecond: 0, seconds: 0, minutes: 5 });
+        timer.setValues({ tenths: 0, seconds: 0, minutes: 5 });
     });
     dom.set10.addEventListener('click', () => {
-        countdownObject.change({ tenthsOfSecond: 0, seconds: 0, minutes: 10 });
+        timer.setValues({ tenths: 0, seconds: 0, minutes: 10 });
     });
     dom.set14.addEventListener('click', () => {
-        countdownObject.change({ counter24: 14 });
+        counter24.setValues({ tenths: 0, seconds: 14 });
     });
     dom.set24.addEventListener('click', () => {
-        countdownObject.change({ counter24: 24 });
+        counter24.setValues({ tenths: 0, seconds: 24 });
     });
 
     [
@@ -540,6 +629,3 @@ export default {
     },
 };
 </script>
-
-<style>
-</style>
