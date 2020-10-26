@@ -1,12 +1,12 @@
 <template>
-    <div class="timeouts timeouts-left timeouts-2">
+    <div :class="$style.timeouts">
         <template v-for="n in countElementsNumber">
             <div
                 :key="'a' + n"
                 v-if="n <= countActiveNumber"
-                class="timeout-ball timeout-ball--active"
+                :class="[$style.timeoutBall, timeoutBallActive]"
             ></div>
-            <div :key="'b' + n" v-else class="timeout-ball"></div>
+            <div :key="'b' + n" v-else :class="$style.timeoutBall"></div>
         </template>
     </div>
 </template>
@@ -25,23 +25,18 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-.timeouts {
-    display: inline-flex;
-    justify-content: center;
-}
-
-.timeout-ball {
+<style module>
+.timeoutBall {
     border: 3px solid #1bda5f;
     border-radius: 50%;
     box-sizing: border-box;
-    height: 50px;
-    margin-left: 10px;
-    margin-right: 10px;
-    width: 50px;
+    height: 6vw;
+    margin-left: 1vw;
+    margin-right: 1vw;
+    width: 6vw;
 }
 
-.timeout-ball--active {
+.timeoutBallActive {
     background-color: #1bda5f;
 }
 </style>
