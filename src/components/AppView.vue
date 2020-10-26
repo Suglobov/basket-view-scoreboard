@@ -43,11 +43,11 @@
             class="d-flex flex-between flex-middle mirror-change-direction"
         >
             <template v-slot:first>
-                <Timeouts
+                <TimeoutsBall
                     class="d-flex flex-center"
                     :count-elements="timeouts"
                     :count-active="spentTimeoutsLeft"
-                ></Timeouts>
+                ></TimeoutsBall>
             </template>
             <template v-slot:center>
                 <div class="d-flex flex-center">
@@ -74,11 +74,11 @@
                 </div>
             </template>
             <template v-slot:last>
-                <Timeouts
+                <TimeoutsBall
                     class="d-flex flex-center"
                     :count-elements="timeouts"
                     :count-active="spentTimeoutsRight"
-                ></Timeouts>
+                ></TimeoutsBall>
             </template>
         </ViewRow>
         <ViewRow
@@ -117,8 +117,8 @@
 
 <script>
 import { reactive } from 'vue';
-import './../js/common.js';
-import Timeouts from './Timeouts.vue';
+import './../scss/style.scss';
+import TimeoutsBall from './TimeoutsBall.vue';
 import Clock from './Clock.vue';
 import ViewRow from './ViewRow.vue';
 
@@ -163,7 +163,7 @@ const vueData = reactive({
 export default {
     components: {
         Clock,
-        Timeouts,
+        TimeoutsBall,
         ViewRow,
     },
     setup() {
@@ -171,6 +171,3 @@ export default {
     },
 };
 </script>
-
-<style>
-</style>
