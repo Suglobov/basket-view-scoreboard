@@ -86,9 +86,14 @@ const clientConfig = {
             oneOf: [{
                 resourceQuery: /module/,
                 use: [
+                    MiniCssExtractPlugin.loader,
                     {
                         loader: 'css-loader',
-                        options: { modules: true, localIdentName: '[local]_[hash:base64:5]' },
+                        options: {
+                            modules: {
+                                localIdentName: '[local]_[hash:base64:5]',
+                            },
+                        },
                     },
                 ],
             }, {
@@ -102,9 +107,14 @@ const clientConfig = {
             oneOf: [{
                 resourceQuery: /module/,
                 use: [
+                    MiniCssExtractPlugin.loader,
                     {
                         loader: 'css-loader',
-                        options: { modules: true, localIdentName: '[local]_[hash:base64:5]' },
+                        options: {
+                            modules: {
+                                localIdentName: '[local]_[hash:base64:5]',
+                            },
+                        },
                     },
                     'sass-loader',
                 ],
