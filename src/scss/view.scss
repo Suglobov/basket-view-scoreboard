@@ -25,16 +25,16 @@
         transform: rotateY(180deg);
     }
 
-    .mirror .need-to-rotate-when-mirroring & {
+    .mirror .mirror-change-direction & {
         transform: rotateY(180deg);
     }
 
-    .mirror .need-to-rotate-when-mirroring &.arrow-right {
+    .mirror .mirror-change-direction &.arrow-right {
         transform: rotateY(0deg);
     }
 }
 
-.mirror .need-to-rotate-when-mirroring {
+.mirror .mirror-change-direction {
     flex-direction: row-reverse;
 }
 
@@ -99,6 +99,10 @@
     color: #1bda5f;
     font-size: 10vw;
     text-align: center;
+}
+
+.view-foul-limit {
+    color: #e03838;
 }
 
 .view-period-text,
