@@ -8,7 +8,7 @@
 
 .score-add {
     background: rgb(134, 150, 240);
-    font-size: 50px;
+    font-size: 3vw;
 }
 
 .set-5,
@@ -16,7 +16,7 @@
 .set-14,
 .set-24 {
     background: rgb(192, 236, 192);
-    font-size: 30px;
+    font-size: 2vw;
 }
 
 .teamLeft,
@@ -33,17 +33,17 @@
 .minutes,
 .quarter,
 .overtime {
-    font-size: 50px;
+    font-size: 3vw;
     max-width: 400px;
 }
 
 .counter24 {
-    font-size: 100px;
+    font-size: 5vw;
 }
 
 .start-timer,
 .stop-timer {
-    font-size: 50px;
+    font-size: 4vw;
     padding: 10px;
 }
 
@@ -69,19 +69,15 @@
     }
 }
 
-.mirror {
-    height: 50px;
-    width: 50px;
-}
-
+.mirror,
 .showArrow {
-    height: 50px;
-    width: 50px;
+    height: 3vw;
+    width: 3vw;
 }
 
 .settings-arrow-wrapper {
-    height: 100px;
-    width: 200px;
+    height: 7vw;
+    width: 15vw;
 }
 
 .settings-arrow-left {
