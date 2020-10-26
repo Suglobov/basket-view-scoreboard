@@ -1,35 +1,11 @@
 @import './fonts.scss';
+@import './flex.scss';
 
 html,
 body {
     min-height: 100vh;
 }
 
-.d-flex {
-    display: flex;
-}
-
-.flex-center-around {
-    align-items: center;
-    display: flex;
-    justify-content: space-around;
-}
-
-.flex-center-between {
-    align-items: center;
-    display: flex;
-    justify-content: space-between;
-}
-
-.flex-center-center {
-    align-items: center;
-    display: flex;
-    justify-content: center;
-}
-
-.flex-auto {
-    flex: auto;
-}
 
 .border {
     border: 1px solid rgba($color: #000, $alpha: 0.2);
