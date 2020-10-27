@@ -2,7 +2,11 @@ import IntegerNumber from './IntegerNumber.js';
 import EventsStorage from './EventsStorage.js';
 
 export default class Countdown {
-    constructor() {
+    constructor({
+        tenths = new IntegerNumber({ min: 0, max: 0, val: 0 }),
+        seconds = new IntegerNumber({ min: 0, max: 0, val: 0 }),
+        minutes = new IntegerNumber({ min: 0, max: 0, val: 0 }),
+    }) {
         this._tenths;
         this._seconds;
         this._minutes;
@@ -10,9 +14,20 @@ export default class Countdown {
         this._rulesReverce;
         this.events;
 
-        this._tenths = new IntegerNumber({ min: 0, max: 9, val: 0 });
-        this._seconds = new IntegerNumber({ min: 0, max: 59, val: 0 });
-        this._minutes = new IntegerNumber({ min: 0, max: 10, val: 0 });
+        const notIntegerNumbers = [tenths, seconds, minutes].filter((elem) => {
+            const isIntegerNumber = elem instanceof IntegerNumber;
+            if (isIntegerNumber === false) {
+                console.error(`${elem} is not instance of IntegerNumber`);
+            }
+            return isIntegerNumber === false;
+        });
+        if (notIntegerNumbers.length > 0) {
+            return;
+        }
+
+        this._tenths = tenths;
+        this._seconds = seconds;
+        this._minutes = minutes;
 
         this._rules = ['tenths', 'seconds', 'minutes'];
         this._rulesReverce = this._rules.slice().reverse();

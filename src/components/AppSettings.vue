@@ -1,22 +1,22 @@
 <template>
     <div class="settings-container uk-flex uk-flex-between uk-flex-wrap">
-        <div class="">
+        <div>
             <div>
-                <label class="">
+                <label>
                     Название
-                    <div class="">
+                    <div>
                         <input
                             class="teamLeft"
                             data-name="teamLeft"
                             type="text"
-                        />
+                        >
                     </div>
                 </label>
             </div>
             <div class="uk-flex uk-flex-bottom">
-                <label class="">
+                <label>
                     Счет
-                    <div class="">
+                    <div>
                         <input
                             class="scoreLeft"
                             data-name="scoreLeft"
@@ -25,7 +25,7 @@
                             min="0"
                             max="1000"
                             step="1"
-                        />
+                        >
                     </div>
                 </label>
                 <div>
@@ -53,9 +53,9 @@
                 </div>
             </div>
             <div class="uk-flex">
-                <label class="">
+                <label>
                     <div>таймауты</div>
-                    <div class="">
+                    <div>
                         <input
                             class="spentTimeoutsLeft"
                             data-name="spentTimeoutsLeft"
@@ -64,12 +64,12 @@
                             min="0"
                             max="3"
                             step="1"
-                        />
+                        >
                     </div>
                 </label>
-                <label class="">
+                <label>
                     Фолы
-                    <div class="">
+                    <div>
                         <input
                             class="folsLeft"
                             data-name="folsLeft"
@@ -78,16 +78,16 @@
                             min="0"
                             max="100"
                             step="1"
-                        />
+                        >
                     </div>
                 </label>
             </div>
         </div>
-        <div class="">
+        <div>
             <div class="uk-flex">
-                <label class="">
+                <label>
                     Минуты
-                    <div class="">
+                    <div>
                         <input
                             class="minutes"
                             data-name="minutes"
@@ -96,12 +96,12 @@
                             min="0"
                             max="10"
                             step="1"
-                        />
+                        >
                     </div>
                 </label>
-                <label class="">
+                <label>
                     Секунды
-                    <div class="">
+                    <div>
                         <input
                             class="seconds"
                             data-name="seconds"
@@ -110,12 +110,12 @@
                             min="0"
                             max="59"
                             step="1"
-                        />
+                        >
                     </div>
                 </label>
-                <label class="">
+                <label>
                     Десятые
-                    <div class="">
+                    <div>
                         <input
                             class="tenths"
                             data-name="tenths"
@@ -124,18 +124,22 @@
                             min="0"
                             max="9"
                             step="1"
-                        />
+                        >
                     </div>
                 </label>
             </div>
             <div>
-                <button class="set-5">= 5 минут</button>
-                <button class="set-10">= 10 минут</button>
+                <button class="set-5">
+                    = 5 минут
+                </button>
+                <button class="set-10">
+                    = 10 минут
+                </button>
             </div>
             <div class="uk-flex uk-flex-bottom">
-                <label class="">
+                <label>
                     Счетчик 24 секунд
-                    <div class="">
+                    <div>
                         <input
                             class="counter24"
                             data-name="counter24"
@@ -144,15 +148,19 @@
                             min="0"
                             max="24"
                             step="0.1"
-                        />
+                        >
                     </div>
                 </label>
                 <div>
                     <div>
-                        <button class="set-14">= 14</button>
+                        <button class="set-14">
+                            = 14
+                        </button>
                     </div>
                     <div>
-                        <button class="set-24">= 24</button>
+                        <button class="set-24">
+                            = 24
+                        </button>
                     </div>
                 </div>
             </div>
@@ -161,18 +169,20 @@
                     class="clock-control"
                     uk-tooltip="реагирует на пробел. Если нажимать пробел в поле ввода, то таймер не среагирует"
                 >
-                    <button class="start-timer">Старт</button>
-                    <button class="stop-timer">Пауза</button>
+                    <button class="start-timer">
+                        Старт
+                    </button>
+                    <button class="stop-timer">
+                        Пауза
+                    </button>
                 </div>
                 <div>
                     <div>
-                        <label
-                            ><input
-                                class="showArrow"
-                                data-name="showArrow"
-                                type="checkbox"
-                            />Показывать стрелочку</label
-                        >
+                        <label><input
+                            class="showArrow"
+                            data-name="showArrow"
+                            type="checkbox"
+                        >Показывать стрелочку</label>
                     </div>
                     <div class="settings-arrow-wrapper">
                         <svg
@@ -187,14 +197,14 @@
                         >
                             <polygon
                                 points="240.773,521.674 240.773,411.322 561.803,411.322 561.803,152.994 240.773,152.994 240.773,40.128 0,280.905 "
-                            ></polygon>
+                            />
                         </svg>
                     </div>
                 </div>
             </div>
             <div class="uk-flex uk-flex-bottom">
                 <div>
-                    <label class="">
+                    <label>
                         <div>Четверть</div>
                         <input
                             class="quarter"
@@ -204,11 +214,11 @@
                             min="1"
                             max="4"
                             step="1"
-                        />
+                        >
                     </label>
                 </div>
                 <div>
-                    <label class="">
+                    <label>
                         <div>Овертайм</div>
                         <input
                             class="overtime"
@@ -218,23 +228,21 @@
                             min="0"
                             max="1000"
                             step="1"
-                        />
+                        >
                     </label>
                 </div>
                 <div>
-                    <label
-                        ><input
-                            class="mirror"
-                            data-name="mirror"
-                            type="checkbox"
-                        />Зеркалить табло</label
-                    >
+                    <label><input
+                        class="mirror"
+                        data-name="mirror"
+                        type="checkbox"
+                    >Зеркалить табло</label>
                 </div>
             </div>
             <div>
-                <label class="">
+                <label>
                     <div>Всего таймаутов</div>
-                    <div class="">
+                    <div>
                         <input
                             class="timeouts"
                             data-name="timeouts"
@@ -243,28 +251,28 @@
                             min="2"
                             max="3"
                             step="1"
-                        />
+                        >
                     </div>
                 </label>
             </div>
         </div>
-        <div class="">
+        <div>
             <div>
-                <label class="">
+                <label>
                     Название
-                    <div class="">
+                    <div>
                         <input
                             class="teamRight"
                             data-name="teamRight"
                             type="text"
-                        />
+                        >
                     </div>
                 </label>
             </div>
             <div class="uk-flex uk-flex-bottom">
-                <label class="">
+                <label>
                     Счет
-                    <div class="">
+                    <div>
                         <input
                             class="scoreRight"
                             data-name="scoreRight"
@@ -273,7 +281,7 @@
                             min="0"
                             max="1000"
                             step="1"
-                        />
+                        >
                     </div>
                 </label>
                 <div>
@@ -301,9 +309,9 @@
                 </div>
             </div>
             <div class="uk-flex">
-                <label class="">
+                <label>
                     <div>таймауты</div>
-                    <div class="">
+                    <div>
                         <input
                             class="spentTimeoutsRight"
                             data-name="spentTimeoutsRight"
@@ -312,12 +320,12 @@
                             min="0"
                             max="3"
                             step="1"
-                        />
+                        >
                     </div>
                 </label>
-                <label class="">
+                <label>
                     Фолы
-                    <div class="">
+                    <div>
                         <input
                             class="folsRight"
                             data-name="folsRight"
@@ -326,7 +334,7 @@
                             min="0"
                             max="100"
                             step="1"
-                        />
+                        >
                     </div>
                 </label>
             </div>
@@ -340,7 +348,9 @@ import { reactive, onMounted } from 'vue';
 import './../js/common.js';
 import TimeTicker from './TimeTicker.js';
 import CountdownObject from './CountdownObject.js';
+import IntegerNumber from './IntegerNumber.js';
 import Countdown from './Countdown.js';
+import Countdown_v2 from './Countdown_v2.js';
 
 
 const vueData = reactive({
@@ -410,151 +420,104 @@ const afterMountedVue = () => {
 
     const timeTicker = new TimeTicker({ delayMs: 100 });
     timeTicker.events.on('tick', () => {
-        timer
-            .minusTenth()
-            .checkForZero();
-        counter24
-            .minusTenth()
-            .checkForZero();
-        // countdownObject
-        //     .minus1()
-        //     .checkForZero();
+        timer.changeTenths(timer.fullTenths - 1);
+        counter24.changeTenths(counter24.fullTenths - 1);
+        if (timer.fullTenths === 0) {
+            timeTicker.stopTimer();
+        }
     });
     timeTicker.events.on('startTimer', () => {
-        timer.checkForZero();
-        // countdownObject.checkForZero();
         dom.clockControl.classList.add('time-running');
+        if (timer.fullTenths === 0) {
+            timeTicker.stopTimer();
+        }
     });
     timeTicker.events.on('stopTimer', () => {
         dom.clockControl.classList.remove('time-running');
     });
 
+    const timer = new Countdown_v2({ fullTenthsMax: 6000 });
+    const counter24 = new Countdown_v2({ fullTenthsMax: 240 });
 
-    const correctCounter24 = ({ timer, counter24 }) => {
-        if (timer.lessEqualLarger(counter24) === 'larger') {
-            counter24.setValuesFrom(timer);
+    const correctCounter24 = () => {
+        if(counter24.fullTenths > timer.fullTenths) {
+            counter24.changeTenths(timer.fullTenths);
         }
     };
 
-    const timer = new Countdown();
-    timer.events.on('zero', () => {
-        timeTicker.stopTimer();
-    });
-    timer.events.on('change', (changedFields) => {
-        dom.tenths.value = timer.give().tenths.give().val;
-        dom.seconds.value = timer.give().seconds.give().val;
-        dom.minutes.value = timer.give().minutes.give().val;
-        if (changedFields.includes('seconds')) {
+    timer.events.on('change', (prevValues) => {
+        dom.tenths.value = timer.tenths;
+        dom.seconds.value = timer.seconds;
+        dom.minutes.value = timer.minutes;
+        if (prevValues.second !== timer.seconds) {
             sendData({
-                seconds: timer.give().seconds.give().val,
-                minutes: timer.give().minutes.give().val,
+                seconds: timer.seconds,
+                minutes: timer.minutes,
             });
         }
     });
-    timer.setValues({
-        tenths: 9,
-        seconds: 15,
-        minutes: 0,
-    });
+    timer.changeTenths(200);
 
-    const counter24 = new Countdown();
-    counter24.events.on('change', (changedFields) => {
-        correctCounter24({ timer, counter24 });
-        dom.counter24.value = `${counter24.give().seconds.give().val}.${counter24.give().tenths.give().val}`;
-        const tenthsIntegerNumber = counter24.give().tenths;
-        const secondsIntegerNumber = counter24.give().seconds;
-        if (
-            secondsIntegerNumber.give().val < 10
-            && !(secondsIntegerNumber.give().val === secondsIntegerNumber.give().min
-                && tenthsIntegerNumber.give().val === tenthsIntegerNumber.give().min)
-        ) {
+    counter24.events.on('change', (prevValues) => {
+        if(counter24.fullTenths > timer.fullTenths) {
+            counter24.changeTenths(timer.fullTenths);
+            return;
+        }
+        dom.counter24.value = `${counter24.seconds}.${counter24.tenths}`;
+        if(counter24.fullTenths < 100 && counter24.fullTenths > 0) {
             sendData({
-                counter24: counter24.give().seconds.give().val,
-                tenthsOfSecond: counter24.give().tenths.give().val,
+                counter24: counter24.seconds,
+                tenthsOfSecond: counter24.tenths,
             });
-        } else if (
-            secondsIntegerNumber.give().val === secondsIntegerNumber.give().min
-            && tenthsIntegerNumber.give().val === tenthsIntegerNumber.give().min
-        ) {
+        } else if(counter24.fullTenths === 0) {
             sendData({
-                counter24: counter24.give().seconds.give().val,
+                counter24: counter24.seconds,
                 tenthsOfSecond: null,
             });
-        } else {
+        } else if (counter24.seconds !== prevValues.seconds) {
             sendData({
-                counter24: counter24.give().seconds.give().val,
-                tenthsOfSecond: counter24.give().tenths.give().val,
+                counter24: counter24.seconds,
+                tenthsOfSecond: null,
             });
         }
     });
-    counter24.setValues({
-        tenths: 9,
-        seconds: 15,
-    });
-
-
-    const countdownObject = new CountdownObject();
-    // countdownObject.events.on('zero', () => {
-    //     timeTicker.stopTimer();
-    // });
-    // countdownObject.events.on('changed', (maxChangedIndex) => {
-    // const cdData = countdownObject.give();
-    // dom.seconds.value = cdData.time[1].value;
-    // dom.minutes.value = cdData.time[2].value;
-    // dom.counter24.value = `${cdData.counter24[1].value}.${cdData.counter24[0].value}`;
-    // if (
-    //     cdData.counter24[1].value < 10
-    //     && !(cdData.counter24[0].value === 0 && cdData.counter24[1].value === 0)
-    // ) {
-    //     sendData({
-    //         seconds: cdData.time[1].value,
-    //         minutes: cdData.time[2].value,
-    //         tenthsOfSecond: cdData.counter24[0].value,
-    //         counter24: cdData.counter24[1].value,
-    //     });
-    // } else if (maxChangedIndex > 0 || countdownObject.time.isZero()) {
-    //     sendData({
-    //         seconds: cdData.time[1].value,
-    //         minutes: cdData.time[2].value,
-    //         tenthsOfSecond: null,
-    //         counter24: cdData.counter24[1].value,
-    //     });
-    // }
-    // });
-    // countdownObject.change({
-    //     tenthsOfSecond: 9, seconds: 10, minutes: 2, counter24: 2,
-    // });
+    counter24.changeTenths(240);
 
 
     // listeners
     dom.tenths.addEventListener('input', debounce((event) => {
-        timer.setValues({ tenths: Number(event.target.value) });
+        timer.changeParts({ tenths: Number(event.target.value) });
+        correctCounter24();
     }, listenersDelay));
     dom.seconds.addEventListener('input', debounce((event) => {
-        timer.setValues({ seconds: Number(event.target.value) });
+        timer.changeParts({ seconds: Number(event.target.value) });
+        correctCounter24();
     }, listenersDelay));
     dom.minutes.addEventListener('input', debounce((event) => {
-        timer.setValues({ minutes: Number(event.target.value) });
+        timer.changeParts({ minutes: Number(event.target.value) });
+        correctCounter24();
     }, listenersDelay));
     dom.counter24.addEventListener('input', debounce((event) => {
         const values = event.target.value.split('.');
-        counter24.setValues({
+        counter24.changeParts({
             tenths: Number(values[1] === undefined ? 0 : values[1]),
             seconds: Number(values[0]),
         });
     }, listenersDelay));
 
     dom.set5.addEventListener('click', () => {
-        timer.setValues({ tenths: 0, seconds: 0, minutes: 5 });
+        timer.changeParts({ tenths: 0, seconds: 0, minutes: 5 });
+        correctCounter24();
     });
     dom.set10.addEventListener('click', () => {
-        timer.setValues({ tenths: 0, seconds: 0, minutes: 10 });
+        timer.changeParts({ tenths: 0, seconds: 0, minutes: 10 });
+        correctCounter24();
     });
     dom.set14.addEventListener('click', () => {
-        counter24.setValues({ tenths: 0, seconds: 14 });
+        counter24.changeParts({ tenths: 0, seconds: 14 });
     });
     dom.set24.addEventListener('click', () => {
-        counter24.setValues({ tenths: 0, seconds: 24 });
+        counter24.changeParts({ tenths: 0, seconds: 24 });
     });
 
     [
