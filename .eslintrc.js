@@ -6,7 +6,8 @@ module.exports = {
     },
     'extends': [
         'eslint:recommended',
-        'plugin:vue/essential',
+        // 'plugin:vue/essential',
+        'plugin:vue/vue3-recommended',
     ],
     'parserOptions': {
         'ecmaVersion': 11,
@@ -16,6 +17,10 @@ module.exports = {
         'vue',
     ],
     'rules': {
+        'vue/html-indent': [
+            'error',
+            4,
+        ],
         'indent': [
             'error',
             4,
