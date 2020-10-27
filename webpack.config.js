@@ -138,6 +138,16 @@ const clientConfig = {
                 name: '[name].[ext]',
                 outputPath: './fonts/',
             },
+        }, {
+            test: /.*/i,
+            include: [
+                path.resolve(__dirname, 'src/sounds'),
+            ],
+            loader: 'file-loader',
+            options: {
+                name: '[name].[ext]',
+                outputPath: './sounds/',
+            },
         }],
     },
 };
