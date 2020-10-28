@@ -1,125 +1,54 @@
-import IntegerNumber from './IntegerNumber.js';
-import EventsStorage from './EventsStorage.js';
-
-export default class Countdown {
-    constructor({
-        tenths = new IntegerNumber({ min: 0, max: 0, val: 0 }),
-        seconds = new IntegerNumber({ min: 0, max: 0, val: 0 }),
-        minutes = new IntegerNumber({ min: 0, max: 0, val: 0 }),
-    }) {
-        this._tenths;
-        this._seconds;
-        this._minutes;
-        this._rules;
-        this._rulesReverce;
-        this.events;
-
-        const notIntegerNumbers = [tenths, seconds, minutes].filter((elem) => {
-            const isIntegerNumber = elem instanceof IntegerNumber;
-            if (isIntegerNumber === false) {
-                console.error(`${elem} is not instance of IntegerNumber`);
-            }
-            return isIntegerNumber === false;
-        });
-        if (notIntegerNumbers.length > 0) {
-            return;
-        }
-
-        this._tenths = tenths;
-        this._seconds = seconds;
-        this._minutes = minutes;
-
-        this._rules = ['tenths', 'seconds', 'minutes'];
-        this._rulesReverce = this._rules.slice().reverse();
-
-        this.events = new EventsStorage(['zero', 'change', 'setFromOther']);
-    }
-    give() {
-        return {
-            tenths: this._tenths,
-            seconds: this._seconds,
-            minutes: this._minutes,
-        };
-    }
-    lessEqualLarger(countdown) {
-        if (countdown instanceof Countdown === false) {
-            console.error(`${countdown} is not instance of Countdown`);
+export default class {
+    constructor({ fullTenthsMax = 0 }) {
+        if (Number.isInteger(fullTenthsMax) === false) {
+            console.error(`${fullTenthsMax} is not integer`);
             return this;
         }
 
-        const lessEqualLarger = this._rulesReverce.reduce((res, rule) => {
-            if (res === 'less' || res === 'larger') {
-                return res;
-            }
-            const thisVal = this.give()[rule].give().val;
-            const incomeVal = countdown.give()[rule].give().val;
-            if (thisVal < incomeVal) {
-                res = 'less';
-            }
-            if (thisVal > incomeVal) {
-                res = 'larger';
-            }
-            return res;
-        }, 'equal');
-        return lessEqualLarger;
+        this.TENTHS_IN_SECONDS = 10;
+        this.TENTHS_IN_MINUTES = 600;
+        this._fullTenthsMax = fullTenthsMax;
+        this.fullTenths = 0;
+        this.tenths = 0;
+        this.seconds = 0;
+        this.minutes = 0;
     }
-    setValues(options) {
-        const changedFields = [];
-        this._rules.forEach((rule) => {
-            if (options[rule] === undefined) {
-                return;
-            }
-            changedFields.push(rule);
-            const integerNumber = this.give()[rule];
-            integerNumber.change({ val: options[rule] });
-        });
-        this.events.trigger('change', changedFields);
+    valueOf() {
+        return this.fullTenths;
+    }
+    changeTenths(value) {
+        if (Number.isInteger(value) === false) {
+            console.error(`${value} is not integer`);
+            return this;
+        }
+
+        const prevFullTenths = this.fullTenths;
+
+        if (value >= 0 && value <= this._fullTenthsMax) {
+            this.fullTenths = value;
+        } else {
+            this.fullTenths = value < 0 ? 0 : this._fullTenthsMax;
+        }
+
+        if ((prevFullTenths - this.fullTenths) === 0) {
+            return this;
+        }
+
+        const remainderMinutes = this.fullTenths % this.TENTHS_IN_MINUTES;
+        const minutes = ~~(this.fullTenths / this.TENTHS_IN_MINUTES);
+        const seconds = ~~(remainderMinutes / this.TENTHS_IN_SECONDS);
+        const tenths = remainderMinutes % this.TENTHS_IN_SECONDS;
+
+        this.minutes = minutes;
+        this.seconds = seconds;
+        this.tenths = tenths;
         return this;
     }
-    setValuesFrom(countdown) {
-        if (countdown instanceof Countdown === false) {
-            console.error(`${countdown} is not instance of Countdown`);
-            return this;
-        }
-        Object.entries(countdown.give())
-            .forEach(([key, val]) => {
-                this.give()[key].change({ val: val.give().val });
-            });
-        this.events.trigger('setFromOther');
-    }
-    checkForZero() {
-        const isZero = this._rules.every((rule) => {
-            const integerNumber = this.give()[rule];
-            return integerNumber.give().val === integerNumber.give().min;
-        });
-        if (isZero) {
-            this.events.trigger('zero');
-        }
-        return this;
-    }
-    minusTenth() {
-        const changedFields = [];
-        const firstNoMinIndex = this._rules.findIndex((rule) => {
-            const integerNumber = this.give()[rule];
-            return integerNumber.give().val > integerNumber.give().min;
-        });
-        if (firstNoMinIndex === -1) {
-            return this;
-        }
-        this._rules.forEach((rule, index) => {
-            const integerNumber = this.give()[rule];
-            const val = integerNumber.give().val;
-            if (index < firstNoMinIndex) {
-                changedFields.push(rule);
-                integerNumber.setToMax();
-            }
-            if (index === firstNoMinIndex) {
-                changedFields.push(rule);
-                integerNumber.change({ val: val - 1 });
-            }
-        });
-
-        this.events.trigger('change', changedFields);
+    changeParts({ tenths, seconds, minutes }) {
+        const fullTenths = (tenths === undefined ? this.tenths : tenths)
+            + (seconds === undefined ? this.seconds : seconds) * this.TENTHS_IN_SECONDS
+            + (minutes === undefined ? this.minutes : minutes) * this.TENTHS_IN_MINUTES;
+        this.changeTenths(fullTenths);
         return this;
     }
 }
