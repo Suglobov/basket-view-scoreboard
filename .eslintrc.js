@@ -6,7 +6,6 @@ module.exports = {
     },
     'extends': [
         'eslint:recommended',
-        // 'plugin:vue/essential',
         'plugin:vue/vue3-recommended',
     ],
     'parserOptions': {
@@ -17,6 +16,15 @@ module.exports = {
         'vue',
     ],
     'rules': {
+        'vue/html-self-closing': ['error', {
+            'html': {
+                'void': 'always',
+                'normal': 'always',
+                'component': 'always',
+            },
+            'svg': 'always',
+            'math': 'always',
+        }],
         'vue/html-indent': [
             'error',
             4,

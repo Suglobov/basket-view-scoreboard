@@ -15,6 +15,13 @@ const serverConfig = {
         filename: './[name].js',
         chunkFilename: './[name].js',
     },
+    plugins: [
+        new CleanWebpackPlugin({
+            dry: false,
+            cleanOnceBeforeBuildPatterns: ['**/*'],
+            cleanAfterEveryBuildPatterns: [],
+        }),
+    ],
     module: {
         rules: [{
             test: /\.m?js$/,
@@ -72,13 +79,6 @@ const clientConfig = {
             },
         }),
         new VueLoaderPlugin(),
-        new CleanWebpackPlugin({
-            dry: true,
-            cleanOnceBeforeBuildPatterns: [],
-            cleanAfterEveryBuildPatterns: [
-                './dist/**',
-            ],
-        }),
     ],
     module: {
         rules: [{
