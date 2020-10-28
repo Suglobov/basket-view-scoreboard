@@ -9,7 +9,7 @@
                             class="teamLeft"
                             data-name="teamLeft"
                             type="text"
-                        >
+                        />
                     </div>
                 </label>
             </div>
@@ -25,7 +25,7 @@
                             min="0"
                             max="1000"
                             step="1"
-                        >
+                        />
                     </div>
                 </label>
                 <div>
@@ -64,7 +64,7 @@
                             min="0"
                             max="3"
                             step="1"
-                        >
+                        />
                     </div>
                 </label>
                 <label>
@@ -78,7 +78,7 @@
                             min="0"
                             max="100"
                             step="1"
-                        >
+                        />
                     </div>
                 </label>
             </div>
@@ -96,7 +96,7 @@
                             min="0"
                             max="10"
                             step="1"
-                        >
+                        />
                     </div>
                 </label>
                 <label>
@@ -110,7 +110,7 @@
                             min="0"
                             max="59"
                             step="1"
-                        >
+                        />
                     </div>
                 </label>
                 <label>
@@ -124,7 +124,7 @@
                             min="0"
                             max="9"
                             step="1"
-                        >
+                        />
                     </div>
                 </label>
             </div>
@@ -148,7 +148,7 @@
                             min="0"
                             max="24"
                             step="0.1"
-                        >
+                        />
                     </div>
                 </label>
                 <div>
@@ -182,7 +182,7 @@
                             class="showArrow"
                             data-name="showArrow"
                             type="checkbox"
-                        >Показывать стрелочку</label>
+                        />Показывать стрелочку</label>
                     </div>
                     <div class="settings-arrow-wrapper">
                         <svg
@@ -214,7 +214,7 @@
                             min="1"
                             max="4"
                             step="1"
-                        >
+                        />
                     </label>
                 </div>
                 <div>
@@ -228,7 +228,7 @@
                             min="0"
                             max="1000"
                             step="1"
-                        >
+                        />
                     </label>
                 </div>
                 <div>
@@ -236,7 +236,7 @@
                         class="mirror"
                         data-name="mirror"
                         type="checkbox"
-                    >Зеркалить табло</label>
+                    />Зеркалить табло</label>
                 </div>
             </div>
             <div>
@@ -251,7 +251,7 @@
                             min="2"
                             max="3"
                             step="1"
-                        >
+                        />
                     </div>
                 </label>
             </div>
@@ -265,7 +265,7 @@
                             class="teamRight"
                             data-name="teamRight"
                             type="text"
-                        >
+                        />
                     </div>
                 </label>
             </div>
@@ -281,7 +281,7 @@
                             min="0"
                             max="1000"
                             step="1"
-                        >
+                        />
                     </div>
                 </label>
                 <div>
@@ -320,7 +320,7 @@
                             min="0"
                             max="3"
                             step="1"
-                        >
+                        />
                     </div>
                 </label>
                 <label>
@@ -334,7 +334,7 @@
                             min="0"
                             max="100"
                             step="1"
-                        >
+                        />
                     </div>
                 </label>
             </div>
@@ -349,7 +349,11 @@ import './../js/common.js';
 import TimeTicker from './TimeTicker.js';
 import CountdownObject from './CountdownObject.js';
 import debounce from './debounce.js';
+import soundBuzzerTimerPath from '../sounds/buzzer/zvuk-gudka-u-mashinyi-skoroy-pomoschi-13746.mp3';
+import soundBuzzerCounter24Path from '../sounds/buzzer/portal2buzzer.mp3';
 
+const soundBuzzerTimer = new Audio(soundBuzzerTimerPath);
+const soundBuzzerCounter24 = new Audio(soundBuzzerCounter24Path);
 
 const vueData = reactive({
     teamLeft: 'Космические волки',
@@ -373,13 +377,6 @@ const vueData = reactive({
 });
 
 const listenersDelay = 200;
-const debounce = (func, delay) => {
-    let timeout;
-    return function () {
-        clearTimeout(timeout);
-        timeout = setTimeout(() => func.apply(this, arguments), delay);
-    };
-};
 
 const sendData = (objectToSend) => {
     window.electron.sendSettings(objectToSend);
@@ -418,104 +415,96 @@ const afterMountedVue = () => {
 
     const timeTicker = new TimeTicker({ delayMs: 100 });
     timeTicker.events.on('tick', () => {
-        timer.changeTenths(timer.fullTenths - 1);
-        counter24.changeTenths(counter24.fullTenths - 1);
-        if (timer.fullTenths === 0) {
-            timeTicker.stopTimer();
-        }
+        countdownObject.minusTenth().checkForZero();
     });
     timeTicker.events.on('startTimer', () => {
         dom.clockControl.classList.add('time-running');
-        if (timer.fullTenths === 0) {
-            timeTicker.stopTimer();
-        }
+        countdownObject.checkForZero();
     });
     timeTicker.events.on('stopTimer', () => {
         dom.clockControl.classList.remove('time-running');
     });
 
-    const timer = new Countdown_v2({ fullTenthsMax: 6000 });
-    const counter24 = new Countdown_v2({ fullTenthsMax: 240 });
-
-    const correctCounter24 = () => {
-        if(counter24.fullTenths > timer.fullTenths) {
-            counter24.changeTenths(timer.fullTenths);
-        }
-    };
-
-    timer.events.on('change', (prevValues) => {
-        dom.tenths.value = timer.tenths;
-        dom.seconds.value = timer.seconds;
-        dom.minutes.value = timer.minutes;
-        if (prevValues.second !== timer.seconds) {
-            sendData({
-                seconds: timer.seconds,
-                minutes: timer.minutes,
-            });
+    const countdownObject = new CountdownObject();
+    countdownObject.events.on('zero', () => {
+        timeTicker.stopTimer();
+    });
+    countdownObject.events.on('change', () => {
+        dom.tenths.value = countdownObject.timer.tenths;
+        dom.seconds.value = countdownObject.timer.seconds;
+        dom.minutes.value = countdownObject.timer.minutes;
+        dom.counter24.value = `${countdownObject.counter24.seconds}.${countdownObject.counter24.tenths}`;
+    });
+    countdownObject.events.on('minusTenths', (prevValues) => {
+        if (
+            countdownObject.timer.fullTenths === 0
+            && countdownObject.timer.fullTenths !== prevValues.timer.fullTenths
+        ) {
+            soundBuzzerTimer.play();
+        } else if (
+            countdownObject.counter24.fullTenths === 0
+            && countdownObject.counter24.fullTenths !== prevValues.counter24.fullTenths
+        ) {
+            soundBuzzerCounter24.play();
         }
     });
-    timer.changeTenths(200);
-
-    counter24.events.on('change', (prevValues) => {
-        if(counter24.fullTenths > timer.fullTenths) {
-            counter24.changeTenths(timer.fullTenths);
-            return;
-        }
-        dom.counter24.value = `${counter24.seconds}.${counter24.tenths}`;
-        if(counter24.fullTenths < 100 && counter24.fullTenths > 0) {
-            sendData({
-                counter24: counter24.seconds,
-                tenthsOfSecond: counter24.tenths,
-            });
-        } else if(counter24.fullTenths === 0) {
-            sendData({
-                counter24: counter24.seconds,
-                tenthsOfSecond: null,
-            });
-        } else if (counter24.seconds !== prevValues.seconds) {
-            sendData({
-                counter24: counter24.seconds,
-                tenthsOfSecond: null,
-            });
-        }
+    countdownObject.changeParts({
+        timer: {
+            tenths: 9,
+            seconds: 5,
+            minutes: 1,
+        },
+        counter24: {
+            tenths: 3,
+            seconds: 7,
+        },
     });
-    counter24.changeTenths(240);
-
 
     // listeners
     dom.tenths.addEventListener('input', debounce((event) => {
-        timer.changeParts({ tenths: Number(event.target.value) });
-        correctCounter24();
+        countdownObject.changeParts({
+            timer: { tenths: Number(event.target.value) },
+        });
     }, listenersDelay));
     dom.seconds.addEventListener('input', debounce((event) => {
-        timer.changeParts({ seconds: Number(event.target.value) });
-        correctCounter24();
+        countdownObject.changeParts({
+            timer: { seconds: Number(event.target.value) },
+        });
     }, listenersDelay));
     dom.minutes.addEventListener('input', debounce((event) => {
-        timer.changeParts({ minutes: Number(event.target.value) });
-        correctCounter24();
+        countdownObject.changeParts({
+            timer: { minutes: Number(event.target.value) },
+        });
     }, listenersDelay));
     dom.counter24.addEventListener('input', debounce((event) => {
         const values = event.target.value.split('.');
-        counter24.changeParts({
-            tenths: Number(values[1] === undefined ? 0 : values[1]),
-            seconds: Number(values[0]),
+        countdownObject.changeParts({
+            counter24: {
+                tenths: Number(values[1] === undefined ? 0 : values[1]),
+                seconds: Number(values[0]),
+            },
         });
     }, listenersDelay));
 
     dom.set5.addEventListener('click', () => {
-        timer.changeParts({ tenths: 0, seconds: 0, minutes: 5 });
-        correctCounter24();
+        countdownObject.changeParts({
+            timer: { tenths: 0, seconds: 0, minutes: 5 },
+        });
     });
     dom.set10.addEventListener('click', () => {
-        timer.changeParts({ tenths: 0, seconds: 0, minutes: 10 });
-        correctCounter24();
+        countdownObject.changeParts({
+            timer: { tenths: 0, seconds: 0, minutes: 10 },
+        });
     });
     dom.set14.addEventListener('click', () => {
-        counter24.changeParts({ tenths: 0, seconds: 14 });
+        countdownObject.changeParts({
+            counter24: { tenths: 0, seconds: 14 },
+        });
     });
     dom.set24.addEventListener('click', () => {
-        counter24.changeParts({ tenths: 0, seconds: 24 });
+        countdownObject.changeParts({
+            counter24: { tenths: 0, seconds: 24 },
+        });
     });
 
     [
