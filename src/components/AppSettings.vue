@@ -1,11 +1,12 @@
 <template>
-    <div class="settings-container uk-flex uk-flex-between uk-flex-wrap">
+    <div class="settings-container d-flex flex-between flex-wrap">
         <div>
             <div>
                 <label>
                     Название
                     <div>
                         <input
+                            v-model="teamLeft"
                             class="teamLeft"
                             data-name="teamLeft"
                             type="text"
@@ -13,15 +14,15 @@
                     </div>
                 </label>
             </div>
-            <div class="uk-flex uk-flex-bottom">
+            <div class="d-flex flex-bottom">
                 <label>
                     Счет
                     <div>
                         <input
+                            v-model.number="scoreLeft"
                             class="scoreLeft"
                             data-name="scoreLeft"
                             type="number"
-                            value="0"
                             min="0"
                             max="1000"
                             step="1"
@@ -33,6 +34,7 @@
                         class="score-add"
                         data-add="1"
                         data-target-name="scoreLeft"
+                        @click="scoreLeft += 1"
                     >
                         +1
                     </button>
@@ -40,6 +42,7 @@
                         class="score-add"
                         data-add="2"
                         data-target-name="scoreLeft"
+                        @click="scoreLeft += 2"
                     >
                         +2
                     </button>
@@ -47,20 +50,21 @@
                         class="score-add"
                         data-add="3"
                         data-target-name="scoreLeft"
+                        @click="scoreLeft += 3"
                     >
                         +3
                     </button>
                 </div>
             </div>
-            <div class="uk-flex">
+            <div class="d-flex">
                 <label>
                     <div>таймауты</div>
                     <div>
                         <input
+                            v-model.number="spentTimeoutsLeft"
                             class="spentTimeoutsLeft"
                             data-name="spentTimeoutsLeft"
                             type="number"
-                            value="0"
                             min="0"
                             max="3"
                             step="1"
@@ -71,10 +75,10 @@
                     Фолы
                     <div>
                         <input
+                            v-model.number="folsLeft"
                             class="folsLeft"
                             data-name="folsLeft"
                             type="number"
-                            value="0"
                             min="0"
                             max="100"
                             step="1"
@@ -84,15 +88,15 @@
             </div>
         </div>
         <div>
-            <div class="uk-flex">
+            <div class="d-flex">
                 <label>
                     Минуты
                     <div>
                         <input
+                            v-model.number="minutes"
                             class="minutes"
                             data-name="minutes"
                             type="number"
-                            value="10"
                             min="0"
                             max="10"
                             step="1"
@@ -103,10 +107,10 @@
                     Секунды
                     <div>
                         <input
+                            v-model.number="seconds"
                             class="seconds"
                             data-name="seconds"
                             type="number"
-                            value="0"
                             min="0"
                             max="59"
                             step="1"
@@ -117,10 +121,10 @@
                     Десятые
                     <div>
                         <input
+                            v-model.number="tenths"
                             class="tenths"
                             data-name="tenths"
                             type="number"
-                            value="0"
                             min="0"
                             max="9"
                             step="1"
@@ -129,56 +133,84 @@
                 </label>
             </div>
             <div>
-                <button class="set-5">
+                <button
+                    class="set-5"
+                    @click="setTimer({ tenths: 0, seconds: 0, minutes: 5 })"
+                >
                     = 5 минут
                 </button>
-                <button class="set-10">
+                <button
+                    class="set-10"
+                    @click="setTimer({ tenths: 0, seconds: 0, minutes: 10 })"
+                >
                     = 10 минут
                 </button>
             </div>
-            <div class="uk-flex uk-flex-bottom">
-                <label>
-                    Счетчик 24 секунд
-                    <div>
-                        <input
-                            class="counter24"
-                            data-name="counter24"
-                            type="number"
-                            value="24"
-                            min="0"
-                            max="24"
-                            step="0.1"
-                        />
-                    </div>
-                </label>
+            <div>
+                <div>
+                    <label>
+                        Счетчик 24 секунд
+                        <div>
+                            <input
+                                v-model="counter24"
+                                class="counter24"
+                                data-name="counter24"
+                                type="number"
+                                min="0"
+                                max="24"
+                                step="0.1"
+                            />
+                        </div>
+                    </label>
+                </div>
                 <div>
                     <div>
-                        <button class="set-14">
+                        <button
+                            class="set-14"
+                            @click="setCounter24({ tenths: 0, seconds: 14 })"
+                        >
                             = 14
+                        </button>
+                        <button
+                            class="set-24"
+                            @click="setCounter24({ tenths: 0, seconds: 24 })"
+                        >
+                            = 24
                         </button>
                     </div>
                     <div>
-                        <button class="set-24">
-                            = 24
+                        <button
+                            class="set-24"
+                            @click="setCounter24({ tenths: 0, seconds: 0 })"
+                        >
+                            = 0, чтоб не сработал баззер
                         </button>
                     </div>
                 </div>
             </div>
-            <div class="uk-flex uk-flex-bottom uk-margin-top uk-margin-bottom">
+            <div class="d-flex flex-bottom">
                 <div
                     class="clock-control"
+                    :class="{ 'time-running': isTimeRunning }"
                     uk-tooltip="реагирует на пробел. Если нажимать пробел в поле ввода, то таймер не среагирует"
                 >
-                    <button class="start-timer">
+                    <button
+                        class="start-timer"
+                        @click="startTimer()"
+                    >
                         Старт
                     </button>
-                    <button class="stop-timer">
+                    <button
+                        class="stop-timer"
+                        @click="stopTimer()"
+                    >
                         Пауза
                     </button>
                 </div>
                 <div>
                     <div>
                         <label><input
+                            v-model="showArrow"
                             class="showArrow"
                             data-name="showArrow"
                             type="checkbox"
@@ -187,6 +219,9 @@
                     <div class="settings-arrow-wrapper">
                         <svg
                             class="settings-arrow-left"
+                            :class="{
+                                'arrow-right': arrowDirection === 'right',
+                            }"
                             preserveAspectRatio="none"
                             version="1.1"
                             xmlns="http://www.w3.org/2000/svg"
@@ -194,6 +229,10 @@
                             x="0px"
                             y="0px"
                             viewBox="0 0 561.803 561.802"
+                            @click="
+                                arrowDirection =
+                                    arrowDirection === 'left' ? 'right' : 'left'
+                            "
                         >
                             <polygon
                                 points="240.773,521.674 240.773,411.322 561.803,411.322 561.803,152.994 240.773,152.994 240.773,40.128 0,280.905 "
@@ -202,15 +241,15 @@
                     </div>
                 </div>
             </div>
-            <div class="uk-flex uk-flex-bottom">
+            <div class="d-flex flex-bottom">
                 <div>
                     <label>
                         <div>Четверть</div>
                         <input
+                            v-model.number="quarter"
                             class="quarter"
                             data-name="quarter"
                             type="number"
-                            value="1"
                             min="1"
                             max="4"
                             step="1"
@@ -221,10 +260,10 @@
                     <label>
                         <div>Овертайм</div>
                         <input
+                            v-model.number="overtime"
                             class="overtime"
                             data-name="overtime"
                             type="number"
-                            value="0"
                             min="0"
                             max="1000"
                             step="1"
@@ -233,6 +272,7 @@
                 </div>
                 <div>
                     <label><input
+                        v-model="isMirror"
                         class="mirror"
                         data-name="mirror"
                         type="checkbox"
@@ -244,10 +284,10 @@
                     <div>Всего таймаутов</div>
                     <div>
                         <input
+                            v-model.number="timeouts"
                             class="timeouts"
                             data-name="timeouts"
                             type="number"
-                            value="2"
                             min="2"
                             max="3"
                             step="1"
@@ -262,6 +302,7 @@
                     Название
                     <div>
                         <input
+                            v-model="teamRight"
                             class="teamRight"
                             data-name="teamRight"
                             type="text"
@@ -269,15 +310,15 @@
                     </div>
                 </label>
             </div>
-            <div class="uk-flex uk-flex-bottom">
+            <div class="d-flex flex-bottom">
                 <label>
                     Счет
                     <div>
                         <input
+                            v-model.number="scoreRight"
                             class="scoreRight"
                             data-name="scoreRight"
                             type="number"
-                            value="0"
                             min="0"
                             max="1000"
                             step="1"
@@ -289,6 +330,7 @@
                         class="score-add"
                         data-add="1"
                         data-target-name="scoreRight"
+                        @click="scoreRight += 1"
                     >
                         +1
                     </button>
@@ -296,6 +338,7 @@
                         class="score-add"
                         data-add="2"
                         data-target-name="scoreRight"
+                        @click="scoreRight += 2"
                     >
                         +2
                     </button>
@@ -303,20 +346,21 @@
                         class="score-add"
                         data-add="3"
                         data-target-name="scoreRight"
+                        @click="scoreRight += 3"
                     >
                         +3
                     </button>
                 </div>
             </div>
-            <div class="uk-flex">
+            <div class="d-flex">
                 <label>
                     <div>таймауты</div>
                     <div>
                         <input
+                            v-model.number="spentTimeoutsRight"
                             class="spentTimeoutsRight"
                             data-name="spentTimeoutsRight"
                             type="number"
-                            value="0"
                             min="0"
                             max="3"
                             step="1"
@@ -327,10 +371,10 @@
                     Фолы
                     <div>
                         <input
+                            v-model.number="folsRight"
                             class="folsRight"
                             data-name="folsRight"
                             type="number"
-                            value="0"
                             min="0"
                             max="100"
                             step="1"
@@ -343,239 +387,181 @@
 </template>
 
 <script>
-
-import { reactive, onMounted } from 'vue';
+import { reactive, watch } from 'vue';
 import './../js/common.js';
 import TimeTicker from './TimeTicker.js';
 import CountdownObject from './CountdownObject.js';
-import debounce from './debounce.js';
-import soundBuzzerTimerPath from '../sounds/buzzer/zvuk-gudka-u-mashinyi-skoroy-pomoschi-13746.mp3';
+import soundBuzzerTimerPath from '../sounds/buzzer/beep_end_period.wav';
 import soundBuzzerCounter24Path from '../sounds/buzzer/portal2buzzer.mp3';
+
 
 const soundBuzzerTimer = new Audio(soundBuzzerTimerPath);
 const soundBuzzerCounter24 = new Audio(soundBuzzerCounter24Path);
 
 const vueData = reactive({
+    isTimeRunning: false,
+    quarter: 1,
+    overtime: 0,
     teamLeft: 'Космические волки',
     teamRight: 'Команда П',
-    scoreLeft: 100,
-    scoreRight: 100,
+    scoreLeft: 0,
+    scoreRight: 0,
     folsLeft: 0,
     folsRight: 0,
-    periodText: 'Четверть',
-    periodValue: 1,
-    isMirror: false,
-    showArrow: false,
-    arrowDirection: 'left',
-    seconds: 0,
-    minutes: 0,
-    counter24: 24,
-    tenthsOfSecond: 0,
     timeouts: 2,
     spentTimeoutsLeft: 0,
     spentTimeoutsRight: 0,
+    isMirror: false,
+    showArrow: false,
+    arrowDirection: 'left',
+    tenths: 0,
+    seconds: 0,
+    minutes: 0,
+    counter24: '24.0',
+    setTimer({ tenths, seconds, minutes }) {
+        countdownObject.changeParts({
+            timer: { tenths, seconds, minutes },
+        });
+    },
+    setCounter24({ tenths, seconds }) {
+        countdownObject.changeParts({
+            counter24: { tenths, seconds },
+        });
+    },
+    startTimer() {
+        timeTicker.startTimer();
+    },
+    stopTimer() {
+        timeTicker.stopTimer();
+    },
 });
-
-const listenersDelay = 200;
 
 const sendData = (objectToSend) => {
     window.electron.sendSettings(objectToSend);
 };
-const afterMountedVue = () => {
-    const dom = {
-        startTimer: document.querySelector('.start-timer'),
-        stopTimer: document.querySelector('.stop-timer'),
-        set5: document.querySelector('.set-5'),
-        set10: document.querySelector('.set-10'),
-        set14: document.querySelector('.set-14'),
-        set24: document.querySelector('.set-24'),
-        clockControl: document.querySelector('.clock-control'),
-        arrow: document.querySelector('.settings-arrow-left'),
-        sets: document.querySelectorAll('.set-value'),
-        buttons: document.querySelectorAll('.score-add'),
-        teamLeft: document.querySelector('[data-name="teamLeft"]'),
-        teamRight: document.querySelector('[data-name="teamRight"]'),
-        scoreLeft: document.querySelector('[data-name="scoreLeft"]'),
-        scoreRight: document.querySelector('[data-name="scoreRight"]'),
-        folsLeft: document.querySelector('[data-name="folsLeft"]'),
-        folsRight: document.querySelector('[data-name="folsRight"]'),
-        spentTimeoutsLeft: document.querySelector('[data-name="spentTimeoutsLeft"]'),
-        spentTimeoutsRight: document.querySelector('[data-name="spentTimeoutsRight"]'),
-        quarter: document.querySelector('[data-name="quarter"]'),
-        overtime: document.querySelector('[data-name="overtime"]'),
-        counter24: document.querySelector('[data-name="counter24"]'),
-        minutes: document.querySelector('[data-name="minutes"]'),
-        seconds: document.querySelector('[data-name="seconds"]'),
-        tenths: document.querySelector('[data-name="tenths"]'),
-        mirror: document.querySelector('[data-name="mirror"]'),
-        showArrow: document.querySelector('[data-name="showArrow"]'),
-        timeouts: document.querySelector('[data-name="timeouts"]'),
-    };
-    // console.log('dom', dom);
 
-    const timeTicker = new TimeTicker({ delayMs: 100 });
-    timeTicker.events.on('tick', () => {
-        countdownObject.minusTenth().checkForZero();
-    });
-    timeTicker.events.on('startTimer', () => {
-        dom.clockControl.classList.add('time-running');
-        countdownObject.checkForZero();
-    });
-    timeTicker.events.on('stopTimer', () => {
-        dom.clockControl.classList.remove('time-running');
-    });
 
-    const countdownObject = new CountdownObject();
-    countdownObject.events.on('zero', () => {
+const timeTicker = new TimeTicker({ delayMs: 100 });
+timeTicker.events.on('tick', () => {
+    countdownObject.minusTenth().checkForZero();
+});
+timeTicker.events.on('startTimer', () => {
+    vueData.isTimeRunning = true;
+    countdownObject.checkForZero();
+});
+timeTicker.events.on('stopTimer', () => {
+    vueData.isTimeRunning = false;
+});
+
+const countdownObject = new CountdownObject();
+countdownObject.events.on('zero', () => {
+    timeTicker.stopTimer();
+});
+countdownObject.events.on('change', (prevValues) => {
+    vueData.tenths = countdownObject.timer.tenths;
+    vueData.seconds = countdownObject.timer.seconds;
+    vueData.minutes = countdownObject.timer.minutes;
+    vueData.counter24 = `${countdownObject.counter24.seconds}.${countdownObject.counter24.tenths}`;
+
+    if (prevValues.timer.second !== countdownObject.timer.seconds) {
+        sendData({
+            seconds: countdownObject.timer.seconds,
+            minutes: countdownObject.timer.minutes,
+        });
+    }
+    if (
+        countdownObject.counter24.fullTenths < 100
+        && countdownObject.counter24.fullTenths > 0) {
+        sendData({
+            counter24: countdownObject.counter24.seconds,
+            tenths: countdownObject.counter24.tenths,
+        });
+    } else if (countdownObject.counter24.fullTenths === 0) {
+        sendData({
+            counter24: countdownObject.counter24.seconds,
+            tenths: null,
+        });
+    } else if (countdownObject.counter24.seconds !== prevValues.seconds) {
+        sendData({
+            counter24: countdownObject.counter24.seconds,
+            tenths: null,
+        });
+    }
+});
+countdownObject.events.on('minusTenths', (prevValues) => {
+    if (
+        countdownObject.timer.fullTenths === 0
+        && countdownObject.timer.fullTenths !== prevValues.timer.fullTenths
+    ) {
+        soundBuzzerTimer.play();
+    } else if (
+        countdownObject.counter24.fullTenths === 0
+        && countdownObject.counter24.fullTenths !== prevValues.counter24.fullTenths
+    ) {
+        soundBuzzerCounter24.play();
+    }
+});
+countdownObject.changeParts({
+    timer: {
+        tenths: 9,
+        seconds: 5,
+        minutes: 1,
+    },
+    counter24: {
+        tenths: 3,
+        seconds: 7,
+    },
+});
+
+// keydown space
+document.body.addEventListener('keydown', (event) => {
+    const { target, code } = event;
+    if (code !== 'Space') {
+        return;
+    }
+    if (target.nodeName === 'INPUT' && target.type !== 'number') {
+        return;
+    }
+    event.preventDefault();
+    if (timeTicker.isTimerRunning) {
         timeTicker.stopTimer();
-    });
-    countdownObject.events.on('change', () => {
-        dom.tenths.value = countdownObject.timer.tenths;
-        dom.seconds.value = countdownObject.timer.seconds;
-        dom.minutes.value = countdownObject.timer.minutes;
-        dom.counter24.value = `${countdownObject.counter24.seconds}.${countdownObject.counter24.tenths}`;
-    });
-    countdownObject.events.on('minusTenths', (prevValues) => {
-        if (
-            countdownObject.timer.fullTenths === 0
-            && countdownObject.timer.fullTenths !== prevValues.timer.fullTenths
-        ) {
-            soundBuzzerTimer.play();
-        } else if (
-            countdownObject.counter24.fullTenths === 0
-            && countdownObject.counter24.fullTenths !== prevValues.counter24.fullTenths
-        ) {
-            soundBuzzerCounter24.play();
-        }
-    });
-    countdownObject.changeParts({
-        timer: {
-            tenths: 9,
-            seconds: 5,
-            minutes: 1,
-        },
-        counter24: {
-            tenths: 3,
-            seconds: 7,
-        },
-    });
-
-    // listeners
-    dom.tenths.addEventListener('input', debounce((event) => {
-        countdownObject.changeParts({
-            timer: { tenths: Number(event.target.value) },
-        });
-    }, listenersDelay));
-    dom.seconds.addEventListener('input', debounce((event) => {
-        countdownObject.changeParts({
-            timer: { seconds: Number(event.target.value) },
-        });
-    }, listenersDelay));
-    dom.minutes.addEventListener('input', debounce((event) => {
-        countdownObject.changeParts({
-            timer: { minutes: Number(event.target.value) },
-        });
-    }, listenersDelay));
-    dom.counter24.addEventListener('input', debounce((event) => {
-        const values = event.target.value.split('.');
-        countdownObject.changeParts({
-            counter24: {
-                tenths: Number(values[1] === undefined ? 0 : values[1]),
-                seconds: Number(values[0]),
-            },
-        });
-    }, listenersDelay));
-
-    dom.set5.addEventListener('click', () => {
-        countdownObject.changeParts({
-            timer: { tenths: 0, seconds: 0, minutes: 5 },
-        });
-    });
-    dom.set10.addEventListener('click', () => {
-        countdownObject.changeParts({
-            timer: { tenths: 0, seconds: 0, minutes: 10 },
-        });
-    });
-    dom.set14.addEventListener('click', () => {
-        countdownObject.changeParts({
-            counter24: { tenths: 0, seconds: 14 },
-        });
-    });
-    dom.set24.addEventListener('click', () => {
-        countdownObject.changeParts({
-            counter24: { tenths: 0, seconds: 24 },
-        });
-    });
-
-    [
-        dom.teamLeft, dom.teamRight, dom.scoreLeft, dom.scoreRight, dom.folsLeft, dom.folsRight,
-        dom.timeouts, dom.spentTimeoutsLeft, dom.spentTimeoutsRight, dom.quarter, dom.overtime,
-    ].forEach((element) => {
-        element.addEventListener('input', debounce((event) => {
-            const { target } = event;
-            const { value } = target;
-            const { name } = target.dataset;
-            sendData({ [name]: value });
-        }, listenersDelay));
-    });
-
-    // buttons add score
-    dom.buttons.forEach((button) => {
-        const { add, targetName } = button.dataset;
-        const score = dom[targetName];
-
-        button.addEventListener('click', () => {
-            score.value = Number(score.value) + Number(add);
-            const value = Number(score.value);
-            sendData({ [targetName]: value });
-        });
-    });
-
-
-    dom.startTimer.addEventListener('click', function () {
+    } else {
         timeTicker.startTimer();
-    });
-    dom.stopTimer.addEventListener('click', function () {
-        timeTicker.stopTimer();
-    });
-    dom.arrow.addEventListener('click', function () {
-        dom.arrow.classList.toggle('arrow-right');
-        sendData({ arrowDirection: dom.arrow.classList.contains('arrow-right') ? 'right' : 'left' });
-    });
-    dom.mirror.addEventListener('input', debounce((event) => {
-        const { target } = event;
-        sendData({ isMirror: target.checked });
-    }, listenersDelay));
-    dom.showArrow.addEventListener('input', debounce((event) => {
-        const { target } = event;
-        sendData({ showArrow: target.checked });
-    }, listenersDelay));
-
-    // keydown space
-    document.body.addEventListener('keydown', (event) => {
-        const { target, code } = event;
-        if (code !== 'Space') {
-            return;
-        }
-        if (target.nodeName === 'INPUT' && target.type !== 'number') {
-            return;
-        }
-        event.preventDefault();
-        if (timeTicker.isTimerRunning) {
-            timeTicker.stopTimer();
-        } else {
-            timeTicker.startTimer();
-        }
-    }, { capture: true });
-};
+    }
+}, { capture: true });
 
 
+watch(() => vueData.tenths, (value) => { countdownObject.changeParts({ timer: { tenths: value } }); });
+watch(() => vueData.seconds, (value) => { countdownObject.changeParts({ timer: { seconds: value } }); });
+watch(() => vueData.minutes, (value) => { countdownObject.changeParts({ timer: { minutes: value } }); });
+watch(() => vueData.counter24, (value) => {
+    const values = value.split('.');
+    countdownObject.changeParts({
+        counter24: {
+            tenths: Number(values[1] === undefined ? 0 : values[1]),
+            seconds: Number(values[0]),
+        },
+    });
+});
+
+watch(() => vueData.teamLeft, (value) => { sendData({ teamLeft: value }); });
+watch(() => vueData.teamRight, (value) => { sendData({ teamRight: value }); });
+watch(() => vueData.scoreLeft, (value) => { sendData({ scoreLeft: value }); });
+watch(() => vueData.scoreRight, (value) => { sendData({ scoreRight: value }); });
+watch(() => vueData.folsLeft, (value) => { sendData({ folsLeft: value }); });
+watch(() => vueData.folsRight, (value) => { sendData({ folsRight: value }); });
+watch(() => vueData.timeouts, (value) => { sendData({ timeouts: value }); });
+watch(() => vueData.spentTimeoutsLeft, (value) => { sendData({ spentTimeoutsLeft: value }); });
+watch(() => vueData.spentTimeoutsRight, (value) => { sendData({ spentTimeoutsRight: value }); });
+watch(() => vueData.isMirror, (value) => { sendData({ isMirror: value }); });
+watch(() => vueData.showArrow, (value) => { sendData({ showArrow: value }); });
+watch(() => vueData.arrowDirection, (value) => { sendData({ arrowDirection: value }); });
+watch(() => vueData.overtime, (value) => { sendData({ overtime: value }); });
+watch(() => vueData.quarter, (value) => { sendData({ quarter: value }); });
 
 export default {
     setup() {
-        onMounted(() => {
-            afterMountedVue();
-        });
+        return vueData;
     },
 };
 </script>
