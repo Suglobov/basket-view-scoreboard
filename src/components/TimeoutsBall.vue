@@ -1,25 +1,30 @@
 <template>
     <div :class="$style.timeouts">
-        <template v-for="n in countElementsNumber">
+        <template v-for="n in countElements">
             <div
+                v-if="n <= countActive"
                 :key="'a' + n"
-                v-if="n <= countActiveNumber"
-                :class="[$style.timeoutBall, timeoutBallActive]"
-            ></div>
-            <div :key="'b' + n" v-else :class="$style.timeoutBall"></div>
+                :class="[$style.timeoutBall, $style.timeoutBallActive]"
+            />
+            <div
+                v-else
+                :key="'b' + n"
+                :class="$style.timeoutBall"
+            />
         </template>
     </div>
 </template>
 
 <script>
 export default {
-    props: ['countElements', 'countActive'],
-    computed: {
-        countElementsNumber() {
-            return Number(this.countElements);
+    props: {
+        countElements: {
+            type: Number,
+            default: 0,
         },
-        countActiveNumber() {
-            return Number(this.countActive);
+        countActive: {
+            type: Number,
+            default: 0,
         },
     },
 };
