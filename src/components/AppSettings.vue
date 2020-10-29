@@ -8,7 +8,6 @@
                         <input
                             v-model="teamLeft"
                             class="teamLeft"
-                            data-name="teamLeft"
                             type="text"
                         />
                     </div>
@@ -21,7 +20,6 @@
                         <input
                             v-model.number="scoreLeft"
                             class="scoreLeft"
-                            data-name="scoreLeft"
                             type="number"
                             min="0"
                             max="1000"
@@ -63,7 +61,6 @@
                         <input
                             v-model.number="spentTimeoutsLeft"
                             class="spentTimeoutsLeft"
-                            data-name="spentTimeoutsLeft"
                             type="number"
                             min="0"
                             max="3"
@@ -77,7 +74,6 @@
                         <input
                             v-model.number="folsLeft"
                             class="folsLeft"
-                            data-name="folsLeft"
                             type="number"
                             min="0"
                             max="100"
@@ -95,7 +91,6 @@
                         <input
                             v-model.number="minutes"
                             class="minutes"
-                            data-name="minutes"
                             type="number"
                             min="0"
                             max="10"
@@ -109,7 +104,6 @@
                         <input
                             v-model.number="seconds"
                             class="seconds"
-                            data-name="seconds"
                             type="number"
                             min="0"
                             max="59"
@@ -123,7 +117,6 @@
                         <input
                             v-model.number="tenths"
                             class="tenths"
-                            data-name="tenths"
                             type="number"
                             min="0"
                             max="9"
@@ -134,13 +127,13 @@
             </div>
             <div>
                 <button
-                    class="set-5"
+                    class="setValue"
                     @click="setTimer({ tenths: 0, seconds: 0, minutes: 5 })"
                 >
                     = 5 минут
                 </button>
                 <button
-                    class="set-10"
+                    class="setValue"
                     @click="setTimer({ tenths: 0, seconds: 0, minutes: 10 })"
                 >
                     = 10 минут
@@ -154,7 +147,6 @@
                             <input
                                 v-model="counter24"
                                 class="counter24"
-                                data-name="counter24"
                                 type="number"
                                 min="0"
                                 max="24"
@@ -166,13 +158,13 @@
                 <div>
                     <div>
                         <button
-                            class="set-14"
+                            class="setValue"
                             @click="setCounter24({ tenths: 0, seconds: 14 })"
                         >
                             = 14
                         </button>
                         <button
-                            class="set-24"
+                            class="setValue"
                             @click="setCounter24({ tenths: 0, seconds: 24 })"
                         >
                             = 24
@@ -180,19 +172,19 @@
                     </div>
                     <div>
                         <button
-                            class="set-24"
+                            class="setValue"
                             @click="setCounter24({ tenths: 0, seconds: 0 })"
                         >
-                            = 0, чтоб не сработал баззер
+                            = 0 (без баззера)
                         </button>
                     </div>
                 </div>
             </div>
             <div class="d-flex flex-bottom">
                 <div
+                    v-tooltip="'реагирует на пробел. Если нажимать пробел в поле ввода, то таймер не среагирует'"
                     class="clock-control"
                     :class="{ 'time-running': isTimeRunning }"
-                    uk-tooltip="реагирует на пробел. Если нажимать пробел в поле ввода, то таймер не среагирует"
                 >
                     <button
                         class="start-timer"
@@ -212,7 +204,6 @@
                         <label><input
                             v-model="showArrow"
                             class="showArrow"
-                            data-name="showArrow"
                             type="checkbox"
                         />Показывать стрелочку</label>
                     </div>
@@ -248,7 +239,6 @@
                         <input
                             v-model.number="quarter"
                             class="quarter"
-                            data-name="quarter"
                             type="number"
                             min="1"
                             max="4"
@@ -262,7 +252,6 @@
                         <input
                             v-model.number="overtime"
                             class="overtime"
-                            data-name="overtime"
                             type="number"
                             min="0"
                             max="1000"
@@ -274,7 +263,6 @@
                     <label><input
                         v-model="isMirror"
                         class="mirror"
-                        data-name="mirror"
                         type="checkbox"
                     />Зеркалить табло</label>
                 </div>
@@ -286,7 +274,6 @@
                         <input
                             v-model.number="timeouts"
                             class="timeouts"
-                            data-name="timeouts"
                             type="number"
                             min="2"
                             max="3"
@@ -304,7 +291,6 @@
                         <input
                             v-model="teamRight"
                             class="teamRight"
-                            data-name="teamRight"
                             type="text"
                         />
                     </div>
@@ -317,7 +303,6 @@
                         <input
                             v-model.number="scoreRight"
                             class="scoreRight"
-                            data-name="scoreRight"
                             type="number"
                             min="0"
                             max="1000"
@@ -359,7 +344,6 @@
                         <input
                             v-model.number="spentTimeoutsRight"
                             class="spentTimeoutsRight"
-                            data-name="spentTimeoutsRight"
                             type="number"
                             min="0"
                             max="3"
@@ -373,7 +357,6 @@
                         <input
                             v-model.number="folsRight"
                             class="folsRight"
-                            data-name="folsRight"
                             type="number"
                             min="0"
                             max="100"
@@ -394,7 +377,6 @@ import CountdownObject from './CountdownObject.js';
 import soundBuzzerTimerPath from '../sounds/buzzer/beep_end_period.wav';
 import soundBuzzerCounter24Path from '../sounds/buzzer/portal2buzzer.mp3';
 
-
 const soundBuzzerTimer = new Audio(soundBuzzerTimerPath);
 const soundBuzzerCounter24 = new Audio(soundBuzzerCounter24Path);
 
@@ -402,7 +384,7 @@ const vueData = reactive({
     isTimeRunning: false,
     quarter: 1,
     overtime: 0,
-    teamLeft: 'Космические волки',
+    teamLeft: 'Команда Л',
     teamRight: 'Команда П',
     scoreLeft: 0,
     scoreRight: 0,
@@ -439,7 +421,6 @@ const vueData = reactive({
 const sendData = (objectToSend) => {
     window.electron.sendSettings(objectToSend);
 };
-
 
 const timeTicker = new TimeTicker({ delayMs: 100 });
 timeTicker.events.on('tick', () => {
@@ -530,7 +511,6 @@ document.body.addEventListener('keydown', (event) => {
     }
 }, { capture: true });
 
-
 watch(() => vueData.tenths, (value) => { countdownObject.changeParts({ timer: { tenths: value } }); });
 watch(() => vueData.seconds, (value) => { countdownObject.changeParts({ timer: { seconds: value } }); });
 watch(() => vueData.minutes, (value) => { countdownObject.changeParts({ timer: { minutes: value } }); });
@@ -560,6 +540,29 @@ watch(() => vueData.overtime, (value) => { sendData({ overtime: value }); });
 watch(() => vueData.quarter, (value) => { sendData({ quarter: value }); });
 
 export default {
+    directives: {
+        tooltip: {
+            mounted(el, binding) {
+                const tooltipElement = document.createElement('div');
+                tooltipElement.classList.add('tooltip');
+                tooltipElement.innerHTML = binding.value;
+                tooltipElement.style.display = 'none';
+                document.body.append(tooltipElement);
+
+                el.addEventListener('mouseover', (/* event */) => {
+                    tooltipElement.style.display = '';
+                    const rectEl = el.getBoundingClientRect();
+                    const rectTool = tooltipElement.getBoundingClientRect();
+                    tooltipElement.style.top = `${rectEl.top - rectTool.height}px`;
+                    tooltipElement.style.left = `${rectEl.left}px`;
+                    tooltipElement.style.width = `${rectEl.width}px`;
+                });
+                el.addEventListener('mouseout', (/* event */) => {
+                    tooltipElement.style.display = 'none';
+                });
+            },
+        },
+    },
     setup() {
         return vueData;
     },

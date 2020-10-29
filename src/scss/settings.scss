@@ -11,10 +11,7 @@
     font-size: 3vw;
 }
 
-.set-5,
-.set-10,
-.set-14,
-.set-24 {
+.setValue {
     background: rgb(192, 236, 192);
     font-size: 2vw;
 }
@@ -88,4 +85,14 @@
     &.arrow-right {
         transform: rotateY(180deg);
     }
+}
+
+.tooltip {
+    background: #000;
+    border: 1px solid #fff;
+    border-radius: 5px;
+    color: #fff;
+    font-size: 1.2vw;
+    padding: 0.5vw;
+    position: absolute;
 }
