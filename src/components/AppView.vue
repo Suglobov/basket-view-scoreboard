@@ -1,55 +1,71 @@
 <template>
-    <div class="view-container font-Aldrich" :class="{ mirror: isMirror }">
+    <div
+        class="view-container font-Aldrich"
+        :class="{ mirror: isMirror }"
+    >
         <ViewRow
-            :widthFirsLast="'25%'"
+            :width-firs-last="'25%'"
             class="d-flex flex-between mirror-change-direction"
         >
-            <template v-slot:first>
-                <div class="view-team view-team-left">{{ teamLeft }}</div>
-            </template>
-            <template v-slot:center>
-                <div class="view-time">
-                    <Clock :minutes="minutes" :seconds="seconds"></Clock>
+            <template #first>
+                <div class="view-team view-team-left">
+                    {{ teamLeft }}
                 </div>
             </template>
-            <template v-slot:last>
-                <div class="view-team view-team-right">{{ teamRight }}</div>
+            <template #center>
+                <div class="view-time">
+                    <Clock
+                        :minutes="minutes"
+                        :seconds="seconds"
+                    />
+                </div>
+            </template>
+            <template #last>
+                <div class="view-team view-team-right">
+                    {{ teamRight }}
+                </div>
             </template>
         </ViewRow>
         <ViewRow
-            :widthFirsLast="'33%'"
+            :width-firs-last="'33%'"
             class="d-flex flex-between flex-bottom mirror-change-direction"
         >
-            <template v-slot:first>
-                <div class="view-score view-score-left">{{ scoreLeft }}</div>
+            <template #first>
+                <div class="view-score view-score-left">
+                    {{ scoreLeft }}
+                </div>
             </template>
-            <template v-slot:center>
+            <template #center>
                 <div class="view-counter24-wrapper d-flex">
-                    <div class="view-counter-24">{{ counter24 }}</div>
+                    <div class="view-counter-24">
+                        {{ counter24 }}
+                    </div>
                     <div
+                        v-if="tenths !== null"
                         class="view-counter-24-tenths-of-second"
-                        v-if="tenthsOfSecond !== null"
                     >
-                        .{{ tenthsOfSecond }}
+                        .{{ tenths }}
                     </div>
                 </div>
             </template>
-            <template v-slot:last>
-                <div class="view-score view-score-right">{{ scoreRight }}</div>
+            <template #last>
+                <div class="view-score view-score-right">
+                    {{ scoreRight }}
+                </div>
             </template>
         </ViewRow>
         <ViewRow
-            :widthFirsLast="'25%'"
+            :width-firs-last="'25%'"
             class="d-flex flex-between flex-middle mirror-change-direction"
         >
-            <template v-slot:first>
+            <template #first>
                 <TimeoutsBall
                     class="d-flex flex-center"
                     :count-elements="timeouts"
                     :count-active="spentTimeoutsLeft"
-                ></TimeoutsBall>
+                />
             </template>
-            <template v-slot:center>
+            <template #center>
                 <div class="d-flex flex-center">
                     <div class="view-arrow-wrapper">
                         <svg
@@ -68,25 +84,27 @@
                         >
                             <polygon
                                 points="240.773,521.674 240.773,411.322 561.803,411.322 561.803,152.994 240.773,152.994 240.773,40.128 0,280.905 "
-                            ></polygon>
+                            />
                         </svg>
                     </div>
                 </div>
             </template>
-            <template v-slot:last>
+            <template #last>
                 <TimeoutsBall
                     class="d-flex flex-center"
                     :count-elements="timeouts"
                     :count-active="spentTimeoutsRight"
-                ></TimeoutsBall>
+                />
             </template>
         </ViewRow>
         <ViewRow
-            :widthFirsLast="'33%'"
+            :width-firs-last="'33%'"
             class="d-flex flex-between mirror-change-direction"
         >
-            <template v-slot:first>
-                <div class="view-foul-text">Фолы</div>
+            <template #first>
+                <div class="view-foul-text">
+                    Фолы
+                </div>
                 <div
                     class="view-foul"
                     :class="{ 'view-foul-limit': folsLeft > 3 }"
@@ -94,16 +112,22 @@
                     {{ folsLeft }}
                 </div>
             </template>
-            <template v-slot:center>
+            <template #center>
                 <div class="view-period-wrapper">
                     <div class="view-quarter-wrapper">
-                        <div class="view-period-text">{{ periodText }}</div>
-                        <div class="view-period-value">{{ periodValue }}</div>
+                        <div class="view-period-text">
+                            {{ periodText }}
+                        </div>
+                        <div class="view-period-value">
+                            {{ periodValue }}
+                        </div>
                     </div>
                 </div>
             </template>
-            <template v-slot:last>
-                <div class="view-foul-text">Фолы</div>
+            <template #last>
+                <div class="view-foul-text">
+                    Фолы
+                </div>
                 <div
                     class="view-foul"
                     :class="{ 'view-foul-limit': folsRight > 3 }"
@@ -142,8 +166,8 @@ window.electron.receiveSettings((message) => {
 const vueData = reactive({
     teamLeft: 'Космические волки',
     teamRight: 'Команда П',
-    scoreLeft: 100,
-    scoreRight: 100,
+    scoreLeft: 0,
+    scoreRight: 0,
     folsLeft: 0,
     folsRight: 0,
     periodText: 'Четверть',
@@ -154,7 +178,7 @@ const vueData = reactive({
     seconds: 0,
     minutes: 0,
     counter24: 24,
-    tenthsOfSecond: 0,
+    tenths: 0,
     timeouts: 2,
     spentTimeoutsLeft: 0,
     spentTimeoutsRight: 0,
