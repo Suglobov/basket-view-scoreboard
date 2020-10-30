@@ -1,4 +1,4 @@
 import { createApp } from 'vue';
-import AppSettings from './components/AppSettings.vue';
+import AppSettings from '../vue/AppSettings.vue';
 
 createApp(AppSettings).mount('#app');

@@ -1,5 +1,5 @@
 <template>
-    <div class="settings-container d-flex flex-between flex-wrap">
+    <div class="settings-container font-Aldrich d-flex flex-between flex-wrap">
         <div>
             <div>
                 <label>
@@ -371,9 +371,9 @@
 
 <script>
 import { reactive, watch } from 'vue';
-import './../js/common.js';
-import TimeTicker from './TimeTicker.js';
-import CountdownObject from './CountdownObject.js';
+import '../scss/style.scss';
+import TimeTicker from '../components/TimeTicker.js';
+import CountdownObject from '../components/CountdownObject.js';
 import soundBuzzerTimerPath from '../sounds/buzzer/beep_end_period.wav';
 import soundBuzzerCounter24Path from '../sounds/buzzer/portal2buzzer.mp3';
 
@@ -511,6 +511,9 @@ document.body.addEventListener('keydown', (event) => {
     }
 }, { capture: true });
 
+
+
+
 watch(() => vueData.tenths, (value) => { countdownObject.changeParts({ timer: { tenths: value } }); });
 watch(() => vueData.seconds, (value) => { countdownObject.changeParts({ timer: { seconds: value } }); });
 watch(() => vueData.minutes, (value) => { countdownObject.changeParts({ timer: { minutes: value } }); });
@@ -546,19 +549,20 @@ export default {
                 const tooltipElement = document.createElement('div');
                 tooltipElement.classList.add('tooltip');
                 tooltipElement.innerHTML = binding.value;
-                tooltipElement.style.display = 'none';
                 document.body.append(tooltipElement);
 
                 el.addEventListener('mouseover', (/* event */) => {
-                    tooltipElement.style.display = '';
+                    tooltipElement.classList.add('tooltip-show');
                     const rectEl = el.getBoundingClientRect();
                     const rectTool = tooltipElement.getBoundingClientRect();
                     tooltipElement.style.top = `${rectEl.top - rectTool.height}px`;
                     tooltipElement.style.left = `${rectEl.left}px`;
                     tooltipElement.style.width = `${rectEl.width}px`;
+                    setTimeout(() => tooltipElement.classList.add('tooltip-opacity'));
                 });
                 el.addEventListener('mouseout', (/* event */) => {
-                    tooltipElement.style.display = 'none';
+                    tooltipElement.classList.remove('tooltip-show');
+                    tooltipElement.classList.remove('tooltip-opacity');
                 });
             },
         },

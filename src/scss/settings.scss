@@ -88,11 +88,23 @@
 }
 
 .tooltip {
-    background: #000;
-    border: 1px solid #fff;
+    background: #222;
+    border: 1px solid #ccc;
     border-radius: 5px;
-    color: #fff;
+    color: #ccc;
+    display: none;
     font-size: 1.2vw;
+    opacity: 0;
     padding: 0.5vw;
     position: absolute;
+    transition-duration: 0.3s;
+    transition-property: opacity;
+}
+
+.tooltip-show {
+    display: block;
+}
+
+.tooltip-opacity {
+    opacity: 1;
 }

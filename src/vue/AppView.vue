@@ -141,7 +141,7 @@
 
 <script>
 import { reactive } from 'vue';
-import './../scss/style.scss';
+import '../scss/style.scss';
 import TimeoutsBall from './TimeoutsBall.vue';
 import Clock from './Clock.vue';
 import ViewRow from './ViewRow.vue';
@@ -164,24 +164,24 @@ window.electron.receiveSettings((message) => {
 });
 
 const vueData = reactive({
-    teamLeft: 'Космические волки',
+    periodText: 'Четверть',
+    periodValue: 1,
+    teamLeft: 'Команда Л',
     teamRight: 'Команда П',
     scoreLeft: 0,
     scoreRight: 0,
     folsLeft: 0,
     folsRight: 0,
-    periodText: 'Четверть',
-    periodValue: 1,
     isMirror: false,
     showArrow: false,
     arrowDirection: 'left',
-    seconds: 0,
-    minutes: 0,
-    counter24: 24,
-    tenths: 0,
     timeouts: 2,
     spentTimeoutsLeft: 0,
     spentTimeoutsRight: 0,
+    minutes: 0,
+    seconds: 0,
+    counter24: '24',
+    tenths: 0,
 });
 
 export default {
