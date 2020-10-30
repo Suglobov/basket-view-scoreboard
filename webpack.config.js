@@ -3,6 +3,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const { VueLoaderPlugin } = require('vue-loader');
+// const StylelintPlugin = require('stylelint-webpack-plugin');
 
 const serverConfig = {
     target: 'electron-main',
@@ -40,24 +41,21 @@ const clientConfig = {
     target: 'web',
     devtool: 'source-map',
     entry: {
-        view: './src/view.js',
-        settings: './src/settings.js',
+        view: './src/js/view.js',
+        settings: './src/js/settings.js',
     },
     output: {
         path: path.resolve(__dirname, 'dist'),
-        filename: './[name].js',
-        chunkFilename: './[name].js',
+        filename: './js/[name].js',
     },
     plugins: [
         new MiniCssExtractPlugin({
-            filename: '[name].css',
-            chunkFilename: '[id].css',
-            ignoreOrder: false,
+            filename: './css/[name].css',
         }),
         new HtmlWebpackPlugin({
             title: 'settings',
             filename: 'settings.html',
-            template: 'src/settings.html',
+            template: 'src/html/settings.html',
             chunks: ['settings'],
             meta: {
                 'Content-Security-Policy': {
@@ -69,7 +67,7 @@ const clientConfig = {
         new HtmlWebpackPlugin({
             title: 'view',
             filename: 'index.html',
-            template: 'src/index.html',
+            template: 'src/html/index.html',
             chunks: ['view'],
             meta: {
                 'Content-Security-Policy': {
@@ -79,6 +77,7 @@ const clientConfig = {
             },
         }),
         new VueLoaderPlugin(),
+        // new StylelintPlugin(),
     ],
     module: {
         rules: [{
@@ -86,7 +85,12 @@ const clientConfig = {
             oneOf: [{
                 resourceQuery: /module/,
                 use: [
-                    MiniCssExtractPlugin.loader,
+                    {
+                        loader: MiniCssExtractPlugin.loader,
+                        options: {
+                            publicPath: '../',
+                        },
+                    },
                     {
                         loader: 'css-loader',
                         options: {
@@ -98,7 +102,12 @@ const clientConfig = {
                 ],
             }, {
                 use: [
-                    MiniCssExtractPlugin.loader,
+                    {
+                        loader: MiniCssExtractPlugin.loader,
+                        options: {
+                            publicPath: '../',
+                        },
+                    },
                     'css-loader',
                 ],
             }],
@@ -107,7 +116,12 @@ const clientConfig = {
             oneOf: [{
                 resourceQuery: /module/,
                 use: [
-                    MiniCssExtractPlugin.loader,
+                    {
+                        loader: MiniCssExtractPlugin.loader,
+                        options: {
+                            publicPath: '../',
+                        },
+                    },
                     {
                         loader: 'css-loader',
                         options: {
@@ -120,7 +134,12 @@ const clientConfig = {
                 ],
             }, {
                 use: [
-                    MiniCssExtractPlugin.loader,
+                    {
+                        loader: MiniCssExtractPlugin.loader,
+                        options: {
+                            publicPath: '../',
+                        },
+                    },
                     'css-loader',
                     'sass-loader',
                 ],
