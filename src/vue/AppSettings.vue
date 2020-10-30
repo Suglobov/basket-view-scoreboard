@@ -501,7 +501,7 @@ document.body.addEventListener('keydown', (event) => {
     if (code !== 'Space') {
         return;
     }
-    if (target.nodeName === 'INPUT' && target.type !== 'number') {
+    if (target.nodeName === 'INPUT' && target.type === 'text') {
         return;
     }
     event.preventDefault();
