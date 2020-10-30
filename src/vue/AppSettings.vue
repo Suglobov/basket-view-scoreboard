@@ -183,6 +183,7 @@
             <div class="d-flex flex-bottom">
                 <div
                     v-tooltip="'реагирует на пробел. Если нажимать пробел в поле ввода, то таймер не среагирует'"
+                    uk-tooltip="Hello World"
                     class="clock-control"
                     :class="{ 'time-running': isTimeRunning }"
                 >
@@ -552,13 +553,15 @@ export default {
                 document.body.append(tooltipElement);
 
                 el.addEventListener('mouseover', (/* event */) => {
-                    tooltipElement.classList.add('tooltip-show');
-                    const rectEl = el.getBoundingClientRect();
-                    const rectTool = tooltipElement.getBoundingClientRect();
-                    tooltipElement.style.top = `${rectEl.top - rectTool.height}px`;
-                    tooltipElement.style.left = `${rectEl.left}px`;
-                    tooltipElement.style.width = `${rectEl.width}px`;
-                    setTimeout(() => tooltipElement.classList.add('tooltip-opacity'));
+                    setTimeout(() => {
+                        tooltipElement.classList.add('tooltip-show');
+                        const rectEl = el.getBoundingClientRect();
+                        tooltipElement.style.width = `${rectEl.width}px`;
+                        const rectTool = tooltipElement.getBoundingClientRect();
+                        tooltipElement.style.top = `${rectEl.top - rectTool.height}px`;
+                        tooltipElement.style.left = `${rectEl.left}px`;
+                        setTimeout(() => tooltipElement.classList.add('tooltip-opacity'));
+                    });
                 });
                 el.addEventListener('mouseout', (/* event */) => {
                     tooltipElement.classList.remove('tooltip-show');
