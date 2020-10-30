@@ -513,11 +513,15 @@ document.body.addEventListener('keydown', (event) => {
 }, { capture: true });
 
 
-
-
-watch(() => vueData.tenths, (value) => { countdownObject.changeParts({ timer: { tenths: value } }); });
-watch(() => vueData.seconds, (value) => { countdownObject.changeParts({ timer: { seconds: value } }); });
-watch(() => vueData.minutes, (value) => { countdownObject.changeParts({ timer: { minutes: value } }); });
+[
+    'tenths',
+    'seconds',
+    'minutes',
+].forEach((elem) => {
+    watch(() => vueData[elem], (value) => {
+        countdownObject.changeParts({ timer: { [elem]: value } });
+    });
+});
 watch(() => vueData.counter24, (value) => {
     const values = value.split('.');
     countdownObject.changeParts({
@@ -527,21 +531,26 @@ watch(() => vueData.counter24, (value) => {
         },
     });
 });
-
-watch(() => vueData.teamLeft, (value) => { sendData({ teamLeft: value }); });
-watch(() => vueData.teamRight, (value) => { sendData({ teamRight: value }); });
-watch(() => vueData.scoreLeft, (value) => { sendData({ scoreLeft: value }); });
-watch(() => vueData.scoreRight, (value) => { sendData({ scoreRight: value }); });
-watch(() => vueData.folsLeft, (value) => { sendData({ folsLeft: value }); });
-watch(() => vueData.folsRight, (value) => { sendData({ folsRight: value }); });
-watch(() => vueData.timeouts, (value) => { sendData({ timeouts: value }); });
-watch(() => vueData.spentTimeoutsLeft, (value) => { sendData({ spentTimeoutsLeft: value }); });
-watch(() => vueData.spentTimeoutsRight, (value) => { sendData({ spentTimeoutsRight: value }); });
-watch(() => vueData.isMirror, (value) => { sendData({ isMirror: value }); });
-watch(() => vueData.showArrow, (value) => { sendData({ showArrow: value }); });
-watch(() => vueData.arrowDirection, (value) => { sendData({ arrowDirection: value }); });
-watch(() => vueData.overtime, (value) => { sendData({ overtime: value }); });
-watch(() => vueData.quarter, (value) => { sendData({ quarter: value }); });
+[
+    'teamLeft',
+    'teamRight',
+    'scoreLeft',
+    'scoreRight',
+    'folsLeft',
+    'folsRight',
+    'timeouts',
+    'spentTimeoutsLeft',
+    'spentTimeoutsRight',
+    'isMirror',
+    'showArrow',
+    'arrowDirection',
+    'overtime',
+    'quarter',
+].forEach((elem) => {
+    watch(() => vueData[elem], (value) => {
+        sendData({ [elem]: value });
+    });
+});
 
 export default {
     directives: {
