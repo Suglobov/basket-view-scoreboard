@@ -183,7 +183,6 @@
             <div class="d-flex flex-bottom">
                 <div
                     v-tooltip="'реагирует на пробел. Если нажимать пробел в поле ввода, то таймер не среагирует'"
-                    uk-tooltip="Hello World"
                     class="clock-control"
                     :class="{ 'time-running': isTimeRunning }"
                 >
