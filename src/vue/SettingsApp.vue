@@ -22,9 +22,7 @@
                 />
             </div>
             <div
-                v-tooltip="
-                    'реагирует на пробел. Если нажимать пробел в поле ввода, то таймер не среагирует'
-                "
+                v-tooltip="'реагирует на пробел. Если нажимать пробел в поле ввода, то таймер не среагирует'"
                 class="clock-control"
                 :class="{ 'time-running': isTimeRunning }"
             >
@@ -130,6 +128,7 @@ import SettingsTeam from './SettingsTeam.vue';
 import SettingsClock from './SettingsClock.vue';
 import SettingsCounter24 from './SettingsCounter24.vue';
 import SettingsHelpText from './SettingsHelpText.vue';
+import tooltipVueDirective from './tooltipVueDirective.js';
 
 const components = {
     SettingsTeam,
@@ -330,30 +329,7 @@ document.body.addEventListener('keydown', (event) => {
 export default {
     components,
     directives: {
-        tooltip: {
-            mounted(el, binding) {
-                const tooltipElement = document.createElement('div');
-                tooltipElement.classList.add('tooltip');
-                tooltipElement.innerHTML = binding.value;
-                document.body.append(tooltipElement);
-
-                el.addEventListener('mouseover', (/* event */) => {
-                    setTimeout(() => {
-                        tooltipElement.classList.add('tooltip-show');
-                        const rectEl = el.getBoundingClientRect();
-                        tooltipElement.style.width = `${rectEl.width}px`;
-                        const rectTool = tooltipElement.getBoundingClientRect();
-                        tooltipElement.style.top = `${rectEl.top - rectTool.height}px`;
-                        tooltipElement.style.left = `${rectEl.left}px`;
-                        setTimeout(() => tooltipElement.classList.add('tooltip-opacity'));
-                    });
-                });
-                el.addEventListener('mouseout', (/* event */) => {
-                    tooltipElement.classList.remove('tooltip-show');
-                    tooltipElement.classList.remove('tooltip-opacity');
-                });
-            },
-        },
+        tooltip: tooltipVueDirective,
     },
     setup() {
         return vueData;
