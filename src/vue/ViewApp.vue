@@ -15,8 +15,8 @@
             <template #center>
                 <div class="view-time">
                     <Clock
-                        :minutes="minutes"
-                        :seconds="seconds"
+                        :minutes="timer.minutes"
+                        :seconds="timer.seconds"
                     />
                 </div>
             </template>
@@ -38,13 +38,13 @@
             <template #center>
                 <div class="view-counter24-wrapper d-flex">
                     <div class="view-counter-24">
-                        {{ counter24 }}
+                        {{ counter24.seconds }}
                     </div>
                     <div
-                        v-if="tenths !== null"
+                        v-if="counter24.tenths !== null"
                         class="view-counter-24-tenths-of-second"
                     >
-                        .{{ tenths }}
+                        .{{ counter24.tenths }}
                     </div>
                 </div>
             </template>
@@ -113,16 +113,7 @@
                 </div>
             </template>
             <template #center>
-                <div class="view-period-wrapper">
-                    <div class="view-quarter-wrapper">
-                        <div class="view-period-text">
-                            {{ periodText }}
-                        </div>
-                        <div class="view-period-value">
-                            {{ periodValue }}
-                        </div>
-                    </div>
-                </div>
+                <ViewPeriod :period="period" />
             </template>
             <template #last>
                 <div class="view-foul-text">
@@ -145,17 +136,19 @@ import '../scss/style.scss';
 import TimeoutsBall from './TimeoutsBall.vue';
 import Clock from './Clock.vue';
 import ViewRow from './ViewRow.vue';
+import ViewPeriod from './ViewPeriod.vue';
 
+
+const components = {
+    Clock,
+    TimeoutsBall,
+    ViewRow,
+    ViewPeriod,
+};
 
 window.electron.receiveSettings((message) => {
     Object.entries(message).forEach(([field, value]) => {
-        if (field === 'quarter') {
-            vueData.periodText = 'Четверть';
-            vueData.periodValue = value;
-        } else if (field === 'overtime') {
-            vueData.periodText = 'Овертайм';
-            vueData.periodValue = value;
-        } else if (vueData[field] !== undefined) {
+        if (vueData[field] !== undefined) {
             vueData[field] = value;
         } else {
             console.log('message error', message);
@@ -164,8 +157,6 @@ window.electron.receiveSettings((message) => {
 });
 
 const vueData = reactive({
-    periodText: 'Четверть',
-    periodValue: 1,
     teamLeft: 'Команда Л',
     teamRight: 'Команда П',
     scoreLeft: 0,
@@ -178,18 +169,20 @@ const vueData = reactive({
     timeouts: 2,
     spentTimeoutsLeft: 0,
     spentTimeoutsRight: 0,
-    minutes: 0,
-    seconds: 0,
-    counter24: '24',
-    tenths: 0,
+    period: 1,
+    timer: {
+        tenths: 0,
+        seconds: 0,
+        minutes: 0,
+    },
+    counter24: {
+        tenths: 0,
+        seconds: 0,
+    },
 });
 
 export default {
-    components: {
-        Clock,
-        TimeoutsBall,
-        ViewRow,
-    },
+    components,
     setup() {
         return vueData;
     },
