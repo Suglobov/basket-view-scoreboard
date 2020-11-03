@@ -1,18 +1,34 @@
 <template>
-    <div class="clock">
-        <div class="clockNumber">{{minutesDozens}}</div>
-        <div class="clockNumber">{{minutesUnits}}</div>
-        <div class="clockColon">:</div>
-        <div class="clockNumber">{{secondsDozens}}</div>
-        <div class="clockNumber">{{secondsUnits}}</div>
+    <div :class="$style.clock">
+        <div :class="$style.clockNumber">
+            {{ minutesDozens }}
+        </div>
+        <div :class="$style.clockNumber">
+            {{ minutesUnits }}
+        </div>
+        <div :class="$style.clockColon">
+            :
+        </div>
+        <div :class="$style.clockNumber">
+            {{ secondsDozens }}
+        </div>
+        <div :class="$style.clockNumber">
+            {{ secondsUnits }}
+        </div>
     </div>
 </template>
 
 <script>
 export default {
     props: {
-        minutes: Number,
-        seconds: Number,
+        minutes: {
+            type: Number,
+            default: 0,
+        },
+        seconds: {
+            type: Number,
+            default: 0,
+        },
     },
     computed: {
         minutesDozens() {
@@ -33,7 +49,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style module>
 .clock {
     display: flex;
     width: 100%;
