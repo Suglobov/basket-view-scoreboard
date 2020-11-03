@@ -23,8 +23,6 @@
             =0
             <span :class="$style.signature">(без баззера)</span>
         </button>
-    </div>
-    <div>
         <button
             :class="$style.setValue"
             @click="emitData({ tenths: 0, seconds: 14 })"
