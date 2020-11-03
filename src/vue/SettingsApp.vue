@@ -24,24 +24,12 @@
                     v-model:seconds="counter24.seconds"
                 />
             </div>
-            <div
-                v-tooltip="'пробел'"
-                class="clock-control"
-                :class="{ 'time-running': isTimeRunning }"
-            >
-                <button
-                    class="start-timer"
-                    @click="startTimer()"
-                >
-                    Старт
-                </button>
-                <button
-                    class="stop-timer"
-                    @click="stopTimer()"
-                >
-                    Пауза
-                </button>
-            </div>
+            <SettingsStartButton 
+                class="d-inline-block"
+                :is-time-running="isTimeRunning"
+                @start-timer="startTimer"
+                @stop-timer="stopTimer"
+            />
         </div>
         <div>
             <SettingsTeam
@@ -117,6 +105,7 @@ import SettingsClock from './SettingsClock.vue';
 import SettingsCounter24 from './SettingsCounter24.vue';
 import SettingsHelpText from './SettingsHelpText.vue';
 import ArrowAttack from './ArrowAttack.vue';
+import SettingsStartButton from './SettingsStartButton.vue';
 
 const components = {
     SettingsTeam,
@@ -124,6 +113,7 @@ const components = {
     SettingsCounter24,
     SettingsHelpText,
     ArrowAttack,
+    SettingsStartButton,
 };
 
 const soundBuzzerTimer = new Audio(soundBuzzerTimerPath);
