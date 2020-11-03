@@ -8,20 +8,20 @@
             class="d-flex flex-between mirror-change-direction"
         >
             <template #first>
-                <div class="view-team view-team-left">
+                <div class="view-team">
                     {{ teamLeft }}
                 </div>
             </template>
             <template #center>
                 <div class="view-time">
-                    <Clock
+                    <ViewClock
                         :minutes="timer.minutes"
                         :seconds="timer.seconds"
                     />
                 </div>
             </template>
             <template #last>
-                <div class="view-team view-team-right">
+                <div class="view-team">
                     {{ teamRight }}
                 </div>
             </template>
@@ -31,12 +31,12 @@
             class="d-flex flex-between flex-bottom mirror-change-direction"
         >
             <template #first>
-                <div class="view-score view-score-left">
+                <div class="view-score">
                     {{ scoreLeft }}
                 </div>
             </template>
             <template #center>
-                <div class="view-counter24-wrapper d-flex">
+                <div class="d-flex width-1-1">
                     <div class="view-counter-24">
                         {{ counter24.seconds }}
                     </div>
@@ -49,7 +49,7 @@
                 </div>
             </template>
             <template #last>
-                <div class="view-score view-score-right">
+                <div class="view-score">
                     {{ scoreRight }}
                 </div>
             </template>
@@ -121,14 +121,14 @@
 import { reactive } from 'vue';
 import '../scss/style.scss';
 import TimeoutsBall from './TimeoutsBall.vue';
-import Clock from './Clock.vue';
+import ViewClock from './ViewClock.vue';
 import ViewRow from './ViewRow.vue';
 import ViewPeriod from './ViewPeriod.vue';
 import ArrowAttack from './ArrowAttack.vue';
 
 
 const components = {
-    Clock,
+    ViewClock,
     TimeoutsBall,
     ViewRow,
     ViewPeriod,
