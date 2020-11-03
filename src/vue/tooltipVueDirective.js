@@ -1,6 +1,5 @@
 export default {
     mounted(el, binding) {
-        console.log(binding);
         if (binding.value === '') {
             return;
         }
@@ -9,7 +8,7 @@ export default {
         tooltipElement.innerHTML = binding.value;
         document.body.append(tooltipElement);
 
-        el.addEventListener('mouseover', (/* event */) => {
+        el.addEventListener('mouseenter', (/* event */) => {
             setTimeout(() => {
                 tooltipElement.classList.add('tooltip-show');
                 const rectEl = el.getBoundingClientRect();
@@ -20,7 +19,7 @@ export default {
                 setTimeout(() => tooltipElement.classList.add('tooltip-opacity'));
             });
         });
-        el.addEventListener('mouseout', (/* event */) => {
+        el.addEventListener('mouseleave', (/* event */) => {
             tooltipElement.classList.remove('tooltip-show');
             tooltipElement.classList.remove('tooltip-opacity');
         });
