@@ -1,33 +1,17 @@
 .settings-container {
     background: #000;
     color: #fff;
-    font-size: 1vw;
+    font-size: 2vw;
     height: 100%;
     min-height: 100vh;
     padding: 2%;
 }
 
-.setValue {
-    background: rgb(192, 236, 192);
-    font-size: 2vw;
-}
-
-.setValueCount24 {
-    font-size: 5vw;
-}
-
 .timeouts,
 .period {
     font-size: 3vw;
-}
-
-.period {
-    font-size: 3vw;
+    text-align: right;
     width: 5vw;
-}
-
-.counter24 {
-    font-size: 5vw;
 }
 
 .start-timer,
@@ -62,21 +46,6 @@
 .showArrow {
     height: 3vw;
     width: 3vw;
-}
-
-.settings-arrow-wrapper {
-    height: 7vw;
-    width: 15vw;
-}
-
-.settings-arrow-left {
-    fill: #e6e00d;
-    height: 100%;
-    width: 100%;
-
-    &.arrow-right {
-        transform: rotateY(180deg);
-    }
 }
 
 .tooltip {

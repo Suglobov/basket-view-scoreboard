@@ -12,5 +12,9 @@ body {
     border: 1px solid rgba($color: #000, $alpha: 0.2);
 }
 
+.mt-big {
+    margin-top: 5vw;
+}
+
 @import './settings.scss';
 @import './view.scss';

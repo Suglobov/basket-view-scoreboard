@@ -16,33 +16,6 @@
     width: 100%;
 }
 
-.view-arrow-left {
-    fill: #e6e00d;
-    height: 100%;
-    width: 100%;
-
-    &.arrow-right {
-        transform: rotateY(180deg);
-    }
-
-    .mirror .mirror-change-direction & {
-        transform: rotateY(180deg);
-    }
-
-    .mirror .mirror-change-direction &.arrow-right {
-        transform: rotateY(0deg);
-    }
-}
-
-.mirror .mirror-change-direction {
-    flex-direction: row-reverse;
-}
-
-.view-arrow-wrapper {
-    height: 15vh;
-    width: 15vw;
-}
-
 .view-team {
     flex: auto;
     font-size: 3vw;

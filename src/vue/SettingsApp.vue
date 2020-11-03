@@ -22,7 +22,7 @@
                 />
             </div>
             <div
-                v-tooltip="'реагирует на пробел. Если нажимать пробел в поле ввода, то таймер не среагирует'"
+                v-tooltip="'пробел'"
                 class="clock-control"
                 :class="{ 'time-running': isTimeRunning }"
             >
@@ -39,72 +39,6 @@
                     Пауза
                 </button>
             </div>
-            <div>
-                <div>
-                    <label><input
-                        v-model="showArrow"
-                        class="showArrow"
-                        type="checkbox"
-                    />Показывать стрелочку</label>
-                </div>
-                <div class="settings-arrow-wrapper">
-                    <svg
-                        class="settings-arrow-left"
-                        :class="{
-                            'arrow-right': arrowDirection === 'right',
-                        }"
-                        preserveAspectRatio="none"
-                        version="1.1"
-                        xmlns="http://www.w3.org/2000/svg"
-                        xmlns:xlink="http://www.w3.org/1999/xlink"
-                        x="0px"
-                        y="0px"
-                        viewBox="0 0 561.803 561.802"
-                        @click="
-                            arrowDirection =
-                                arrowDirection === 'left' ? 'right' : 'left'
-                        "
-                    >
-                        <polygon
-                            points="240.773,521.674 240.773,411.322 561.803,411.322 561.803,152.994 240.773,152.994 240.773,40.128 0,280.905 "
-                        />
-                    </svg>
-                </div>
-            </div>
-            <div>
-                <label><input
-                    v-model="isMirror"
-                    class="mirror"
-                    type="checkbox"
-                />Зеркалить табло</label>
-            </div>
-            <div>
-                <label>
-                    <div>Период</div>
-                    <input
-                        v-model.number="period"
-                        class="period"
-                        type="number"
-                        min="1"
-                        step="1"
-                    />
-                </label>
-            </div>
-            <div>
-                <label>
-                    <div>Всего таймаутов</div>
-                    <div>
-                        <input
-                            v-model.number="timeouts"
-                            class="timeouts"
-                            type="number"
-                            min="2"
-                            max="3"
-                            step="1"
-                        />
-                    </div>
-                </label>
-            </div>
         </div>
         <div>
             <SettingsTeam
@@ -113,6 +47,54 @@
                 v-model:spent-timeouts="spentTimeoutsRight"
                 v-model:fols="folsRight"
             />
+            <div class="mt-big">
+                <div>
+                    <label><input
+                        v-model="showArrow"
+                        class="showArrow"
+                        type="checkbox"
+                    />Показывать стрелочку</label>
+                </div>
+                <ArrowAttack
+                    :width="'15vw'"
+                    :height="'7vw'"
+                    :direction="arrowDirection"
+                    :show="true"
+                    @click="arrowDirection = arrowDirection === 'left' ? 'right' : 'left'"
+                />
+                <div>
+                    <label><input
+                        v-model="isMirror"
+                        class="mirror"
+                        type="checkbox"
+                    />Зеркалить табло</label>
+                </div>
+                <div>
+                    <label>
+                        <div>Период</div>
+                        <input
+                            v-model.number="period"
+                            class="period"
+                            type="number"
+                            min="1"
+                            step="1"
+                        />
+                    </label>
+                    <label>
+                        <div>Всего таймаутов</div>
+                        <div>
+                            <input
+                                v-model.number="timeouts"
+                                class="timeouts"
+                                type="number"
+                                min="2"
+                                max="3"
+                                step="1"
+                            />
+                        </div>
+                    </label>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -129,12 +111,14 @@ import SettingsClock from './SettingsClock.vue';
 import SettingsCounter24 from './SettingsCounter24.vue';
 import SettingsHelpText from './SettingsHelpText.vue';
 import tooltipVueDirective from './tooltipVueDirective.js';
+import ArrowAttack from './ArrowAttack.vue';
 
 const components = {
     SettingsTeam,
     SettingsClock,
     SettingsCounter24,
     SettingsHelpText,
+    ArrowAttack,
 };
 
 const soundBuzzerTimer = new Audio(soundBuzzerTimerPath);

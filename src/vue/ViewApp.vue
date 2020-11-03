@@ -67,26 +67,13 @@
             </template>
             <template #center>
                 <div class="d-flex flex-center">
-                    <div class="view-arrow-wrapper">
-                        <svg
-                            v-show="showArrow"
-                            class="view-arrow-left"
-                            :class="{
-                                'arrow-right': arrowDirection === 'right',
-                            }"
-                            preserveAspectRatio="none"
-                            version="1.1"
-                            xmlns="http://www.w3.org/2000/svg"
-                            xmlns:xlink="http://www.w3.org/1999/xlink"
-                            x="0px"
-                            y="0px"
-                            viewBox="0 0 561.803 561.802"
-                        >
-                            <polygon
-                                points="240.773,521.674 240.773,411.322 561.803,411.322 561.803,152.994 240.773,152.994 240.773,40.128 0,280.905 "
-                            />
-                        </svg>
-                    </div>
+                    <ArrowAttack
+                        :width="'15vw'"
+                        :height="'15vw'"
+                        :direction="((arrowDirection === 'left' && isMirror === false)
+                            || (arrowDirection === 'right' && isMirror === true)) ? 'left' : 'right'"
+                        :show="showArrow"
+                    />
                 </div>
             </template>
             <template #last>
@@ -137,6 +124,7 @@ import TimeoutsBall from './TimeoutsBall.vue';
 import Clock from './Clock.vue';
 import ViewRow from './ViewRow.vue';
 import ViewPeriod from './ViewPeriod.vue';
+import ArrowAttack from './ArrowAttack.vue';
 
 
 const components = {
@@ -144,6 +132,7 @@ const components = {
     TimeoutsBall,
     ViewRow,
     ViewPeriod,
+    ArrowAttack,
 };
 
 window.electron.receiveSettings((message) => {
