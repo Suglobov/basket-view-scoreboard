@@ -29,18 +29,21 @@
         </label>
         <div>
             <button
+                v-tooltip="tooltip1"
                 :class="$style.scoreAdd"
                 @click="$emit('update:score', score + 1)"
             >
                 +1
             </button>
             <button
+                v-tooltip="tooltip2"
                 :class="$style.scoreAdd"
                 @click="$emit('update:score', score + 2)"
             >
                 +2
             </button>
             <button
+                v-tooltip="tooltip3"
                 :class="$style.scoreAdd"
                 @click="$emit('update:score', score + 3)"
             >
@@ -98,6 +101,18 @@ export default {
         fols: {
             type: Number,
             default: 0,
+        },
+        tooltip1: {
+            type: String,
+            default: '',
+        },
+        tooltip2: {
+            type: String,
+            default: '',
+        },
+        tooltip3: {
+            type: String,
+            default: '',
         },
     },
     emits: [

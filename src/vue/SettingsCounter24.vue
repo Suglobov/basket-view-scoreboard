@@ -17,6 +17,7 @@
     </div>
     <div>
         <button
+            v-tooltip="'A'"
             :class="$style.setValue"
             @click="emitData({ tenths: 0, seconds: 0 })"
         >
@@ -24,12 +25,14 @@
             <span :class="$style.signature">(без баззера)</span>
         </button>
         <button
+            v-tooltip="'S'"
             :class="$style.setValue"
             @click="emitData({ tenths: 0, seconds: 14 })"
         >
             =14
         </button>
         <button
+            v-tooltip="'D'"
             :class="$style.setValue"
             @click="emitData({ tenths: 0, seconds: 24 })"
         >

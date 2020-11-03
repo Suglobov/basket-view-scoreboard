@@ -6,6 +6,9 @@
                 v-model:score="scoreLeft"
                 v-model:spent-timeouts="spentTimeoutsLeft"
                 v-model:fols="folsLeft"
+                :tooltip1="'Q'"
+                :tooltip2="'W'"
+                :tooltip3="'E'"
             />
             <SettingsHelpText />
         </div>
@@ -46,6 +49,9 @@
                 v-model:score="scoreRight"
                 v-model:spent-timeouts="spentTimeoutsRight"
                 v-model:fols="folsRight"
+                :tooltip1="'Z'"
+                :tooltip2="'X'"
+                :tooltip3="'C'"
             />
             <div class="mt-big">
                 <div>
@@ -110,7 +116,6 @@ import SettingsTeam from './SettingsTeam.vue';
 import SettingsClock from './SettingsClock.vue';
 import SettingsCounter24 from './SettingsCounter24.vue';
 import SettingsHelpText from './SettingsHelpText.vue';
-import tooltipVueDirective from './tooltipVueDirective.js';
 import ArrowAttack from './ArrowAttack.vue';
 
 const components = {
@@ -244,7 +249,6 @@ countdownObject.changeParts({
 // keydown space
 document.body.addEventListener('keydown', (event) => {
     const { target, code } = event;
-    console.log('code', code);
     if (target.nodeName === 'INPUT' && target.type === 'text') {
         return;
     }
@@ -312,9 +316,6 @@ document.body.addEventListener('keydown', (event) => {
 
 export default {
     components,
-    directives: {
-        tooltip: tooltipVueDirective,
-    },
     setup() {
         return vueData;
     },

@@ -1,5 +1,9 @@
 export default {
     mounted(el, binding) {
+        console.log(binding);
+        if (binding.value === '') {
+            return;
+        }
         const tooltipElement = document.createElement('div');
         tooltipElement.classList.add('tooltip');
         tooltipElement.innerHTML = binding.value;
