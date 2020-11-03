@@ -16,5 +16,9 @@ body {
     margin-top: 5vw;
 }
 
+.d-inline-block {
+    display: inline-block;
+}
+
 @import './settings.scss';
 @import './view.scss';

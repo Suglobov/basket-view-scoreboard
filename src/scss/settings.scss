@@ -14,34 +14,6 @@
     width: 5vw;
 }
 
-.start-timer,
-.stop-timer {
-    font-size: 4vw;
-    padding: 2vw;
-}
-
-.start-timer {
-    background-color: #1e87f0;
-    color: #fff;
-}
-
-.stop-timer {
-    background-color: #f0506e;
-    color: #fff;
-}
-
-.clock-control:not(.time-running) {
-    .stop-timer {
-        display: none;
-    }
-}
-
-.clock-control.time-running {
-    .start-timer {
-        display: none;
-    }
-}
-
 .mirror,
 .showArrow {
     height: 3vw;
