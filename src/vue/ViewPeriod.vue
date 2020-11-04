@@ -4,15 +4,18 @@
         :class="$style.text"
     >
         Четверть
+        <div :class="$style.period">
+            {{ period }}
+        </div>
     </div>
     <div
         v-else
         :class="$style.text"
     >
         Овертайм
-    </div>
-    <div :class="$style.period">
-        {{ period }}
+        <div :class="$style.period">
+            {{ period - 4 }}
+        </div>
     </div>
 </template>
 
