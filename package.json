@@ -4,7 +4,7 @@
     "description": "",
     "main": "./dist/electron/main.js",
     "scripts": {
-        "server": "npx nodemon ./src/backend/webServer.js",
+        "npm-install": "npm i",
         "webpack-watch": "npx webpack --mode development --watch --progress",
         "webpack-build": "npx webpack --mode production --progress",
         "stylelint-fix": "npx stylelint ./src/**/*.scss --fix",
