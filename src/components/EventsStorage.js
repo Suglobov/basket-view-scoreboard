@@ -7,7 +7,7 @@ class EventsStorage {
     }
     on(eventName, eventHandler) {
         if (this.events[eventName] === undefined) {
-            console.warn('not posible eventName', eventName);
+            console.error('not posible eventName', eventName);
             return this;
         }
         this.events[eventName].push(eventHandler);
@@ -15,7 +15,7 @@ class EventsStorage {
     }
     off(eventName, eventHandler) {
         if (this.events[eventName] === undefined) {
-            console.warn('not posible eventName', eventName);
+            console.error('not posible eventName', eventName);
             return this;
         }
         this.events[eventName] = this.events[eventName]
@@ -24,7 +24,7 @@ class EventsStorage {
     }
     trigger(eventName, ...args) {
         if (this.events[eventName] === undefined) {
-            console.warn('not posible eventName', eventName);
+            console.error('not posible eventName', eventName);
             return this;
         }
         this.events[eventName].forEach((handler) => handler(...args));

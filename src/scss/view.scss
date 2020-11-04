@@ -16,31 +16,10 @@
     width: 100%;
 }
 
-.view-arrow-left {
-    fill: #e6e00d;
-    height: 100%;
-    width: 100%;
-
-    &.arrow-right {
-        transform: rotateY(180deg);
+.mirror {
+    .mirror-change-direction {
+        flex-direction: row-reverse;
     }
-
-    .mirror .need-to-rotate-when-mirroring & {
-        transform: rotateY(180deg);
-    }
-
-    .mirror .need-to-rotate-when-mirroring &.arrow-right {
-        transform: rotateY(0deg);
-    }
-}
-
-.mirror .need-to-rotate-when-mirroring {
-    flex-direction: row-reverse;
-}
-
-.view-arrow-wrapper {
-    height: 15vh;
-    width: 15vw;
 }
 
 .view-team {
@@ -58,28 +37,10 @@
     width: 38vw;
 }
 
-.view-minutes,
-.view-seconds {
-    width: 45%;
-}
-
-.view-minutes {
-    text-align: right;
-}
-
-.view-time-colon {
-    text-align: center;
-    width: 10%;
-}
-
 .view-score {
     color: #e6e00d;
-    font-size: 12vw;
+    font-size: 16vw;
     text-align: center;
-}
-
-.view-counter24-wrapper {
-    width: 100%;
 }
 
 .view-counter-24 {
@@ -94,14 +55,16 @@
     font-size: 10vw;
 }
 
-.view-period-value,
 .view-foul {
     color: #1bda5f;
     font-size: 10vw;
     text-align: center;
 }
 
-.view-period-text,
+.view-foul-limit {
+    color: #e03838;
+}
+
 .view-foul-text {
     font-size: 3vw;
     text-align: center;

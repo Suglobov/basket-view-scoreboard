@@ -1,22 +1,5 @@
 $fontsList: (
-    'Orbitron': 'Orbitron/Orbitron-VariableFont_wght.ttf',
-    'MajorMonoDisplay': 'Major_Mono_Display/MajorMonoDisplay-Regular.ttf',
-    'NovaMono': 'Nova_Mono/NovaMono-Regular.ttf',
     'Aldrich': 'Aldrich/Aldrich-Regular.ttf',
-    'Buran_USSR': 'Buran_USSR/Buran_USSR.ttf',
-    'Exo_2': 'Exo_2/Exo2-VariableFont_wght.ttf',
-    'Nunito': 'Nunito/Nunito-Regular.ttf',
-    'Play': 'Play/Play-Regular.ttf',
-    'Roboto': 'Roboto/Roboto-Regular.ttf',
-    'Rubik': 'Rubik/Rubik-VariableFont_wght.ttf',
-    'Rubik_Mono_One': 'Rubik_Mono_One/RubikMonoOne-Regular.ttf',
-    'Electrolize': 'Electrolize/Electrolize-Regular.ttf',
-    'Geo': 'Geo/Geo-Regular.ttf',
-    'Russo_One': 'Russo_One/RussoOne-Regular.ttf',
-    'Saira': 'Saira/Saira-Regular.ttf',
-    'Sarpanch': 'Sarpanch/Sarpanch-Regular.ttf',
-    'Stalinist_One': 'Stalinist_One/StalinistOne-Regular.ttf',
-    'Teko': 'Teko/Teko-Regular.ttf',
 );
 
 @each $name, $path in $fontsList {

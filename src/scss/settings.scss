@@ -1,89 +1,45 @@
 .settings-container {
     background: #000;
     color: #fff;
+    font-size: 2vw;
     height: 100%;
     min-height: 100vh;
     padding: 2%;
 }
 
-.score-add {
-    background: rgb(134, 150, 240);
-    font-size: 50px;
-}
-
-.set-5,
-.set-10,
-.set-14,
-.set-24 {
-    background: rgb(192, 236, 192);
-    font-size: 30px;
-}
-
-.teamLeft,
-.teamRight,
-.scoreLeft,
-.scoreRight,
 .timeouts,
-.spentTimeoutsLeft,
-.spentTimeoutsRight,
-.folsLeft,
-.folsRight,
-.tenthsOfSecond,
-.seconds,
-.minutes,
-.quarter,
-.overtime {
-    font-size: 50px;
+.period {
+    font-size: 3vw;
+    text-align: right;
+    width: 5vw;
 }
 
-.counter24 {
-    font-size: 100px;
+.mirror,
+.showArrow {
+    height: 3vw;
+    width: 3vw;
 }
 
-.start-timer,
-.stop-timer {
-    font-size: 50px;
-    padding: 10px;
+.tooltip {
+    background: #222;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    color: #ccc;
+    display: none;
+    font-size: 1.2vw;
+    opacity: 0;
+    padding: 0.5vw;
+    position: absolute;
+    top: 0;
+    transition-duration: 0.3s;
+    transition-property: opacity;
 }
 
-.start-timer {
-    background-color: #1e87f0;
-    color: #fff;
+.tooltip-show {
+    display: block;
 }
 
-.stop-timer {
-    background-color: #f0506e;
-    color: #fff;
-}
-
-.clock-control:not(.time-running) {
-    .stop-timer {
-        display: none;
-    }
-}
-
-.clock-control.time-running {
-    .start-timer {
-        display: none;
-    }
-}
-
-.mirror {
-    height: 50px;
-    width: 50px;
-}
-
-.settings-arrow-wrapper {
-    height: 100px;
-    width: 200px;
-}
-
-.settings-arrow-left {
-    fill: #e6e00d;
-    height: 100%;
-    width: 100%;
-
-    &.arrow-right {
-        transform: rotateY(180deg);
-    }
+.tooltip-opacity {
+    opacity: 1;
 }
