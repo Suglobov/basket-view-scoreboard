@@ -1,20 +1,14 @@
 module.exports = {
-    extends: [
-        'stylelint-config-standard',
-        'stylelint-config-recommended',
-        'stylelint-config-sass-guidelines',
-        'stylelint-config-idiomatic-order',
-        'stylelint-config-prettier',
-    ],
     plugins: [
         'stylelint-scss',
         'stylelint-order',
     ],
+    extends: [
+        'stylelint-config-standard',
+        'stylelint-config-idiomatic-order',
+        'stylelint-config-prettier',
+    ],
     rules: {
-        'order/properties-alphabetical-order': [
-            false,
-            { 'disableFix': true },
-        ],
         'scss/at-import-partial-extension-blacklist': [''],
         'scss/dollar-variable-pattern': /.*/,
         indentation: 4,
