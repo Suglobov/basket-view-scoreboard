@@ -3,7 +3,7 @@
 https://drive.google.com/file/d/1RXJtLsctx5a9q0Se2gEWhKlPriFibDw8/view?usp=sharing
 # Технологии
 node v10.16.3  
-Приложение на electron.  
+Приложение на electron js. (https://www.electronjs.org/)  
 Остальные пакеты можно посмотреть в package.json.
 
 # Описание
@@ -16,7 +16,7 @@ node v10.16.3
 Авторы идеи:  
 Всеволод Погорелов
 + https://vk.com/vsevolod_pogorelov
-+ @seva_lol
++ https://t.me/seva_lol
 
 Андрей Патрин
 + https://vk.com/id568990640
@@ -24,6 +24,6 @@ node v10.16.3
 Программист:  
 Суглобов Евгений
 + https://vk.com/suglobov
-+ @suglobov_e
++ https://t.me/suglobov_e
 
 
