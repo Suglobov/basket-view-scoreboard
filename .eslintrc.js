@@ -1,21 +1,21 @@
 module.exports = {
+    extends: [
+        'plugin:vue/vue3-recommended',
+        'plugin:vue/vue3-strongly-recommended',
+        'eslint:recommended',
+    ],
+    plugins: [
+        'vue',
+    ],
     'env': {
         'browser': true,
         'es2020': true,
         'node': true,
     },
-    'extends': [
-        'plugin:vue/vue3-recommended',
-        'plugin:vue/vue3-strongly-recommended',
-        'eslint:recommended',
-    ],
     'parserOptions': {
         'ecmaVersion': 11,
         'sourceType': 'module',
     },
-    'plugins': [
-        'vue',
-    ],
     'rules': {
         'vue/html-self-closing': ['error', {
             'html': {
