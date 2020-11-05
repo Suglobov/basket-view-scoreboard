@@ -6,17 +6,19 @@ module.exports = {
     ],
     plugins: [
         'vue',
+        'jest',
     ],
-    'env': {
-        'browser': true,
-        'es2020': true,
-        'node': true,
+    env: {
+        browser: true,
+        es2020: true,
+        node: true,
+        jest: true,
     },
-    'parserOptions': {
-        'ecmaVersion': 11,
-        'sourceType': 'module',
+    parserOptions: {
+        ecmaVersion: 11,
+        sourceType: 'module',
     },
-    'rules': {
+    rules: {
         'vue/html-self-closing': ['error', {
             'html': {
                 'void': 'always',
@@ -30,7 +32,7 @@ module.exports = {
             'error',
             4,
         ],
-        'indent': [
+        indent: [
             'error',
             4,
         ],
@@ -38,11 +40,11 @@ module.exports = {
             'error',
             'unix',
         ],
-        'quotes': [
+        quotes: [
             'error',
             'single',
         ],
-        'semi': [
+        semi: [
             'error',
             'always',
         ],
