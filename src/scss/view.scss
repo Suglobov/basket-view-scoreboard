@@ -3,17 +3,17 @@
 // }
 
 .view-container {
-    background: #000;
-    box-sizing: border-box;
-    color: #fff;
     display: flex;
-    flex-direction: column;
-    height: 100%;
-    justify-content: space-between;
-    line-height: 1;
-    min-height: 100vh;
-    padding: 2%;
     width: 100%;
+    height: 100%;
+    min-height: 100vh;
+    box-sizing: border-box;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 2%;
+    background: #000;
+    color: #fff;
+    line-height: 1;
 }
 
 .mirror {
@@ -23,18 +23,18 @@
 }
 
 .view-team {
+    overflow: hidden;
     flex: auto;
     font-size: 3vw;
-    overflow: hidden;
     text-align: center;
 }
 
 .view-time {
-    color: #e03838;
     display: flex;
-    font-size: 12vw;
-    margin: auto;
     width: 38vw;
+    margin: auto;
+    color: #e03838;
+    font-size: 12vw;
 }
 
 .view-score {
@@ -44,10 +44,10 @@
 }
 
 .view-counter-24 {
+    width: 60%;
     color: #e03838;
     font-size: 10vw;
     text-align: right;
-    width: 60%;
 }
 
 .view-counter-24-tenths-of-second {
