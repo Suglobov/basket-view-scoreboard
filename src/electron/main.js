@@ -9,10 +9,6 @@ const viewHtmlPath = path.join(basePath, '/dist/index.html');
 const settingsHtmlPath = path.join(basePath, '/dist/settings.html');
 
 function createWindows() {
-    // ipcMain.on('settings', (_event, message) => {
-    //     console.log('message', message);
-    //     viewWindow.webContents.send('settings', message);
-    // });
     ipcMain.handle('getViewWebContentsId', () => {
         return viewWindow.id;
     });
