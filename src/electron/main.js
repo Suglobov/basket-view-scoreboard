@@ -3,21 +3,28 @@ import url from 'url';
 import { app, BrowserWindow, ipcMain } from 'electron';
 
 const basePath = path.join(app.getAppPath());
-const preloadPath = path.join(basePath, 'dist/electron/preload.js');
+const preloadViewPath = path.join(basePath, 'dist/electron/preloadView.js');
+const preloadSettingsPath = path.join(basePath, 'dist/electron/preloadSettings.js');
 const viewHtmlPath = path.join(basePath, '/dist/index.html');
 const settingsHtmlPath = path.join(basePath, '/dist/settings.html');
 
 function createWindows() {
-    ipcMain.on('settings', (_event, message) => {
-        viewWindow.webContents.send('settings', message);
+    // ipcMain.on('settings', (_event, message) => {
+    //     console.log('message', message);
+    //     viewWindow.webContents.send('settings', message);
+    // });
+    ipcMain.handle('getViewWebContentsId', () => {
+        return viewWindow.id;
     });
 
     const viewWindow = new BrowserWindow({
+        x: 500,
+        y: 0,
         webPreferences: {
             enableRemoteModule: true,
             worldSafeExecuteJavaScript: true,
             contextIsolation: true,
-            preload: preloadPath,
+            preload: preloadViewPath,
         },
         autoHideMenuBar: true,
     });
@@ -30,11 +37,13 @@ function createWindows() {
     // viewWindow.maximize();
 
     const settingsWindow = new BrowserWindow({
+        x: 0,
+        y: 0,
         webPreferences: {
             enableRemoteModule: true,
             worldSafeExecuteJavaScript: true,
             contextIsolation: true,
-            preload: preloadPath,
+            preload: preloadSettingsPath,
         },
     });
     settingsWindow.loadURL(url.format({
