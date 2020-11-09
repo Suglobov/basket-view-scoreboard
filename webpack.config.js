@@ -9,7 +9,8 @@ const serverConfig = {
     target: 'electron-main',
     entry: {
         'electron/main': './src/electron/main.js',
-        'electron/preload': './src/electron/preload.js',
+        'electron/preloadView': './src/electron/preloadView.js',
+        'electron/preloadSettings': './src/electron/preloadSettings.js',
     },
     output: {
         path: path.resolve(__dirname, 'dist'),
