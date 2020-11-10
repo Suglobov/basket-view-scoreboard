@@ -1,5 +1,8 @@
 <template>
-    <div ref="inner" />
+    <div
+        v-show="false"
+        ref="inner"
+    />
     <teleport to="body">
         <transition>
             <div
