@@ -14,8 +14,8 @@ function createWindows() {
     });
 
     const viewWindow = new BrowserWindow({
-        x: 500,
-        y: 0,
+        x: 0,
+        y: 600,
         webPreferences: {
             enableRemoteModule: true,
             worldSafeExecuteJavaScript: true,
