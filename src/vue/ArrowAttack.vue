@@ -47,9 +47,10 @@ export default {
 
 <style module>
 .arrowLeft {
-    fill: #e6e00d;
-    height: 100%;
     width: 100%;
+    height: 100%;
+    cursor: pointer;
+    fill: #e6e00d;
 }
 
 .arrowRight {

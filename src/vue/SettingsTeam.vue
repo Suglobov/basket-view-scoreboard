@@ -1,6 +1,6 @@
 <template>
     <div>
-        <label>
+        <label :class="$style.cursorPointer">
             <div :class="$style.text">Название</div>
             <div>
                 <input
@@ -13,7 +13,7 @@
         </label>
     </div>
     <div class="d-flex flex-bottom">
-        <label>
+        <label :class="$style.cursorPointer">
             <div :class="$style.text">Счет</div>
             <div>
                 <input
@@ -29,31 +29,31 @@
         </label>
         <div>
             <button
-                v-tooltip="tooltip1"
-                :class="$style.scoreAdd"
+                :class="[$style.scoreAdd, $style.cursorPointer]"
                 @click="$emit('update:score', score + 1)"
             >
                 +1
+                <TooltipInner :text="tooltip1" />
             </button>
             <button
-                v-tooltip="tooltip2"
-                :class="$style.scoreAdd"
+                :class="[$style.scoreAdd, $style.cursorPointer]"
                 @click="$emit('update:score', score + 2)"
             >
                 +2
+                <TooltipInner :text="tooltip2" />
             </button>
             <button
-                v-tooltip="tooltip3"
-                :class="$style.scoreAdd"
+                :class="[$style.scoreAdd, $style.cursorPointer]"
                 @click="$emit('update:score', score + 3)"
             >
                 +3
+                <TooltipInner :text="tooltip3" />
             </button>
         </div>
     </div>
     <div class="d-flex">
-        <label>
-            <div :class="$style.textFols">Таймауты</div>
+        <label :class="$style.cursorPointer">
+            <div :class="$style.text2">Таймауты</div>
             <div>
                 <input
                     type="number"
@@ -66,8 +66,8 @@
                 />
             </div>
         </label>
-        <label>
-            <div :class="$style.textFols">Фолы</div>
+        <label :class="$style.cursorPointer">
+            <div :class="$style.text2">Фолы</div>
             <div>
                 <input
                     type="number"
@@ -84,7 +84,12 @@
 </template>
 
 <script>
+import TooltipInner from './TooltipInner.vue';
+
 export default {
+    components: {
+        TooltipInner,
+    },
     props : {
         team: {
             type: String,
@@ -125,36 +130,40 @@ export default {
 </script>
 
 <style module>
+.cursorPointer {
+    cursor: pointer;
+}
+
 .text {
     font-size: 1vw;
 }
 
-.textFols {
+.text2 {
     font-size: 1vw;
     text-align: center;
 }
 
 .team {
-    font-size: 2vw;
     max-width: 400px;
+    font-size: 2vw;
 }
 
 .score {
+    width: 7vw;
     font-size: 3vw;
     text-align: right;
-    width: 7vw;
 }
 
 .spentTimeouts {
+    width: 5vw;
     font-size: 3vw;
     text-align: right;
-    width: 5vw;
 }
 
 .fols {
+    width: 5vw;
     font-size: 3vw;
     text-align: right;
-    width: 5vw;
 }
 
 .scoreAdd {
