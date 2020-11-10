@@ -28,7 +28,7 @@
         </ViewRow>
         <ViewRow
             :width-firs-last="'33%'"
-            class="d-flex flex-between flex-bottom mirror-change-direction"
+            class="d-flex flex-between mirror-change-direction"
         >
             <template #first>
                 <div class="view-score">
@@ -36,16 +36,11 @@
                 </div>
             </template>
             <template #center>
-                <div class="d-flex width-1-1">
-                    <div class="view-counter-24">
-                        {{ counter24.seconds }}
-                    </div>
-                    <div
-                        v-if="counter24.tenths !== null"
-                        class="view-counter-24-tenths-of-second"
-                    >
-                        .{{ counter24.tenths }}
-                    </div>
+                <div class="d-flex flex-center flex-middle width-1-1 height-100">
+                    <ViewCounter24
+                        :tenths="counter24.tenths"
+                        :seconds="counter24.seconds"
+                    />
                 </div>
             </template>
             <template #last>
@@ -125,6 +120,7 @@ import ViewClock from './ViewClock.vue';
 import ViewRow from './ViewRow.vue';
 import ViewPeriod from './ViewPeriod.vue';
 import ArrowAttack from './ArrowAttack.vue';
+import ViewCounter24 from './ViewCounter24.vue';
 
 
 const components = {
@@ -133,6 +129,7 @@ const components = {
     ViewRow,
     ViewPeriod,
     ArrowAttack,
+    ViewCounter24,
 };
 
 window.electron.receiveSettings((message) => {
