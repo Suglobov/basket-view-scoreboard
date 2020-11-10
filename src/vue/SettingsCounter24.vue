@@ -5,11 +5,11 @@
             <div>
                 <input
                     :class="$style.counter24"
+                    :value="`${seconds}.${tenths}`"
                     type="number"
                     min="0"
                     max="24"
                     step="0.1"
-                    :value="`${seconds}.${tenths}`"
                     @input="emitInput"
                 />
             </div>
@@ -42,6 +42,8 @@
 </template>
 
 <script>
+import debounce from '../components/debounce.js';
+
 export default {
     props : {
         tenths: {
@@ -54,23 +56,20 @@ export default {
         },
     },
     emits: [
-        'change-from-button',
-        'change-from-input',
-        'changeFromButton',
-        'changeFromInput',
+        'update:tenths',
+        'update:seconds',
     ],
     setup(props, context) {
         return {
             emitButton({ tenths, seconds }) {
-                context.emit('change-from-button', { tenths, seconds });
+                context.emit('update:tenths', tenths);
+                context.emit('update:seconds', seconds);
             },
-            emitInput($event) {
+            emitInput: debounce(($event) => {
                 const values = $event.target.value.split('.');
-                context.emit('change-from-input', {
-                    tenths: Number(values[1] === undefined ? 0 : values[1]),
-                    seconds: Number(values[0]),
-                });
-            },
+                context.emit('update:tenths', Number(values[1] === undefined ? 0 : values[1]));
+                context.emit('update:seconds', Number(values[0]));
+            }, 100),
         };
     },
 };

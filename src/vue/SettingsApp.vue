@@ -30,17 +30,13 @@
         </div>
         <div>
             <SettingsClock
-                :minutes="timer.minutes"
-                :seconds="timer.seconds"
-                :tenths="timer.tenths"
-                @change-from-button="changeTimerFromButton"
-                @change-from-input="changeTimerFromInput"
+                v-model:minutes="timer.minutes"
+                v-model:seconds="timer.seconds"
+                v-model:tenths="timer.tenths"
             />
             <SettingsCounter24
-                :tenths="counter24.tenths"
-                :seconds="counter24.seconds"
-                @change-from-button="changeCounter24FromButton"
-                @change-from-input="changeCounter24FromInput"
+                v-model:tenths="counter24.tenths"
+                v-model:seconds="counter24.seconds"
             />
             <SettingsStartButton
                 class="d-inline-block"
@@ -128,7 +124,6 @@ import { reactive, watch } from 'vue';
 import '../scss/style.scss';
 import TimeTicker from '../components/TimeTicker.js';
 import CountdownObject from '../components/CountdownObject.js';
-import debounce from '../components/debounce.js';
 import soundBuzzerTimerPath from '../sounds/buzzer/beep_end_period.mp3';
 import soundBuzzerCounter24Path from '../sounds/buzzer/portal2buzzer.mp3';
 import SettingsTeam from './SettingsTeam.vue';
@@ -184,18 +179,6 @@ const vueData = reactive({
     },
     soundBuzzerTimer,
     soundBuzzerCounter24,
-    changeTimerFromButton({ tenths, seconds, minutes }) {
-        countdownObject.changeParts({ timer: { tenths, seconds, minutes } });
-    },
-    changeTimerFromInput: debounce(({ tenths, seconds, minutes }) => {
-        countdownObject.changeParts({ timer: { tenths, seconds, minutes } });
-    }, 100),
-    changeCounter24FromButton({ tenths, seconds }) {
-        countdownObject.changeParts({ counter24: { tenths, seconds } });
-    },
-    changeCounter24FromInput: debounce(({ tenths, seconds }) => {
-        countdownObject.changeParts({ counter24: { tenths, seconds } });
-    }, 100),
 });
 
 const sendData = (objectToSend) => {
@@ -313,6 +296,14 @@ document.body.addEventListener('keydown', (event) => {
     event.preventDefault();
     actions[code]();
 }, { capture: true });
+
+watch(() => vueData.timer, ({ tenths, seconds, minutes }) => {
+    countdownObject.changeParts({ timer: { tenths, seconds, minutes } });
+}, { deep : true });
+
+watch(() => vueData.counter24, ({ tenths, seconds }) => {
+    countdownObject.changeParts({ counter24: { tenths, seconds } });
+}, { deep : true });
 
 [
     'teamLeft',

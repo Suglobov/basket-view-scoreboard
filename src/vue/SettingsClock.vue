@@ -10,7 +10,7 @@
                     max="10"
                     step="1"
                     :value="minutes"
-                    @input="$emit('change-from-input', { minutes: Number($event.target.value) })"
+                    @input="emitInput({ minutes: Number($event.target.value) })"
                 />
             </div>
         </label>
@@ -24,7 +24,7 @@
                     max="59"
                     step="1"
                     :value="seconds"
-                    @input="$emit('change-from-input', { seconds: Number($event.target.value) })"
+                    @input="emitInput({ seconds: Number($event.target.value) })"
                 />
             </div>
         </label>
@@ -38,7 +38,7 @@
                     max="9"
                     step="1"
                     :value="tenths"
-                    @input="$emit('change-from-input', { tenths: Number($event.target.value) })"
+                    @input="emitInput({ tenths: Number($event.target.value) })"
                 />
             </div>
         </label>
@@ -60,6 +60,8 @@
 </template>
 
 <script>
+import debounce from '../components/debounce.js';
+
 export default {
     props : {
         tenths: {
@@ -79,16 +81,19 @@ export default {
         'update:tenths',
         'update:seconds',
         'update:minutes',
-        'change-from-button',
-        'change-from-input',
-        'changeFromButton',
-        'changeFromInput',
     ],
     setup(props, context) {
         return {
             emitButton({ tenths, seconds, minutes }) {
-                context.emit('change-from-button', { tenths, seconds, minutes });
+                context.emit('update:tenths', tenths);
+                context.emit('update:seconds', seconds);
+                context.emit('update:minutes', minutes);
             },
+            emitInput: debounce(({ tenths, seconds, minutes }) => {
+                context.emit('update:tenths', tenths);
+                context.emit('update:seconds', seconds);
+                context.emit('update:minutes', minutes);
+            }, 500),
         };
     },
 };
