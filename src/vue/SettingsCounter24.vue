@@ -1,7 +1,7 @@
 <template>
     <div>
-        <label>
-            <div>Счетчик 24 секунд</div>
+        <label :class="$style.cursorPointer">
+            <div :class="$style.text">Счетчик 24 секунд</div>
             <div>
                 <input
                     :class="$style.counter24"
@@ -18,23 +18,23 @@
     <div>
         <button
             v-tooltip="'A'"
-            :class="$style.setValue"
-            @click="emitData({ tenths: 0, seconds: 0 })"
+            :class="[$style.setValue, $style.cursorPointer]"
+            @click="emitButton({ tenths: 0, seconds: 0 })"
         >
             =0
             <span :class="$style.signature">(без баззера)</span>
         </button>
         <button
             v-tooltip="'S'"
-            :class="$style.setValue"
-            @click="emitData({ tenths: 0, seconds: 14 })"
+            :class="[$style.setValue, $style.cursorPointer]"
+            @click="emitButton({ tenths: 0, seconds: 14 })"
         >
             =14
         </button>
         <button
             v-tooltip="'D'"
-            :class="$style.setValue"
-            @click="emitData({ tenths: 0, seconds: 24 })"
+            :class="[$style.setValue, $style.cursorPointer]"
+            @click="emitButton({ tenths: 0, seconds: 24 })"
         >
             =24
         </button>
@@ -42,9 +42,6 @@
 </template>
 
 <script>
-import debounce from '../components/debounce.js';
-
-
 export default {
     props : {
         tenths: {
@@ -57,30 +54,41 @@ export default {
         },
     },
     emits: [
-        'update:tenths',
-        'update:seconds',
+        'change-from-button',
+        'change-from-input',
+        'changeFromButton',
+        'changeFromInput',
     ],
     setup(props, context) {
         return {
-            emitData({ tenths, seconds }) {
-                setTimeout(() => context.emit('update:tenths', tenths));
-                setTimeout(() => context.emit('update:seconds', seconds));
+            emitButton({ tenths, seconds }) {
+                context.emit('change-from-button', { tenths, seconds });
             },
-            emitInput: debounce(($event) =>{
+            emitInput($event) {
                 const values = $event.target.value.split('.');
-                setTimeout(() => context.emit('update:tenths', Number(values[1] === undefined ? 0 : values[1])));
-                setTimeout(() => context.emit('update:seconds', Number(values[0])));
-            }, 500),
+                context.emit('change-from-input', {
+                    tenths: Number(values[1] === undefined ? 0 : values[1]),
+                    seconds: Number(values[0]),
+                });
+            },
         };
     },
 };
 </script>
 
 <style module>
+.cursorPointer {
+    cursor: pointer;
+}
+
 .counter24 {
+    width: 12vw;
     font-size: 5vw;
     text-align: right;
-    width: 12vw;
+}
+
+.text {
+    font-size: 2vw;
 }
 
 .setValue {

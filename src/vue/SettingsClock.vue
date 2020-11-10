@@ -1,6 +1,6 @@
 <template>
     <div class="d-flex">
-        <label>
+        <label :class="$style.cursorPointer">
             <div :class="$style.text">Мин.</div>
             <div>
                 <input
@@ -10,11 +10,11 @@
                     max="10"
                     step="1"
                     :value="minutes"
-                    @input="$emit('update:minutes', Number($event.target.value))"
+                    @input="$emit('change-from-input', { minutes: Number($event.target.value) })"
                 />
             </div>
         </label>
-        <label>
+        <label :class="$style.cursorPointer">
             <div :class="$style.text">Сек.</div>
             <div>
                 <input
@@ -24,11 +24,11 @@
                     max="59"
                     step="1"
                     :value="seconds"
-                    @input="$emit('update:seconds', Number($event.target.value))"
+                    @input="$emit('change-from-input', { seconds: Number($event.target.value) })"
                 />
             </div>
         </label>
-        <label>
+        <label :class="$style.cursorPointer">
             <div :class="$style.text">0.1</div>
             <div>
                 <input
@@ -38,21 +38,21 @@
                     max="9"
                     step="1"
                     :value="tenths"
-                    @input="$emit('update:tenths', Number($event.target.value))"
+                    @input="$emit('change-from-input', { tenths: Number($event.target.value) })"
                 />
             </div>
         </label>
     </div>
     <div>
         <button
-            :class="$style.setValue"
-            @click="emitData({ tenths: 0, seconds: 0, minutes: 5 })"
+            :class="[$style.setValue, $style.cursorPointer]"
+            @click="emitButton({ tenths: 0, seconds: 0, minutes: 5 })"
         >
             =5мин.
         </button>
         <button
-            :class="$style.setValue"
-            @click="emitData({ tenths: 0, seconds: 0, minutes: 10 })"
+            :class="[$style.setValue, $style.cursorPointer]"
+            @click="emitButton({ tenths: 0, seconds: 0, minutes: 10 })"
         >
             =10мин.
         </button>
@@ -79,25 +79,34 @@ export default {
         'update:tenths',
         'update:seconds',
         'update:minutes',
+        'change-from-button',
+        'change-from-input',
+        'changeFromButton',
+        'changeFromInput',
     ],
     setup(props, context) {
         return {
-            emitData({ tenths, seconds, minutes }) {
-                setTimeout(() => context.emit('update:tenths', tenths));
-                setTimeout(() => context.emit('update:seconds', seconds));
-                setTimeout(() => context.emit('update:minutes', minutes));
+            emitButton({ tenths, seconds, minutes }) {
+                context.emit('change-from-button', { tenths, seconds, minutes });
             },
         };
     },
 };
 </script>
+
 <style module>
+.cursorPointer {
+    cursor: pointer;
+}
+
 .text {
+    cursor: pointer;
     font-size: 2vw;
 }
 
 .setValue {
     background: rgb(192, 236, 192);
+    cursor: pointer;
     font-size: 2vw;
 }
 
@@ -108,17 +117,17 @@ export default {
 }
 
 .minutes {
-    text-align: right;
     width: 5vw;
+    text-align: right;
 }
 
 .seconds {
-    text-align: right;
     width: 5vw;
+    text-align: right;
 }
 
 .tenths {
-    text-align: right;
     width: 3.5vw;
+    text-align: right;
 }
 </style>
