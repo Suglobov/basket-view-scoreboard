@@ -35,8 +35,9 @@ export default {
 <style module>
 .startTimer,
 .stopTimer {
-    font-size: 4vw;
     padding: 2vw;
+    cursor: pointer;
+    font-size: 4vw;
 }
 
 .startTimer {
