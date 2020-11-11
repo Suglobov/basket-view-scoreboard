@@ -49,20 +49,23 @@ class CountdownObject {
         this.events.trigger('changeParts', prevValues);
     }
     checkForZero() {
-        const isZero = this.timer.fullTenths === 0;
-        if (isZero) {
+        if (this.timer.fullTenths === 0) {
             this.events.trigger('zero');
         }
         return this;
     }
-    minusTenth() {
+    minusTenth({ timer, counter24 }) {
         if (this.timer.fullTenths === 0) {
             this._correctCounter24();
             return this;
         }
         const prevValues = this._getPrevValues();
-        this.timer.changeTenths(this.timer.fullTenths - 1);
-        this.counter24.changeTenths(this.counter24.fullTenths - 1);
+        if (timer === true) {
+            this.timer.changeTenths(this.timer.fullTenths - 1);
+        }
+        if (counter24 === true) {
+            this.counter24.changeTenths(this.counter24.fullTenths - 1);
+        }
         this._correctCounter24();
         this.events.trigger('change', prevValues);
         this.events.trigger('minusTenths', prevValues);
