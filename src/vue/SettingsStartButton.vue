@@ -1,7 +1,8 @@
 <template>
-    <div v-tooltip="'пробел'">
+    <div>
         <button
             v-if="isTimeRunning"
+            v-tooltip="'пробел'"
             :class="$style.stopTimer"
             @click="$emit('stop-timer')"
         >
@@ -9,6 +10,7 @@
         </button>
         <button
             v-else
+            v-tooltip="'пробел'"
             :class="$style.startTimer"
             @click="$emit('start-timer')"
         >
