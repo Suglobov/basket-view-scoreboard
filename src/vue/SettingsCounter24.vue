@@ -17,14 +17,6 @@
     </div>
     <div>
         <button
-            v-tooltip="'A'"
-            :class="[$style.setValue, $style.cursorPointer]"
-            @click="emitButton({ tenths: 0, seconds: 0 })"
-        >
-            =0
-            <span :class="$style.signature">(без баззера)</span>
-        </button>
-        <button
             v-tooltip="'S'"
             :class="[$style.setValue, $style.cursorPointer]"
             @click="emitButton({ tenths: 0, seconds: 14 })"
