@@ -34,16 +34,17 @@
                 v-model:seconds="timer.seconds"
                 v-model:tenths="timer.tenths"
             />
-            <SettingsCounter24
-                v-model:tenths="counter24.tenths"
-                v-model:seconds="counter24.seconds"
-            />
             <SettingsStartButton
-                class="d-inline-block"
                 :is-time-running="isTimeRunning"
                 @start-timer="startTimer"
                 @stop-timer="stopTimer"
             />
+            <hr />
+            <SettingsCounter24
+                v-model:tenths="counter24.tenths"
+                v-model:seconds="counter24.seconds"
+            />
+            <SettingsSyncCounter24Button v-model:on="isCounter24SyncWithTimer" />
         </div>
         <div>
             <SettingsTeam
@@ -133,6 +134,7 @@ import SettingsHelpText from './SettingsHelpText.vue';
 import ArrowAttack from './ArrowAttack.vue';
 import SettingsStartButton from './SettingsStartButton.vue';
 import TooltipInner from './TooltipInner.vue';
+import SettingsSyncCounter24Button from './SettingsSyncCounter24Button.vue';
 
 const components = {
     SettingsTeam,
@@ -142,6 +144,7 @@ const components = {
     ArrowAttack,
     SettingsStartButton,
     TooltipInner,
+    SettingsSyncCounter24Button,
 };
 
 const soundBuzzerTimer = new Audio(soundBuzzerTimerPath);
@@ -149,6 +152,7 @@ const soundBuzzerCounter24 = new Audio(soundBuzzerCounter24Path);
 
 const vueData = reactive({
     isTimeRunning: false,
+    isCounter24SyncWithTimer: true,
     teamLeft: 'Команда Л',
     teamRight: 'Команда П',
     scoreLeft: 0,
@@ -187,7 +191,12 @@ const sendData = (objectToSend) => {
 
 const timeTicker = new TimeTicker({ delayMs: 100 });
 timeTicker.events.on('tick', () => {
-    countdownObject.minusTenth().checkForZero();
+    countdownObject
+        .minusTenth({
+            timer: true,
+            counter24: vueData.isCounter24SyncWithTimer,
+        })
+        .checkForZero();
 });
 timeTicker.events.on('startTimer', () => {
     vueData.isTimeRunning = true;
@@ -273,7 +282,7 @@ document.body.addEventListener('keydown', (event) => {
         return;
     }
     const actions = {
-        KeyA() { countdownObject.changeParts({ counter24: { tenths: 0, seconds: 0 } }); },
+        KeyA() { vueData.isCounter24SyncWithTimer = !vueData.isCounter24SyncWithTimer; },
         KeyS() { countdownObject.changeParts({ counter24: { tenths: 0, seconds: 14 } }); },
         KeyD() { countdownObject.changeParts({ counter24: { tenths: 0, seconds: 24 } }); },
         KeyQ() { vueData.scoreLeft += 1; },
