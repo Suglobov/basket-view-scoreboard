@@ -5,6 +5,7 @@
             :class="$style.off"
             @click="$emit('update:on', false)"
         >
+            <TooltipInner :text="'A'" />
             Пауза
         </button>
         <button
@@ -12,13 +13,19 @@
             :class="$style.on"
             @click="$emit('update:on', true)"
         >
+            <TooltipInner :text="'A'" />
             Старт
         </button>
     </div>
 </template>
 
 <script>
+import TooltipInner from './TooltipInner.vue';
+
 export default {
+    components: {
+        TooltipInner,
+    },
     props: {
         on: {
             type: Boolean,
