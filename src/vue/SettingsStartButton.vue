@@ -2,25 +2,30 @@
     <div>
         <button
             v-if="isTimeRunning"
-            v-tooltip="'пробел'"
             :class="$style.stopTimer"
             @click="$emit('stop-timer')"
         >
+            <TooltipInner :text="'пробел'" />
             Пауза
         </button>
         <button
             v-else
-            v-tooltip="'пробел'"
             :class="$style.startTimer"
             @click="$emit('start-timer')"
         >
+            <TooltipInner :text="'пробел'" />
             Старт
         </button>
     </div>
 </template>
 
 <script>
+import TooltipInner from './TooltipInner.vue';
+
 export default {
+    components: {
+        TooltipInner,
+    },
     props: {
         isTimeRunning: {
             type: Boolean,
