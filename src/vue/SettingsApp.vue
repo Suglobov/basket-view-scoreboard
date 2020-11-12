@@ -39,7 +39,7 @@
                 @start-timer="startTimer"
                 @stop-timer="stopTimer"
             />
-            <hr />
+            <hr>
             <SettingsCounter24
                 v-model:tenths="counter24.tenths"
                 v-model:seconds="counter24.seconds"
@@ -63,7 +63,7 @@
                             v-model="showArrow"
                             class="showArrow"
                             type="checkbox"
-                        />
+                        >
                         <div>
                             <div>Показывать</div>
                             <div>стрелочку</div>
@@ -83,7 +83,7 @@
                             v-model="isMirror"
                             class="mirror"
                             type="checkbox"
-                        />
+                        >
                         <div>
                             <div>Зеркалить</div>
                             <div>табло</div>
@@ -99,7 +99,7 @@
                             type="number"
                             min="1"
                             step="1"
-                        />
+                        >
                     </label>
                     <label class="cursor-pointer">
                         <div>Всего таймаутов</div>
@@ -111,7 +111,7 @@
                                 min="2"
                                 max="3"
                                 step="1"
-                            />
+                            >
                         </div>
                     </label>
                 </div>
@@ -124,7 +124,7 @@
 import { reactive, watch } from 'vue';
 import '../scss/style.scss';
 import TimeTicker from '../components/TimeTicker.js';
-import CountdownObject from '../components/CountdownObject.js';
+import CountdownManager from '../components/CountdownManager.js';
 import soundBuzzerTimerPath from '../sounds/buzzer/beep_end_period.mp3';
 import soundBuzzerCounter24Path from '../sounds/buzzer/portal2buzzer.mp3';
 import SettingsTeam from './SettingsTeam.vue';
@@ -175,10 +175,10 @@ const vueData = reactive({
         tenths: 0,
         seconds: 0,
     },
-    startTimer() {
+    startTimer () {
         timeTicker.startTimer();
     },
-    stopTimer() {
+    stopTimer () {
         timeTicker.stopTimer();
     },
     soundBuzzerTimer,
@@ -191,7 +191,7 @@ const sendData = (objectToSend) => {
 
 const timeTicker = new TimeTicker({ delayMs: 100 });
 timeTicker.events.on('tick', () => {
-    countdownObject
+    countdownManager
         .minusTenth({
             timer: true,
             counter24: vueData.isCounter24SyncWithTimer,
@@ -200,70 +200,63 @@ timeTicker.events.on('tick', () => {
 });
 timeTicker.events.on('startTimer', () => {
     vueData.isTimeRunning = true;
-    countdownObject.checkForZero();
+    countdownManager.checkForZero();
 });
 timeTicker.events.on('stopTimer', () => {
     vueData.isTimeRunning = false;
 });
 
-const countdownObject = new CountdownObject();
-countdownObject.events.on('zero', () => {
+const countdownManager = new CountdownManager();
+countdownManager.events.on('zero', () => {
     timeTicker.stopTimer();
 });
-countdownObject.events.on('change', (prevValues) => {
+countdownManager.events.on('change', (prevValues) => {
+    const { timer, counter24 } = countdownManager;
+    const { timer: prevTimer } = prevValues;
+
     setTimeout(() => {
-        vueData.timer.tenths = countdownObject.timer.tenths;
-        vueData.timer.seconds = countdownObject.timer.seconds;
-        vueData.timer.minutes = countdownObject.timer.minutes;
-        vueData.counter24.tenths = countdownObject.counter24.tenths;
-        vueData.counter24.seconds = countdownObject.counter24.seconds;
+        vueData.timer.tenths = timer.tenths;
+        vueData.timer.seconds = timer.seconds;
+        vueData.timer.minutes = timer.minutes;
+        vueData.counter24.tenths = counter24.tenths;
+        vueData.counter24.seconds = counter24.seconds;
     });
 
-    if (prevValues.timer.second !== countdownObject.timer.seconds) {
+    if (prevTimer.second !== timer.seconds) {
         sendData({
             timer: {
-                seconds: countdownObject.timer.seconds,
-                minutes: countdownObject.timer.minutes,
+                seconds: timer.seconds,
+                minutes: timer.minutes,
             },
         });
     }
 
-    if (
-        countdownObject.counter24.fullTenths < 100
-        && countdownObject.counter24.fullTenths > 0
-    ) {
+    if (counter24.fullTenths < 100 && counter24.fullTenths > 0) {
         sendData({
             counter24: {
-                tenths: countdownObject.counter24.tenths,
-                seconds: countdownObject.counter24.seconds,
+                tenths: counter24.tenths,
+                seconds: counter24.seconds,
             },
         });
-    } else if (
-        countdownObject.counter24.seconds !== prevValues.seconds
-        || countdownObject.counter24.fullTenths === 0
-    ) {
+    } else if (counter24.seconds !== prevValues.seconds || counter24.fullTenths === 0) {
         sendData({
             counter24: {
                 tenths: null,
-                seconds: countdownObject.counter24.seconds,
+                seconds: counter24.seconds,
             },
         });
     }
 });
-countdownObject.events.on('minusTenths', (prevValues) => {
-    if (
-        countdownObject.timer.fullTenths === 0
-        && countdownObject.timer.fullTenths !== prevValues.timer.fullTenths
-    ) {
+countdownManager.events.on('minusTenths', (prevValues) => {
+    const { timer, counter24 } = countdownManager;
+    const { timer: prevTimer, counter24: prevCounter24 } = prevValues;
+    if (timer.fullTenths === 0 && timer.fullTenths !== prevTimer.fullTenths) {
         soundBuzzerTimer.play();
-    } else if (
-        countdownObject.counter24.fullTenths === 0
-        && countdownObject.counter24.fullTenths !== prevValues.counter24.fullTenths
-    ) {
+    } else if (counter24.fullTenths === 0 && counter24.fullTenths !== prevCounter24.fullTenths) {
         soundBuzzerCounter24.play();
     }
 });
-countdownObject.changeParts({
+countdownManager.changeParts({
     timer: {
         tenths: 9,
         seconds: 5,
@@ -282,16 +275,16 @@ document.body.addEventListener('keydown', (event) => {
         return;
     }
     const actions = {
-        KeyA() { vueData.isCounter24SyncWithTimer = !vueData.isCounter24SyncWithTimer; },
-        KeyS() { countdownObject.changeParts({ counter24: { tenths: 0, seconds: 14 } }); },
-        KeyD() { countdownObject.changeParts({ counter24: { tenths: 0, seconds: 24 } }); },
-        KeyQ() { vueData.scoreLeft += 1; },
-        KeyW() { vueData.scoreLeft += 2; },
-        KeyE() { vueData.scoreLeft += 3; },
-        KeyZ() { vueData.scoreRight += 1; },
-        KeyX() { vueData.scoreRight += 2; },
-        KeyC() { vueData.scoreRight += 3; },
-        Space() {
+        KeyA () { vueData.isCounter24SyncWithTimer = !vueData.isCounter24SyncWithTimer; },
+        KeyS () { countdownManager.changeParts({ counter24: { tenths: 0, seconds: 14 } }); },
+        KeyD () { countdownManager.changeParts({ counter24: { tenths: 0, seconds: 24 } }); },
+        KeyQ () { vueData.scoreLeft += 1; },
+        KeyW () { vueData.scoreLeft += 2; },
+        KeyE () { vueData.scoreLeft += 3; },
+        KeyZ () { vueData.scoreRight += 1; },
+        KeyX () { vueData.scoreRight += 2; },
+        KeyC () { vueData.scoreRight += 3; },
+        Space () {
             if (timeTicker.isTimerRunning) {
                 timeTicker.stopTimer();
             } else {
@@ -307,12 +300,12 @@ document.body.addEventListener('keydown', (event) => {
 }, { capture: true });
 
 watch(() => vueData.timer, ({ tenths, seconds, minutes }) => {
-    countdownObject.changeParts({ timer: { tenths, seconds, minutes } });
-}, { deep : true });
+    countdownManager.changeParts({ timer: { tenths, seconds, minutes } });
+}, { deep: true });
 
 watch(() => vueData.counter24, ({ tenths, seconds }) => {
-    countdownObject.changeParts({ counter24: { tenths, seconds } });
-}, { deep : true });
+    countdownManager.changeParts({ counter24: { tenths, seconds } });
+}, { deep: true });
 
 [
     'teamLeft',
@@ -336,7 +329,7 @@ watch(() => vueData.counter24, ({ tenths, seconds }) => {
 
 export default {
     components,
-    setup() {
+    setup () {
         return vueData;
     },
 };

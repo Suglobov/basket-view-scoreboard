@@ -1,10 +1,10 @@
-import Countdown from './Countdown.js';
+import TimeComponent from './TimeComponent.js';
 import EventsStorage from './EventsStorage.js';
 
-class CountdownObject {
-    constructor() {
-        this.timer = new Countdown({ fullTenthsMax: 6000 });
-        this.counter24 = new Countdown({ fullTenthsMax: 240 });
+export default class {
+    constructor () {
+        this.timer = new TimeComponent({ fullTenthsMax: 6000 });
+        this.counter24 = new TimeComponent({ fullTenthsMax: 240 });
         this.events = new EventsStorage([
             'zero',
             'change',
@@ -12,13 +12,15 @@ class CountdownObject {
             'changeParts',
         ]);
     }
-    _correctCounter24() {
+
+    _correctCounter24 () {
         if (this.counter24.fullTenths > this.timer.fullTenths) {
             this.counter24.changeTenths(this.timer.fullTenths);
         }
         return this;
     }
-    _getPrevValues() {
+
+    _getPrevValues () {
         return {
             timer: {
                 fullTenths: this.timer.fullTenths,
@@ -34,7 +36,8 @@ class CountdownObject {
             },
         };
     }
-    changeParts({ timer, counter24 }) {
+
+    changeParts ({ timer, counter24 }) {
         const prevValues = this._getPrevValues();
         if (timer !== undefined) {
             const { tenths, seconds, minutes } = timer;
@@ -48,13 +51,15 @@ class CountdownObject {
         this.events.trigger('change', prevValues);
         this.events.trigger('changeParts', prevValues);
     }
-    checkForZero() {
+
+    checkForZero () {
         if (this.timer.fullTenths === 0) {
             this.events.trigger('zero');
         }
         return this;
     }
-    minusTenth({ timer, counter24 }) {
+
+    minusTenth ({ timer, counter24 }) {
         if (this.timer.fullTenths === 0) {
             this._correctCounter24();
             return this;
@@ -72,5 +77,3 @@ class CountdownObject {
         return this;
     }
 }
-
-export default CountdownObject;
