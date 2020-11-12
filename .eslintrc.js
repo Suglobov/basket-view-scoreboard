@@ -1,8 +1,9 @@
 module.exports = {
     extends: [
+        'eslint:recommended',
+        'standard',
         'plugin:vue/vue3-recommended',
         'plugin:vue/vue3-strongly-recommended',
-        'eslint:recommended',
     ],
     plugins: [
         'vue',
@@ -19,15 +20,6 @@ module.exports = {
         sourceType: 'module',
     },
     rules: {
-        'vue/html-self-closing': ['error', {
-            'html': {
-                'void': 'always',
-                'normal': 'always',
-                'component': 'always',
-            },
-            'svg': 'always',
-            'math': 'always',
-        }],
         'vue/html-indent': [
             'error',
             4,
@@ -49,11 +41,11 @@ module.exports = {
             'always',
         ],
         'comma-dangle': ['error', {
-            'arrays': 'always-multiline',
-            'objects': 'always-multiline',
-            'imports': 'always-multiline',
-            'exports': 'always-multiline',
-            'functions': 'always-multiline',
+            arrays: 'always-multiline',
+            objects: 'always-multiline',
+            imports: 'always-multiline',
+            exports: 'always-multiline',
+            functions: 'always-multiline',
         }],
     },
 };
