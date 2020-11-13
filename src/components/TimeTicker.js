@@ -1,17 +1,17 @@
 import EventsStorage from './EventsStorage.js';
 
 class TimeTicker {
-    constructor({
+    constructor ({
         delayMs = 10,
     }) {
-        this.interval;
+        this.interval = undefined;
         this.delayMs = delayMs;
         this.isTimerRunning = false;
 
         this.events = new EventsStorage(['tick', 'startTimer', 'stopTimer']);
     }
 
-    startTimer() {
+    startTimer () {
         this.isTimerRunning = true;
         this.interval = setInterval(() => {
             this.events.trigger('tick');
@@ -20,7 +20,7 @@ class TimeTicker {
         return this;
     }
 
-    stopTimer() {
+    stopTimer () {
         this.isTimerRunning = false;
         clearInterval(this.interval);
         this.events.trigger('stopTimer');
