@@ -1,13 +1,26 @@
 <template>
-    <div>Список сочетаний клавиш:</div>
-    <div>q - +1 к левой команде</div>
-    <div>w - +2 к левой команде</div>
-    <div>e - +3 к левой команде</div>
-    <div>z - +1 к правой команде</div>
-    <div>x - +2 к правой команде</div>
-    <div>c - +3 к правой команде</div>
-    <div>a - старт/стоп счетчика 24</div>
-    <div>s - счетчик 24 на 14</div>
-    <div>d - счетчик 24 на 24</div>
-    <div>пробел - остановка/запуск таймера</div>
+    <div
+        v-for="(item, index) in hotKeyFuncSettings"
+        :key="index"
+    >
+        {{ hotKeyStorage[item.hotKey].hint }} - {{ funcStorage[item.func].hint }}
+    </div>
 </template>
+
+<script>
+import { inject } from 'vue';
+
+export default {
+    setup () {
+        const hotKeyStorage = inject('hotKeyStorage', {});
+        const funcStorage = inject('funcStorage', {});
+        const hotKeyFuncSettings = inject('hotKeyFuncSettings', []);
+
+        return {
+            funcStorage,
+            hotKeyStorage,
+            hotKeyFuncSettings,
+        };
+    },
+};
+</script>
