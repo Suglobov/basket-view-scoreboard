@@ -11,7 +11,7 @@
                     step="1"
                     :value="minutes"
                     @input="emitInput({ minutes: Number($event.target.value) })"
-                />
+                >
             </div>
         </label>
         <label :class="$style.cursorPointer">
@@ -25,7 +25,7 @@
                     step="1"
                     :value="seconds"
                     @input="emitInput({ seconds: Number($event.target.value) })"
-                />
+                >
             </div>
         </label>
         <label :class="$style.cursorPointer">
@@ -39,7 +39,7 @@
                     step="1"
                     :value="tenths"
                     @input="emitInput({ tenths: Number($event.target.value) })"
-                />
+                >
             </div>
         </label>
     </div>
@@ -63,7 +63,7 @@
 import debounce from '../components/debounce.js';
 
 export default {
-    props : {
+    props: {
         tenths: {
             type: Number,
             default: 0,
@@ -82,9 +82,9 @@ export default {
         'update:seconds',
         'update:minutes',
     ],
-    setup(props, context) {
+    setup (props, context) {
         return {
-            emitButton({ tenths, seconds, minutes }) {
+            emitButton ({ tenths, seconds, minutes }) {
                 context.emit('update:tenths', tenths);
                 context.emit('update:seconds', seconds);
                 context.emit('update:minutes', minutes);
