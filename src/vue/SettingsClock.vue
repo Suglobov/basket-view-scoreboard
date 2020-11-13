@@ -44,25 +44,27 @@
         </label>
     </div>
     <div>
-        <button
-            :class="[$style.setValue, $style.cursorPointer]"
-            @click="emitButton({ tenths: 0, seconds: 0, minutes: 5 })"
-        >
-            =5мин.
-        </button>
-        <button
-            :class="[$style.setValue, $style.cursorPointer]"
-            @click="emitButton({ tenths: 0, seconds: 0, minutes: 10 })"
-        >
-            =10мин.
-        </button>
+        <WrapperFuncWithHotkey :func-name="'setTimerTo5m'">
+            <button :class="$style.setValue">
+                =5мин.
+            </button>
+        </WrapperFuncWithHotkey>
+        <WrapperFuncWithHotkey :func-name="'setTimerTo10m'">
+            <button :class="$style.setValue">
+                =10мин.
+            </button>
+        </WrapperFuncWithHotkey>
     </div>
 </template>
 
 <script>
 import debounce from '../components/debounce.js';
+import WrapperFuncWithHotkey from './WrapperFuncWithHotkey.vue';
 
 export default {
+    components: {
+        WrapperFuncWithHotkey,
+    },
     props: {
         tenths: {
             type: Number,
