@@ -8,7 +8,7 @@
                     :class="$style.team"
                     :value="team"
                     @input="$emit('update:team', $event.target.value)"
-                />
+                >
             </div>
         </label>
     </div>
@@ -24,31 +24,25 @@
                     :class="$style.score"
                     :value="score"
                     @input="$emit('update:score', Number($event.target.value))"
-                />
+                >
             </div>
         </label>
         <div>
-            <button
-                :class="[$style.scoreAdd, $style.cursorPointer]"
-                @click="$emit('update:score', score + 1)"
-            >
-                +1
-                <TooltipInner :text="tooltip1" />
-            </button>
-            <button
-                :class="[$style.scoreAdd, $style.cursorPointer]"
-                @click="$emit('update:score', score + 2)"
-            >
-                +2
-                <TooltipInner :text="tooltip2" />
-            </button>
-            <button
-                :class="[$style.scoreAdd, $style.cursorPointer]"
-                @click="$emit('update:score', score + 3)"
-            >
-                +3
-                <TooltipInner :text="tooltip3" />
-            </button>
+            <WrapperFuncWithHotkey :func-name="`addScore${side[0].toUpperCase()}${side.slice(1)}1`">
+                <button :class="$style.scoreAdd">
+                    +1
+                </button>
+            </WrapperFuncWithHotkey>
+            <WrapperFuncWithHotkey :func-name="`addScore${side[0].toUpperCase()}${side.slice(1)}2`">
+                <button :class="$style.scoreAdd">
+                    +2
+                </button>
+            </WrapperFuncWithHotkey>
+            <WrapperFuncWithHotkey :func-name="`addScore${side[0].toUpperCase()}${side.slice(1)}3`">
+                <button :class="$style.scoreAdd">
+                    +3
+                </button>
+            </WrapperFuncWithHotkey>
         </div>
     </div>
     <div class="d-flex">
@@ -63,7 +57,7 @@
                     :class="$style.spentTimeouts"
                     :value="spentTimeouts"
                     @input="$emit('update:spentTimeouts', Number($event.target.value))"
-                />
+                >
             </div>
         </label>
         <label :class="$style.cursorPointer">
@@ -77,20 +71,24 @@
                     :class="$style.fols"
                     :value="fols"
                     @input="$emit('update:fols', Number($event.target.value))"
-                />
+                >
             </div>
         </label>
     </div>
 </template>
 
 <script>
-import TooltipInner from './TooltipInner.vue';
+import WrapperFuncWithHotkey from './WrapperFuncWithHotkey.vue';
 
 export default {
     components: {
-        TooltipInner,
+        WrapperFuncWithHotkey,
     },
-    props : {
+    props: {
+        side: {
+            type: String,
+            default: '',
+        },
         team: {
             type: String,
             default: '',
@@ -106,18 +104,6 @@ export default {
         fols: {
             type: Number,
             default: 0,
-        },
-        tooltip1: {
-            type: String,
-            default: '',
-        },
-        tooltip2: {
-            type: String,
-            default: '',
-        },
-        tooltip3: {
-            type: String,
-            default: '',
         },
     },
     emits: [
@@ -168,6 +154,7 @@ export default {
 
 .scoreAdd {
     background: rgb(134, 150, 240);
+    cursor: pointer;
     font-size: 3vw;
 }
 </style>

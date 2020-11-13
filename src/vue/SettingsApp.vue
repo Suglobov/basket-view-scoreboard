@@ -6,9 +6,7 @@
                 v-model:score="scoreLeft"
                 v-model:spent-timeouts="spentTimeoutsLeft"
                 v-model:fols="folsLeft"
-                :tooltip1="'Q'"
-                :tooltip2="'W'"
-                :tooltip3="'E'"
+                :side="'left'"
             />
             <SettingsHelpText />
             <div>
@@ -34,11 +32,7 @@
                 v-model:seconds="timer.seconds"
                 v-model:tenths="timer.tenths"
             />
-            <SettingsStartButton
-                :is-time-running="isTimeRunning"
-                @start-timer="startTimer"
-                @stop-timer="stopTimer"
-            />
+            <SettingsStartButton :is-time-running="isTimeRunning" />
             <hr>
             <SettingsCounter24
                 v-model:tenths="counter24.tenths"
@@ -52,9 +46,7 @@
                 v-model:score="scoreRight"
                 v-model:spent-timeouts="spentTimeoutsRight"
                 v-model:fols="folsRight"
-                :tooltip1="'Z'"
-                :tooltip2="'X'"
-                :tooltip3="'C'"
+                :side="'right'"
             />
             <div class="mt-big">
                 <div>
