@@ -1,45 +1,41 @@
 <template>
     <div>
-        <button
+        <WrapperFuncWithHotkey
             v-if="isTimeRunning"
-            :class="$style.stopTimer"
-            @click="funcStorage.startStopTimer.action"
+            :func-name="'startStopTimer'"
         >
-            <TooltipInner :text="funcHint.startStopTimer" />
-            Пауза
-        </button>
-        <button
+            <button
+                v-if="isTimeRunning"
+                :class="$style.stopTimer"
+            >
+                Пауза
+            </button>
+        </WrapperFuncWithHotkey>
+        <WrapperFuncWithHotkey
             v-else
-            :class="$style.startTimer"
-            @click="funcStorage.startStopTimer.action"
+            :func-name="'startStopTimer'"
         >
-            <TooltipInner :text="funcHint.startStopTimer" />
-            Старт
-        </button>
+            <button
+                :class="$style.startTimer"
+            >
+                Старт
+            </button>
+        </WrapperFuncWithHotkey>
     </div>
 </template>
 
 <script>
-import { inject } from 'vue';
-import TooltipInner from './TooltipInner.vue';
+import WrapperFuncWithHotkey from './WrapperFuncWithHotkey.vue';
 
 export default {
     components: {
-        TooltipInner,
+        WrapperFuncWithHotkey,
     },
     props: {
         isTimeRunning: {
             type: Boolean,
             default: false,
         },
-    },
-    setup () {
-        const funcStorage = inject('funcStorage', {});
-        const funcHint = inject('funcHint', {});
-        return {
-            funcStorage,
-            funcHint,
-        };
     },
 };
 </script>
