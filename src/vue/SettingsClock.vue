@@ -86,15 +86,16 @@ export default {
     ],
     setup (props, context) {
         return {
-            emitButton ({ tenths, seconds, minutes }) {
-                context.emit('update:tenths', tenths);
-                context.emit('update:seconds', seconds);
-                context.emit('update:minutes', minutes);
-            },
             emitInput: debounce(({ tenths, seconds, minutes }) => {
-                context.emit('update:tenths', tenths);
-                context.emit('update:seconds', seconds);
-                context.emit('update:minutes', minutes);
+                if (tenths !== undefined) {
+                    context.emit('update:tenths', tenths);
+                }
+                if (seconds !== undefined) {
+                    context.emit('update:seconds', seconds);
+                }
+                if (minutes !== undefined) {
+                    context.emit('update:minutes', minutes);
+                }
             }, 500),
         };
     },
