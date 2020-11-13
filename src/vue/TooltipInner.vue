@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, toRefs } from 'vue';
 
 export default {
     props: {
@@ -29,14 +29,19 @@ export default {
             default: '',
         },
     },
-    setup() {
+    setup (props) {
         const inner = ref(null);
         const tooltip = ref(null);
         const show = ref(false);
+        const { text } = toRefs(props);
 
         onMounted(() => {
             const parent = inner.value.parentNode;
+
             parent.addEventListener('mouseenter', (/* event */) => {
+                if (text.value === '') {
+                    return;
+                }
                 tooltip.value.style.display = 'block';
                 const rectEl = parent.getBoundingClientRect();
                 const rectTool = tooltip.value.getBoundingClientRect();
