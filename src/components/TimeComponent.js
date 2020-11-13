@@ -37,6 +37,9 @@ export default class {
     changeTenths (value) {
         const oldValue = this.limitInteger.value;
         this.limitInteger.changeValue(value);
+        if (this.limitInteger.value !== value) {
+            console.warn('this.limitInteger.value !== value');
+        }
 
         if (oldValue === this.limitInteger.value) {
             return;
