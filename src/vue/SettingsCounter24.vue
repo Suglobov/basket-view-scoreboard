@@ -11,33 +11,33 @@
                     max="24"
                     step="0.1"
                     @input="emitInput"
-                />
+                >
             </div>
         </label>
     </div>
     <div>
-        <button
-            v-tooltip="'S'"
-            :class="[$style.setValue, $style.cursorPointer]"
-            @click="emitButton({ tenths: 0, seconds: 14 })"
-        >
-            =14
-        </button>
-        <button
-            v-tooltip="'D'"
-            :class="[$style.setValue, $style.cursorPointer]"
-            @click="emitButton({ tenths: 0, seconds: 24 })"
-        >
-            =24
-        </button>
+        <WrapperFuncWithHotkey :func-name="'setCounter24To14'">
+            <button :class="$style.setValue">
+                =14
+            </button>
+        </WrapperFuncWithHotkey>
+        <WrapperFuncWithHotkey :func-name="'setCounter24To24'">
+            <button :class="$style.setValue">
+                =24
+            </button>
+        </WrapperFuncWithHotkey>
     </div>
 </template>
 
 <script>
 import debounce from '../components/debounce.js';
+import WrapperFuncWithHotkey from './WrapperFuncWithHotkey.vue';
 
 export default {
-    props : {
+    components: {
+        WrapperFuncWithHotkey,
+    },
+    props: {
         tenths: {
             type: Number,
             default: 0,
@@ -51,12 +51,8 @@ export default {
         'update:tenths',
         'update:seconds',
     ],
-    setup(props, context) {
+    setup (props, context) {
         return {
-            emitButton({ tenths, seconds }) {
-                context.emit('update:tenths', tenths);
-                context.emit('update:seconds', seconds);
-            },
             emitInput: debounce(($event) => {
                 const values = $event.target.value.split('.');
                 context.emit('update:tenths', Number(values[1] === undefined ? 0 : values[1]));
@@ -84,6 +80,7 @@ export default {
 
 .setValue {
     background: rgb(192, 236, 192);
+    cursor: pointer;
     font-size: 4vw;
 }
 
