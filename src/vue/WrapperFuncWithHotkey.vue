@@ -1,7 +1,7 @@
 <template>
     <div
         :class="$style.wrapper"
-        @click.capture="onClick"
+        @click.capture="func"
     >
         <TooltipInner :text="hint" />
         <slot />
@@ -31,11 +31,8 @@ export default {
         const func = funcStorage[funcName.value] ? funcStorage[funcName.value].action : () => {};
         const hint = funcHint[funcName.value] ? funcHint[funcName.value] : '';
         return {
-            funcStorage,
+            func,
             hint,
-            onClick () {
-                func();
-            },
         };
     },
 };
