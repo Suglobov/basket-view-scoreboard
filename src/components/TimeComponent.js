@@ -24,7 +24,9 @@ export default class {
 
     _getFullValueFromComponents (componentObject) {
         const fullValue = this.rules.reduce((res, { name, divider }) => {
-            const value = (componentObject[name] === undefined) ? 0 : componentObject[name] * divider;
+            const value = (componentObject[name] === undefined)
+                ? this[name] * divider
+                : componentObject[name] * divider;
             return res + value;
         }, 0);
         return fullValue;
