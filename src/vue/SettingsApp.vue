@@ -121,12 +121,15 @@
 </template>
 
 <script>
-import { reactive, watch } from 'vue';
 import '../scss/style.scss';
 import TimeTicker from '../components/TimeTicker.js';
 import CountdownManager from '../components/CountdownManager.js';
+import sendSettings from '../components/sendSettings.js';
+
 import soundBuzzerTimerPath from '../sounds/buzzer/beep_end_period.mp3';
 import soundBuzzerCounter24Path from '../sounds/buzzer/portal2buzzer.mp3';
+
+import { reactive, watch, provide } from 'vue';
 import SettingsTeam from './SettingsTeam.vue';
 import SettingsClock from './SettingsClock.vue';
 import SettingsCounter24 from './SettingsCounter24.vue';
@@ -150,6 +153,129 @@ const components = {
 const soundBuzzerTimer = new Audio(soundBuzzerTimerPath);
 const soundBuzzerCounter24 = new Audio(soundBuzzerCounter24Path);
 
+const funcStorage = {
+    startStopTimer: {
+        hint: 'остановка/запуск таймера',
+        action: () => {
+            if (timeTicker.isTimerRunning === false) {
+                timeTicker.startTimer();
+            } else {
+                timeTicker.stopTimer();
+            }
+        },
+    },
+    setTimerTo5m: {
+        hint: 'таймер на 5 минут',
+        action: () => {
+            countdownManager.changeParts({ timer: { tenths: 0, seconds: 0, minutes: 5 } });
+        },
+    },
+    setTimerTo10m: {
+        hint: 'таймер на 10 минут',
+        action: () => {
+            countdownManager.changeParts({ timer: { tenths: 0, seconds: 0, minutes: 10 } });
+        },
+    },
+    startStopCounter24: {
+        hint: 'старт/стоп счетчика 24',
+        action: () => {
+            vueData.isCounter24SyncWithTimer = !vueData.isCounter24SyncWithTimer;
+        },
+    },
+    setCounter24To14: {
+        hint: 'счетчик 24 на 14',
+        action: () => {
+            countdownManager.changeParts({ counter24: { tenths: 0, seconds: 14 } });
+        },
+    },
+    setCounter24To24: {
+        hint: 'счетчик 24 на 24',
+        action: () => {
+            countdownManager.changeParts({ counter24: { tenths: 0, seconds: 24 } });
+        },
+    },
+    addScoreLeft1: {
+        hint: '+1 к левой команде',
+        action: () => {
+            vueData.scoreLeft += 1;
+        },
+    },
+    addScoreLeft2: {
+        hint: '+2 к левой команде',
+        action: () => {
+            vueData.scoreLeft += 2;
+        },
+    },
+    addScoreLeft3: {
+        hint: '+3 к левой команде',
+        action: () => {
+            vueData.scoreLeft += 3;
+        },
+    },
+    addScoreRight1: {
+        hint: '+1 к правой команде',
+        action: () => {
+            vueData.scoreRight += 1;
+        },
+    },
+    addScoreRight2: {
+        hint: '+2 к правой команде',
+        action: () => {
+            vueData.scoreRight += 2;
+        },
+    },
+    addScoreRight3: {
+        hint: '+3 к правой команде',
+        action: () => {
+            vueData.scoreRight += 3;
+        },
+    },
+};
+const hotKeyStorage = {
+    KeyQ: { hint: 'Q' },
+    KeyW: { hint: 'W' },
+    KeyE: { hint: 'E' },
+    KeyA: { hint: 'A' },
+    KeyS: { hint: 'S' },
+    KeyD: { hint: 'D' },
+    KeyZ: { hint: 'Z' },
+    KeyX: { hint: 'X' },
+    KeyC: { hint: 'C' },
+    Space: { hint: 'Пробел' },
+};
+const hotKeyFuncSettings = [
+    { hotKey: 'KeyQ', func: 'addScoreLeft1' },
+    { hotKey: 'KeyW', func: 'addScoreLeft2' },
+    { hotKey: 'KeyE', func: 'addScoreLeft3' },
+    { hotKey: 'KeyA', func: 'startStopCounter24' },
+    { hotKey: 'KeyS', func: 'setCounter24To14' },
+    { hotKey: 'KeyD', func: 'setCounter24To24' },
+    { hotKey: 'KeyZ', func: 'addScoreRight1' },
+    { hotKey: 'KeyX', func: 'addScoreRight2' },
+    { hotKey: 'KeyC', func: 'addScoreRight3' },
+    { hotKey: 'Space', func: 'startStopTimer' },
+];
+const hotKeyBindFunc = hotKeyFuncSettings.reduce((res, elem) => {
+    res[elem.hotKey] = elem.func;
+    return res;
+}, {});
+const funcBindHotKey = hotKeyFuncSettings.reduce((res, elem) => {
+    res[elem.func] = elem.hotKey;
+    return res;
+}, {});
+const hotKeyAction = Object.keys(hotKeyStorage).reduce((res, hotKeyName) => {
+    const funcName = hotKeyBindFunc[hotKeyName];
+    const currentAction = funcStorage[funcName].action;
+    res[hotKeyName] = (funcName === undefined) ? () => {} : currentAction;
+    return res;
+}, {});
+const funcHint = Object.keys(funcStorage).reduce((res, funcName) => {
+    const hotKeyName = funcBindHotKey[funcName];
+    const currentHotKey = hotKeyStorage[hotKeyName];
+    res[funcName] = (hotKeyName === undefined) ? '' : currentHotKey.hint;
+    return res;
+}, {});
+
 const vueData = reactive({
     isTimeRunning: false,
     isCounter24SyncWithTimer: true,
@@ -166,15 +292,8 @@ const vueData = reactive({
     showArrow: false,
     arrowDirection: 'left',
     period: 1,
-    timer: {
-        tenths: 0,
-        seconds: 0,
-        minutes: 0,
-    },
-    counter24: {
-        tenths: 0,
-        seconds: 0,
-    },
+    timer: { tenths: 0, seconds: 0, minutes: 0 },
+    counter24: { tenths: 0, seconds: 0 },
     startTimer () {
         timeTicker.startTimer();
     },
@@ -184,10 +303,6 @@ const vueData = reactive({
     soundBuzzerTimer,
     soundBuzzerCounter24,
 });
-
-const sendData = (objectToSend) => {
-    window.electron.sendSettings(objectToSend);
-};
 
 const timeTicker = new TimeTicker({ delayMs: 100 });
 timeTicker.events.on('tick', () => {
@@ -223,28 +338,13 @@ countdownManager.events.on('change', (prevValues) => {
     });
 
     if (prevTimer.second !== timer.seconds) {
-        sendData({
-            timer: {
-                seconds: timer.seconds,
-                minutes: timer.minutes,
-            },
-        });
+        sendSettings({ timer: { seconds: timer.seconds, minutes: timer.minutes } });
     }
 
     if (counter24.fullTenths < 100 && counter24.fullTenths > 0) {
-        sendData({
-            counter24: {
-                tenths: counter24.tenths,
-                seconds: counter24.seconds,
-            },
-        });
+        sendSettings({ counter24: { tenths: counter24.tenths, seconds: counter24.seconds } });
     } else if (counter24.seconds !== prevValues.seconds || counter24.fullTenths === 0) {
-        sendData({
-            counter24: {
-                tenths: null,
-                seconds: counter24.seconds,
-            },
-        });
+        sendSettings({ counter24: { tenths: null, seconds: counter24.seconds } });
     }
 });
 countdownManager.events.on('minusTenths', (prevValues) => {
@@ -257,15 +357,8 @@ countdownManager.events.on('minusTenths', (prevValues) => {
     }
 });
 countdownManager.changeParts({
-    timer: {
-        tenths: 9,
-        seconds: 5,
-        minutes: 1,
-    },
-    counter24: {
-        tenths: 3,
-        seconds: 7,
-    },
+    timer: { tenths: 9, seconds: 5, minutes: 1 },
+    counter24: { tenths: 3, seconds: 7 },
 });
 
 // keydown space
@@ -274,29 +367,11 @@ document.body.addEventListener('keydown', (event) => {
     if (target.nodeName === 'INPUT' && target.type === 'text') {
         return;
     }
-    const actions = {
-        KeyA () { vueData.isCounter24SyncWithTimer = !vueData.isCounter24SyncWithTimer; },
-        KeyS () { countdownManager.changeParts({ counter24: { tenths: 0, seconds: 14 } }); },
-        KeyD () { countdownManager.changeParts({ counter24: { tenths: 0, seconds: 24 } }); },
-        KeyQ () { vueData.scoreLeft += 1; },
-        KeyW () { vueData.scoreLeft += 2; },
-        KeyE () { vueData.scoreLeft += 3; },
-        KeyZ () { vueData.scoreRight += 1; },
-        KeyX () { vueData.scoreRight += 2; },
-        KeyC () { vueData.scoreRight += 3; },
-        Space () {
-            if (timeTicker.isTimerRunning) {
-                timeTicker.stopTimer();
-            } else {
-                timeTicker.startTimer();
-            }
-        },
-    };
-    if (actions[code] === undefined) {
+    if (hotKeyAction[code] === undefined) {
         return;
     }
     event.preventDefault();
-    actions[code]();
+    hotKeyAction[code]();
 }, { capture: true });
 
 watch(() => vueData.timer, ({ tenths, seconds, minutes }) => {
@@ -323,13 +398,18 @@ watch(() => vueData.counter24, ({ tenths, seconds }) => {
     'period',
 ].forEach((elem) => {
     watch(() => vueData[elem], (value) => {
-        sendData({ [elem]: value });
+        sendSettings({ [elem]: value });
     });
 });
 
 export default {
     components,
     setup () {
+        provide('hotKeyStorage', hotKeyStorage);
+        provide('funcStorage', funcStorage);
+        provide('hotKeyFuncSettings', hotKeyFuncSettings);
+        provide('funcHint', funcHint);
+
         return vueData;
     },
 };
