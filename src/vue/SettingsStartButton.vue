@@ -3,23 +3,24 @@
         <button
             v-if="isTimeRunning"
             :class="$style.stopTimer"
-            @click="$emit('stop-timer')"
+            @click="funcStorage.startStopTimer.action"
         >
-            <TooltipInner :text="'пробел'" />
+            <TooltipInner :text="funcHint.startStopTimer" />
             Пауза
         </button>
         <button
             v-else
             :class="$style.startTimer"
-            @click="$emit('start-timer')"
+            @click="funcStorage.startStopTimer.action"
         >
-            <TooltipInner :text="'пробел'" />
+            <TooltipInner :text="funcHint.startStopTimer" />
             Старт
         </button>
     </div>
 </template>
 
 <script>
+import { inject } from 'vue';
 import TooltipInner from './TooltipInner.vue';
 
 export default {
@@ -32,10 +33,14 @@ export default {
             default: false,
         },
     },
-    emits: [
-        'stop-timer',
-        'start-timer',
-    ],
+    setup () {
+        const funcStorage = inject('funcStorage', {});
+        const funcHint = inject('funcHint', {});
+        return {
+            funcStorage,
+            funcHint,
+        };
+    },
 };
 </script>
 
