@@ -1,30 +1,30 @@
 <template>
     <div>
-        <button
+        <WrapperFuncWithHotkey
             v-if="on"
-            :class="$style.off"
-            @click="$emit('update:on', false)"
+            :func-name="'startStopCounter24'"
         >
-            <TooltipInner :text="'A'" />
-            Пауза
-        </button>
-        <button
+            <button :class="$style.off">
+                Пауза
+            </button>
+        </WrapperFuncWithHotkey>
+        <WrapperFuncWithHotkey
             v-else
-            :class="$style.on"
-            @click="$emit('update:on', true)"
+            :func-name="'startStopCounter24'"
         >
-            <TooltipInner :text="'A'" />
-            Старт
-        </button>
+            <button :class="$style.on">
+                Старт
+            </button>
+        </WrapperFuncWithHotkey>
     </div>
 </template>
 
 <script>
-import TooltipInner from './TooltipInner.vue';
+import WrapperFuncWithHotkey from './WrapperFuncWithHotkey.vue';
 
 export default {
     components: {
-        TooltipInner,
+        WrapperFuncWithHotkey,
     },
     props: {
         on: {
