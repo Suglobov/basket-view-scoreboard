@@ -1,6 +1,7 @@
 # basket-view-scoreboard
 ссылка на архив с версией для windows  
-https://drive.google.com/file/d/1RXJtLsctx5a9q0Se2gEWhKlPriFibDw8/view?usp=sharing
+https://drive.google.com/file/d/1OxBa29lpWuqVjEmo8OxagOqysk2qMFUK/view?usp=sharing
+
 # Технологии
 node v10.16.3  
 Приложение на electron js. (https://www.electronjs.org/)  
