@@ -78,23 +78,25 @@ export default {
 
         let chunks = [];
 
-        sourceForCapturePromise.then((sources) => {
-            const streamsPromise = sources.map((source) => {
-                const userMediaPromise = navigator.mediaDevices.getUserMedia({
-                    audio: false,
-                    video: {
-                        mandatory: {
-                            chromeMediaSource: 'desktop',
-                            chromeMediaSourceId: source.id,
+        setTimeout(() => {
+            sourceForCapturePromise.then((sources) => {
+                const streamsPromise = sources.map((source) => {
+                    const userMediaPromise = navigator.mediaDevices.getUserMedia({
+                        audio: false,
+                        video: {
+                            mandatory: {
+                                chromeMediaSource: 'desktop',
+                                chromeMediaSourceId: source.id,
+                            },
                         },
-                    },
+                    });
+                    return userMediaPromise;
                 });
-                return userMediaPromise;
+                return Promise.all(streamsPromise);
+            }).then((streamsPromise) => {
+                streams.value = streamsPromise;
             });
-            return Promise.all(streamsPromise);
-        }).then((streamsPromise) => {
-            streams.value = streamsPromise;
-        });
+        }, 1000);
 
         watch(() => streams, (value) => {
             nextTick(() => {
