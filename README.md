@@ -29,7 +29,12 @@ node v10.16.3
 + https://vk.com/suglobov
 + https://t.me/suglobov_e
 
-# ссылк на архивы с версией для windows  
+# ссылк на архивы с версией для windows
+https://drive.google.com/file/d/1MTbzARsbtgYQMIoLHbnwqCAjMs3OFDPg/view?usp=sharing  
+В этой версии добавил возможность записи видео с окна с таблом.
+Еще есть проблема, что не всегда сразу появляется список оконо, нужна перезагрузка страницы.
+
+---
 
 https://drive.google.com/file/d/14k0rmElg-j5mAfljboqV-LF30R_BFi6S/view?usp=sharing  
 В этой версии счетчик 24 секунд может быть остановлен.  
