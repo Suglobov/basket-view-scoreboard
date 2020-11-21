@@ -68,7 +68,7 @@ export default class {
         if (timer === true) {
             this.timer.changeTenths(this.timer.fullTenths - 1);
         }
-        if (counter24 === true) {
+        if (counter24 === true && this.counter24.fullTenths > 0) {
             this.counter24.changeTenths(this.counter24.fullTenths - 1);
         }
         this._correctCounter24();
