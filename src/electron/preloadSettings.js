@@ -1,4 +1,4 @@
-import { contextBridge, ipcRenderer, desktopCapturer } from 'electron';
+import { contextBridge, ipcRenderer } from 'electron';
 
 let viewWebContentsId;
 ipcRenderer.invoke('getViewWebContentsId').then((result) => {
@@ -11,8 +11,6 @@ ipcRenderer.on('settings', (_event, message) => {
 
 const reciveSettingsStorage = [];
 
-const sourceForCapturePromise = desktopCapturer.getSources({ types: ['window'] });
-
 const electron = {
     sendSettings: (message) => {
         ipcRenderer.sendTo(viewWebContentsId, 'settings', message);
@@ -20,6 +18,6 @@ const electron = {
     receiveSettings: (cb) => {
         reciveSettingsStorage.push(cb);
     },
-    sourceForCapturePromise,
 };
+
 contextBridge.exposeInMainWorld('electron', electron);
