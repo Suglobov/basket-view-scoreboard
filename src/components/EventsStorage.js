@@ -1,34 +1,37 @@
 class EventsStorage {
-    constructor(posibleEvents = []) {
+    constructor (posibleEvents = []) {
         this.events = {};
         posibleEvents.forEach((eventName) => {
             this.events[eventName] = [];
         });
+        Object.freeze(this);
     }
-    on(eventName, eventHandler) {
+
+    _chackEvent (eventName, successCb) {
         if (this.events[eventName] === undefined) {
             console.error('not posible eventName', eventName);
-            return this;
+            return;
         }
-        this.events[eventName].push(eventHandler);
-        return this;
+        successCb();
     }
-    off(eventName, eventHandler) {
-        if (this.events[eventName] === undefined) {
-            console.error('not posible eventName', eventName);
-            return this;
-        }
-        this.events[eventName] = this.events[eventName]
-            .filter((handler) => handler !== eventHandler);
-        return this;
+
+    on (eventName, eventHandler) {
+        this._chackEvent(eventName, () => {
+            this.events[eventName].push(eventHandler);
+        });
     }
-    trigger(eventName, ...args) {
-        if (this.events[eventName] === undefined) {
-            console.error('not posible eventName', eventName);
-            return this;
-        }
-        this.events[eventName].forEach((handler) => handler(...args));
-        return this;
+
+    off (eventName, eventHandler) {
+        this._chackEvent(eventName, () => {
+            this.events[eventName] = this.events[eventName]
+                .filter((handler) => handler !== eventHandler);
+        });
+    }
+
+    trigger (eventName, ...args) {
+        this._chackEvent(eventName, () => {
+            this.events[eventName].forEach((handler) => handler(...args));
+        });
     }
 }
 
