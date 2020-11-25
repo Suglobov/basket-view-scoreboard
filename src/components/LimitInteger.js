@@ -1,30 +1,56 @@
-/**
- * if the values are not integers, then they will be assigned 0
- */
 export default class {
-    constructor ({ value, min, max }) {
-        this.value = this._getInteger(value);
-        this.min = this._getInteger(min);
-        this.max = this._getInteger(max);
+    constructor({ value = 0, min = 0, max = 0 }) {
+        [value, min, max].forEach((val) => this._checkForinteger(val));
+        this._checkMinMax(min, max);
+        this._checkValue(value, min, max);
+
+        this.value = value;
+        this.min = min;
+        this.max = max;
+
+
+        const out = Object.create(null);
+        out.min = this.min;
+        out.max = this.max;
+        out.getValue = () => this.value;
+        out.setValue = (value) => this.setValue(value);
+        Object.freeze(out);
+        return out;
     }
 
-    _getInteger (value) {
-        return Number.isInteger(value) ? value : 0;
-    }
-
-    changeValue (value) {
-        const valueInteger = this._getInteger(value);
-        if (valueInteger === this.value) {
+    _checkForinteger(value) {
+        if (Number.isInteger(value)) {
             return;
         }
+        throw new Error(`value not integer (${typeof value})`);
+    }
 
-        let newValue;
-        if (valueInteger >= this.min && valueInteger <= this.max) {
-            newValue = valueInteger;
-        } else {
-            newValue = valueInteger < this.min ? this.min : this.max;
+    _checkMinMax(min, max) {
+        if (min <= max) {
+            return;
         }
+        throw new Error(`min (${min}) > max (${max})`);
+    }
 
-        this.value = newValue;
+    _checkValue(value, min, max) {
+        if (value >= min && value <= max) {
+            return;
+        }
+        if (value < min) {
+            throw new Error(`value (${value}) < min (${min})`);
+        } else if (value > max) {
+            throw new Error(`value (${value}) > max (${max})`);
+        } else {
+            throw new Error('imposible step');
+        }
+    }
+
+    setValue(value) {
+        this._checkForinteger(value);
+        this._checkValue(value, this.min, this.max);
+        if (value === this.value) {
+            return;
+        }
+        this.value = value;
     }
 }
