@@ -15,7 +15,7 @@ export default class {
         out.min = this.min;
         out.max = this.max;
         out.getValue = () => this.value;
-        out.setValue = (value) => this.setValue(value);
+        out.setValue = (value = 0) => this.setValue(value);
         Object.freeze(out);
         return out;
     }
