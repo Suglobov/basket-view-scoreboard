@@ -165,7 +165,10 @@ timerManager.events.on('timerChanged', (modifiedParts) => {
         vueData.timer.minutes = timer.minutes;
     });
 
-    sendSettings({ timer: { seconds: timer.seconds, minutes: timer.minutes } });
+    const partsForSend = ['seconds', 'minutes'];
+    if (modifiedParts.some((part) => partsForSend.includes(part))) {
+        sendSettings({ timer: { seconds: timer.seconds, minutes: timer.minutes } });
+    }
 });
 timerManager.events.on('counter24Changed', (modifiedParts) => {
     const { counter24 } = timerManager;
@@ -174,7 +177,12 @@ timerManager.events.on('counter24Changed', (modifiedParts) => {
         vueData.counter24.seconds = counter24.seconds;
     });
 
-    sendSettings({ counter24: { tenths: counter24.tenths, seconds: counter24.seconds } });
+    const partsForSend = ['seconds', 'minutes'];
+    if (modifiedParts.some((part) => partsForSend.includes(part))) {
+        sendSettings({ counter24: { tenths: counter24.tenths, seconds: counter24.seconds } });
+    } else if (counter24.getFullTenths() < 100) {
+        sendSettings({ counter24: { tenths: counter24.tenths, seconds: counter24.seconds } });
+    }
 });
 timerManager.events.on('endOfQuarter', () => {
     soundBuzzerTimer.play();
