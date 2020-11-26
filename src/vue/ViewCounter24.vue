@@ -2,19 +2,19 @@
     <div
         :class="[
             $style.wrapper,
-            seconds < 6 && tenths !== null ? $style.warning : '',
+            seconds < 6 ? $style.warning : '',
         ]"
     >
         <div
             :class="[
                 $style.seconds,
-                seconds < 10 ? $style.less10 : '',
+                seconds < 10 ? $style.showTenths : '',
             ]"
         >
             {{ seconds }}
         </div>
         <div
-            v-show="tenths !== null"
+            v-show="seconds < 10"
             :class="$style.tenths"
         >
             .{{ tenths }}
@@ -26,8 +26,8 @@
 export default {
     props: {
         tenths: {
-            type: [Number, null],
-            default: null,
+            type: Number,
+            default: 0,
         },
         seconds: {
             type: Number,
@@ -41,29 +41,28 @@ export default {
 .wrapper {
     display: flex;
     justify-content: center;
-    padding: 2vw;
+    padding: 1vw;
     color: #e03838;
 }
 
 .warning {
-    background-color: #e03838;
+    background-color: #ff0f;
     border-radius: 10px;
-    color: #fff;
 }
 
 .seconds {
     flex: none;
-    font-size: 10vw;
+    font-size: 12vw;
     text-align: right;
 }
 
-.less10 {
+.showTenths {
     width: 8vw;
 }
 
 .tenths {
-    width: 10vw;
+    width: 12vw;
     flex: none;
-    font-size: 10vw;
+    font-size: 12vw;
 }
 </style>
