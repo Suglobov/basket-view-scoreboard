@@ -38,7 +38,7 @@
                 v-model:tenths="counter24.tenths"
                 v-model:seconds="counter24.seconds"
             />
-            <SettingsSyncCounter24Button v-model:on="isCounter24SyncWithTimer" />
+            <SettingsSyncCounter24Button v-model:on="isCounter24RunningWithTimer" />
         </div>
         <div>
             <SettingsTeam
@@ -114,8 +114,7 @@
 
 <script>
 import '../scss/style.scss';
-import TimeTicker from '../components/TimeTicker.js';
-import CountdownManager from '../components/CountdownManager.js';
+import TimerManager from '../components/TimerManager.js';
 import sendSettings from '../components/sendSettings.js';
 
 import soundBuzzerTimerPath from '../sounds/buzzer/beep_end_period.mp3';
@@ -145,45 +144,91 @@ const components = {
 const soundBuzzerTimer = new Audio(soundBuzzerTimerPath);
 const soundBuzzerCounter24 = new Audio(soundBuzzerCounter24Path);
 
+const timerManager = new TimerManager();
+timerManager.events.on('startTimer', () => {
+    vueData.isTimeRunning = true;
+});
+timerManager.events.on('stopTimer', () => {
+    vueData.isTimeRunning = false;
+});
+timerManager.events.on('startCounter24RunningWithTimer', () => {
+    vueData.isCounter24RunningWithTimer = true;
+});
+timerManager.events.on('stopCounter24RunningWithTimer', () => {
+    vueData.isCounter24RunningWithTimer = false;
+});
+timerManager.events.on('timerChanged', (modifiedParts) => {
+    const { timer } = timerManager;
+    setTimeout(() => {
+        vueData.timer.tenths = timer.tenths;
+        vueData.timer.seconds = timer.seconds;
+        vueData.timer.minutes = timer.minutes;
+    });
+
+    sendSettings({ timer: { seconds: timer.seconds, minutes: timer.minutes } });
+});
+timerManager.events.on('counter24Changed', (modifiedParts) => {
+    const { counter24 } = timerManager;
+    setTimeout(() => {
+        vueData.counter24.tenths = counter24.tenths;
+        vueData.counter24.seconds = counter24.seconds;
+    });
+
+    sendSettings({ counter24: { tenths: counter24.tenths, seconds: counter24.seconds } });
+});
+timerManager.events.on('endOfQuarter', () => {
+    soundBuzzerTimer.play();
+});
+timerManager.events.on('endOfCounter24', () => {
+    soundBuzzerCounter24.play();
+});
+timerManager.changeTimerParts({ tenths: 9, seconds: 5, minutes: 1 });
+timerManager.changeCounter24Parts({ tenths: 3, seconds: 7 });
+
+
 const funcStorage = {
     startStopTimer: {
         hint: 'остановка/запуск таймера',
         action: () => {
-            if (timeTicker.isTimerRunning === false) {
-                timeTicker.startTimer();
+            if (timerManager.isTimerRunning === false) {
+                timerManager.startTimer();
             } else {
-                timeTicker.stopTimer();
+                timerManager.stopTimer();
             }
         },
     },
     setTimerTo5m: {
         hint: 'таймер на 5 минут',
         action: () => {
-            countdownManager.changeParts({ timer: { tenths: 0, seconds: 0, minutes: 5 } });
+            timerManager.changeTimerParts({ tenths: 0, seconds: 0, minutes: 5 });
         },
     },
     setTimerTo10m: {
         hint: 'таймер на 10 минут',
         action: () => {
-            countdownManager.changeParts({ timer: { tenths: 0, seconds: 0, minutes: 10 } });
+            timerManager.changeTimerParts({ tenths: 0, seconds: 0, minutes: 10 });
         },
     },
     startStopCounter24: {
         hint: 'старт/стоп счетчика 24',
         action: () => {
-            vueData.isCounter24SyncWithTimer = !vueData.isCounter24SyncWithTimer;
+            if (timerManager.isCounter24RunningWithTimer === false) {
+                timerManager.startCounter24RunningWithTimer();
+            } else {
+                timerManager.stopCounter24RunningWithTimer();
+            }
         },
     },
     setCounter24To14: {
         hint: 'счетчик 24 на 14',
         action: () => {
-            countdownManager.changeParts({ counter24: { tenths: 0, seconds: 14 } });
+            timerManager.changeCounter24Parts({ tenths: 0, seconds: 14 });
         },
     },
     setCounter24To24: {
         hint: 'счетчик 24 на 24',
         action: () => {
-            countdownManager.changeParts({ counter24: { tenths: 0, seconds: 24 } });
+            timerManager.changeCounter24Parts({ tenths: 0, seconds: 24 });
         },
     },
     addScoreLeft1: {
@@ -270,7 +315,7 @@ const funcHint = Object.keys(funcStorage).reduce((res, funcName) => {
 
 const vueData = reactive({
     isTimeRunning: false,
-    isCounter24SyncWithTimer: true,
+    isCounter24RunningWithTimer: true,
     teamLeft: 'Команда Л',
     teamRight: 'Команда П',
     scoreLeft: 0,
@@ -286,71 +331,8 @@ const vueData = reactive({
     period: 1,
     timer: { tenths: 0, seconds: 0, minutes: 0 },
     counter24: { tenths: 0, seconds: 0 },
-    startTimer () {
-        timeTicker.startTimer();
-    },
-    stopTimer () {
-        timeTicker.stopTimer();
-    },
     soundBuzzerTimer,
     soundBuzzerCounter24,
-});
-
-const timeTicker = new TimeTicker({ delayMs: 100 });
-timeTicker.events.on('tick', () => {
-    countdownManager
-        .minusTenth({
-            timer: true,
-            counter24: vueData.isCounter24SyncWithTimer,
-        })
-        .checkForZero();
-});
-timeTicker.events.on('startTimer', () => {
-    vueData.isTimeRunning = true;
-    countdownManager.checkForZero();
-});
-timeTicker.events.on('stopTimer', () => {
-    vueData.isTimeRunning = false;
-});
-
-const countdownManager = new CountdownManager();
-countdownManager.events.on('zero', () => {
-    timeTicker.stopTimer();
-});
-countdownManager.events.on('change', (prevValues) => {
-    const { timer, counter24 } = countdownManager;
-    const { timer: prevTimer } = prevValues;
-
-    setTimeout(() => {
-        vueData.timer.tenths = timer.tenths;
-        vueData.timer.seconds = timer.seconds;
-        vueData.timer.minutes = timer.minutes;
-        vueData.counter24.tenths = counter24.tenths;
-        vueData.counter24.seconds = counter24.seconds;
-    });
-
-    if (prevTimer.second !== timer.seconds) {
-        sendSettings({ timer: { seconds: timer.seconds, minutes: timer.minutes } });
-    }
-
-    if (counter24.fullTenths < 100 && counter24.fullTenths > 0) {
-        sendSettings({ counter24: { tenths: counter24.tenths, seconds: counter24.seconds } });
-    } else if (counter24.seconds !== prevValues.seconds || counter24.fullTenths === 0) {
-        sendSettings({ counter24: { tenths: null, seconds: counter24.seconds } });
-    }
-});
-countdownManager.events.on('minusTenths', (prevValues) => {
-    const { timer, counter24 } = countdownManager;
-    const { timer: prevTimer, counter24: prevCounter24 } = prevValues;
-    if (timer.fullTenths === 0 && timer.fullTenths !== prevTimer.fullTenths) {
-        soundBuzzerTimer.play();
-    } else if (counter24.fullTenths === 0 && counter24.fullTenths !== prevCounter24.fullTenths) {
-        soundBuzzerCounter24.play();
-    }
-});
-countdownManager.changeParts({
-    timer: { tenths: 9, seconds: 5, minutes: 1 },
-    counter24: { tenths: 3, seconds: 7 },
 });
 
 // keydown space
@@ -367,11 +349,11 @@ document.body.addEventListener('keydown', (event) => {
 }, { capture: true });
 
 watch(() => vueData.timer, ({ tenths, seconds, minutes }) => {
-    countdownManager.changeParts({ timer: { tenths, seconds, minutes } });
+    timerManager.changeTimerParts({ tenths, seconds, minutes });
 }, { deep: true });
 
 watch(() => vueData.counter24, ({ tenths, seconds }) => {
-    countdownManager.changeParts({ counter24: { tenths, seconds } });
+    timerManager.changeCounter24Parts({ tenths, seconds });
 }, { deep: true });
 
 [
