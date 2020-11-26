@@ -1,6 +1,8 @@
+import checkType from './checkType.js';
+
 export default class {
     constructor({ value = 0, min = 0, max = 0 }) {
-        [value, min, max].forEach((val) => this._checkForinteger(val));
+        [value, min, max].forEach((val) => checkType(val, 'integer'));
         this._checkMinMax(min, max);
         this._checkValue(value, min, max);
 
@@ -18,21 +20,14 @@ export default class {
         return out;
     }
 
-    _checkForinteger(value) {
-        if (Number.isInteger(value)) {
-            return;
-        }
-        throw new Error(`value not integer (${typeof value})`);
-    }
-
-    _checkMinMax(min, max) {
+    _checkMinMax(min = 0, max = 0) {
         if (min <= max) {
             return;
         }
         throw new Error(`min (${min}) > max (${max})`);
     }
 
-    _checkValue(value, min, max) {
+    _checkValue(value = 0, min = 0, max = 0) {
         if (value >= min && value <= max) {
             return;
         }
@@ -45,8 +40,8 @@ export default class {
         }
     }
 
-    setValue(value) {
-        this._checkForinteger(value);
+    setValue(value = 0) {
+        checkType(value, 'integer');
         this._checkValue(value, this.min, this.max);
         if (value === this.value) {
             return;
