@@ -47,7 +47,6 @@ module.exports = {
             exports: 'always-multiline',
             functions: 'always-multiline',
         }],
-        'space-before-function-paren': ['error', 'never'],
         'no-multiple-empty-lines': ['error', { max: 2 }],
     },
 };
