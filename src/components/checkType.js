@@ -1,7 +1,7 @@
-export default function(variable, type = '') {
+export default function (variable, type = '') {
     const typeTests = {
         function: (value) => value instanceof Function,
-        object: (value) => value instanceof Object,
+        object: (value) => typeof value === 'object' && value instanceof Object,
         string: (value) => typeof value === 'string',
         number: (value) => typeof value === 'number',
         integer: (value) => typeof value === 'number' && Number.isInteger(value),
