@@ -16,8 +16,7 @@ export default class {
         out.max = this.max;
         out.getValue = () => this.value;
         out.setValue = (value = 0) => this.setValue(value);
-        Object.freeze(out);
-        return out;
+        return Object.freeze(out);
     }
 
     _checkMinMax(min = 0, max = 0) {
