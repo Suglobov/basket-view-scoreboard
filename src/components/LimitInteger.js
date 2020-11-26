@@ -14,7 +14,7 @@ export default class {
         const out = Object.create(null);
         out.min = this.min;
         out.max = this.max;
-        out.getValue = () => this.value;
+        out.getValue = () => this.getValue();
         out.setValue = (value = 0) => this.setValue(value);
         return Object.freeze(out);
     }
@@ -37,6 +37,10 @@ export default class {
         } else {
             throw new Error('imposible step');
         }
+    }
+
+    getValue() {
+        return this.value;
     }
 
     setValue(value = 0) {
