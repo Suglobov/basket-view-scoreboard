@@ -95,7 +95,7 @@ export default class {
     _getModifiedParts (parts = {}, prevParts = {}) {
         const modifiedParts = Object.entries(parts)
             .reduce((res, [key, value]) => {
-                if (value !== prevParts[key].value) {
+                if (value !== prevParts[key]) {
                     res.push(key);
                 }
                 return res;
