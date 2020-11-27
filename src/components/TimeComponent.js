@@ -4,6 +4,9 @@ import checkType from './checkType.js';
 export default class {
     constructor ({ fullTenthsMax = 0 }) {
         this.limitInteger = new LimitInteger({ max: fullTenthsMax });
+        this.tenths = undefined;
+        this.seconds = undefined;
+        this.minutes = undefined;
 
         this.rules = [
             { name: 'tenths', divider: 1, remainder: 10 },
