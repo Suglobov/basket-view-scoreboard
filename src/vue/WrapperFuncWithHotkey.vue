@@ -9,8 +9,10 @@
 </template>
 
 <script>
-import { inject, toRefs } from 'vue';
+import { toRefs } from 'vue';
 import TooltipInner from './TooltipInner.vue';
+
+import { funcStorage, funcHint } from './hotKeysFuncsStorages.js';
 
 export default {
     components: {
@@ -24,9 +26,6 @@ export default {
     },
     setup (props) {
         const { funcName } = toRefs(props);
-
-        const funcStorage = inject('funcStorage', {});
-        const funcHint = inject('funcHint', {});
 
         const func = funcStorage[funcName.value] ? funcStorage[funcName.value].action : () => {};
         const hint = funcHint[funcName.value] ? funcHint[funcName.value] : '';
