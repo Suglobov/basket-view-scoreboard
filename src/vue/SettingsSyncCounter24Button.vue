@@ -1,7 +1,7 @@
 <template>
     <div>
         <WrapperFuncWithHotkey
-            v-if="on"
+            v-if="on && !isCounter24TemporaryStop"
             :func-name="'startStopCounter24'"
         >
             <button :class="$style.off">
@@ -28,6 +28,10 @@ export default {
     },
     props: {
         on: {
+            type: Boolean,
+            default: false,
+        },
+        isCounter24TemporaryStop: {
             type: Boolean,
             default: false,
         },

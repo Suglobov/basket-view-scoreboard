@@ -1,11 +1,11 @@
 <template>
     <div>
         <WrapperFuncWithHotkey
-            v-if="isTimeRunning"
+            v-if="isTimerRunning"
             :func-name="'startStopTimer'"
         >
             <button
-                v-if="isTimeRunning"
+                v-if="isTimerRunning"
                 :class="$style.stopTimer"
             >
                 Пауза
@@ -32,7 +32,7 @@ export default {
         WrapperFuncWithHotkey,
     },
     props: {
-        isTimeRunning: {
+        isTimerRunning: {
             type: Boolean,
             default: false,
         },

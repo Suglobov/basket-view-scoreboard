@@ -16,26 +16,26 @@
         </label>
     </div>
     <div>
-        <WrapperFuncWithHotkey :func-name="'setCounter24To14'">
+        <WrapperFuncWithHotkeyAndStopCounter24 :func-name="'setCounter24To14'">
             <button :class="$style.setValue">
                 =14
             </button>
-        </WrapperFuncWithHotkey>
-        <WrapperFuncWithHotkey :func-name="'setCounter24To24'">
+        </WrapperFuncWithHotkeyAndStopCounter24>
+        <WrapperFuncWithHotkeyAndStopCounter24 :func-name="'setCounter24To24'">
             <button :class="$style.setValue">
                 =24
             </button>
-        </WrapperFuncWithHotkey>
+        </WrapperFuncWithHotkeyAndStopCounter24>
     </div>
 </template>
 
 <script>
 import debounce from '../components/debounce.js';
-import WrapperFuncWithHotkey from './WrapperFuncWithHotkey.vue';
+import WrapperFuncWithHotkeyAndStopCounter24 from './WrapperFuncWithHotkeyAndStopCounter24.vue';
 
 export default {
     components: {
-        WrapperFuncWithHotkey,
+        WrapperFuncWithHotkeyAndStopCounter24,
     },
     props: {
         tenths: {

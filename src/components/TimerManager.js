@@ -10,6 +10,7 @@ export default class {
 
         this.isTimerRunning = false;
         this.isCounter24RunningWithTimer = true;
+        this.isCounter24TemporaryStop = false;
 
         this.events = new EventsStorage([
             'timerChanged',
@@ -22,6 +23,8 @@ export default class {
             'stopTimer',
             'startCounter24RunningWithTimer',
             'stopCounter24RunningWithTimer',
+            'setIsCounter24TemporaryStopToTrue',
+            'setIsCounter24TemporaryStopToFalse',
         ]);
 
         this._listenTimeTicker();
@@ -43,6 +46,7 @@ export default class {
 
                 if (
                     this.isCounter24RunningWithTimer === true &&
+                    this.isCounter24TemporaryStop === false &&
                     this.counter24.getFullTenths() > 0
                 ) {
                     this.counter24.changeTenths(this.counter24.getFullTenths() - 1);
@@ -138,5 +142,15 @@ export default class {
     stopCounter24RunningWithTimer () {
         this.isCounter24RunningWithTimer = false;
         this.events.trigger('stopCounter24RunningWithTimer');
+    }
+
+    setIsCounter24TemporaryStopToTrue () {
+        this.isCounter24TemporaryStop = true;
+        this.events.trigger('setIsCounter24TemporaryStopToTrue');
+    }
+
+    setIsCounter24TemporaryStopToFalse () {
+        this.isCounter24TemporaryStop = false;
+        this.events.trigger('setIsCounter24TemporaryStopToFalse');
     }
 }
