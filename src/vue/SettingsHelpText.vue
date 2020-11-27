@@ -8,14 +8,10 @@
 </template>
 
 <script>
-import { inject } from 'vue';
+import { hotKeyStorage, funcStorage, hotKeyFuncSettings } from './hotKeysFuncsStorages.js';
 
 export default {
     setup () {
-        const hotKeyStorage = inject('hotKeyStorage', {});
-        const funcStorage = inject('funcStorage', {});
-        const hotKeyFuncSettings = inject('hotKeyFuncSettings', []);
-
         return {
             funcStorage,
             hotKeyStorage,
