@@ -6,17 +6,21 @@ export default class {
         this._checkMinMax(min, max);
         this._checkValue(value, min, max);
 
-        this.value = value;
         this.min = min;
         this.max = max;
 
+        let _value = value;
 
-        const out = Object.create(null);
-        out.min = this.min;
-        out.max = this.max;
-        out.getValue = () => this.getValue();
-        out.setValue = (value = 0) => this.setValue(value);
-        return Object.freeze(out);
+        this.getValue = () => _value;
+        this.setValue = (value = 0) => {
+            checkType(value, 'integer');
+            this._checkValue(value, min, max);
+            if (value === _value) {
+                return;
+            }
+            _value = value;
+        };
+        Object.freeze(this);
     }
 
     _checkMinMax (min = 0, max = 0) {
@@ -37,18 +41,5 @@ export default class {
         } else {
             throw new Error('imposible step');
         }
-    }
-
-    getValue () {
-        return this.value;
-    }
-
-    setValue (value = 0) {
-        checkType(value, 'integer');
-        this._checkValue(value, this.min, this.max);
-        if (value === this.value) {
-            return;
-        }
-        this.value = value;
     }
 }
