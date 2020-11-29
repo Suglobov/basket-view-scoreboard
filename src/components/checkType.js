@@ -9,15 +9,10 @@ export default function (variable, type = '') {
     };
 
     if (typeTests[type] === undefined) {
-        throw new Error(`type ${type} not supported`);
+        throw new Error(`type '${type}' not supported`);
     }
 
-    const checkType = (variable, type = '') => {
-        if (typeTests[type](variable) === false) {
-            throw new Error(`'${variable}' type not ${type}`);
-        }
-    };
-
-    checkType(type, 'string');
-    checkType(variable, type);
+    if (typeTests[type](variable) === false) {
+        throw new Error(`'${variable}' type not ${type}`);
+    }
 }
