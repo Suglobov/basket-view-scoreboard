@@ -3,8 +3,8 @@ import LimitInteger from './LimitInteger.js';
 import PartsNumber from './PartsNumber.js';
 
 export default class {
-    constructor ({ value = 0 } = {}) {
-        this.limitInteger = new LimitInteger({ max: value });
+    constructor ({ maxValue = 0 } = {}) {
+        this.limitInteger = new LimitInteger({ max: maxValue });
         this.partsNumber = new PartsNumber([
             { divider: 1, remainder: 10 },
             { divider: 10, remainder: 60 },
