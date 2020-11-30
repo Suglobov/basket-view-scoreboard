@@ -24,6 +24,7 @@ export default class {
                 return;
             }
             _value = correctValue;
+            return this;
         };
         Object.freeze(this);
     }
@@ -36,7 +37,7 @@ export default class {
         return 0;
     }
 
-    _getCorrectMin (min = 0, cbError = (_warn = '') => { }) {
+    _getCorrectMin (min = 0, cbError = () => {}) {
         if (min <= this.max) {
             return min;
         }
