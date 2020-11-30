@@ -117,13 +117,11 @@
 
 <script>
 import '../scss/style.scss';
-import sendSettings from '../components/sendSettings.js';
+
 
 import vueData from './vueData.js';
-import timerManager from './timerMatager.js';
 import listenHotKeys from './listenHotKeys.js';
 
-import { watch } from 'vue';
 import SettingsTeam from './SettingsTeam.vue';
 import SettingsClock from './SettingsClock.vue';
 import SettingsCounter24 from './SettingsCounter24.vue';
@@ -146,34 +144,6 @@ const components = {
 
 listenHotKeys();
 
-
-watch(() => vueData.timer, ({ tenths, seconds, minutes }) => {
-    timerManager.changeTimerParts({ tenths, seconds, minutes });
-}, { deep: true });
-
-watch(() => vueData.counter24, ({ tenths, seconds }) => {
-    timerManager.changeCounter24Parts({ tenths, seconds });
-}, { deep: true });
-
-[
-    'teamLeft',
-    'teamRight',
-    'scoreLeft',
-    'scoreRight',
-    'folsLeft',
-    'folsRight',
-    'timeouts',
-    'spentTimeoutsLeft',
-    'spentTimeoutsRight',
-    'isMirror',
-    'showArrow',
-    'arrowDirection',
-    'period',
-].forEach((elem) => {
-    watch(() => vueData[elem], (value) => {
-        sendSettings({ [elem]: value });
-    });
-});
 
 export default {
     components,
