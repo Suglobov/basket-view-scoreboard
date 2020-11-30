@@ -1,61 +1,52 @@
 import vueData from './vueData.js';
-import timerManager from './timerMatager.js';
 
 const funcStorage = {
     startStopTimer: {
         hint: 'остановка/запуск таймера',
         action: () => {
-            if (timerManager.isTimerRunning === false) {
-                timerManager.startTimer();
-            } else {
-                timerManager.stopTimer();
-            }
+            vueData.isTimerRunning = !vueData.isTimerRunning;
         },
     },
     setTimerTo5m: {
         hint: 'таймер на 5 минут',
         action: () => {
-            timerManager.changeTimerParts({ tenths: 0, seconds: 0, minutes: 5 });
+            vueData.timer = { tenths: 0, seconds: 0, minutes: 5 };
         },
     },
     setTimerTo10m: {
         hint: 'таймер на 10 минут',
         action: () => {
-            timerManager.changeTimerParts({ tenths: 0, seconds: 0, minutes: 10 });
+            vueData.timer = { tenths: 0, seconds: 0, minutes: 10 };
         },
     },
     startStopCounter24: {
         hint: 'старт/стоп счетчика 24',
         action: () => {
-            if (timerManager.isCounter24RunningWithTimer === false) {
-                timerManager.startCounter24RunningWithTimer();
-            } else {
-                timerManager.stopCounter24RunningWithTimer();
-            }
+            vueData.isCounter24RunningWithTimer = !vueData.isCounter24RunningWithTimer;
         },
     },
     setIsCounter24TemporaryStopToTrue: {
         hint: 'временный приостанавливает счетчик 24',
         action: () => {
-            timerManager.setIsCounter24TemporaryStopToTrue();
+            vueData.isCounter24TemporaryStop = true;
         },
     },
     setIsCounter24TemporaryStopToFalse: {
         hint: 'отключает временное приостановление счетчика 24',
         action: () => {
-            timerManager.setIsCounter24TemporaryStopToFalse();
+            vueData.isCounter24TemporaryStop = false;
         },
     },
     setCounter24To14: {
         hint: 'счетчик 24 на 14',
         action: () => {
-            timerManager.changeCounter24Parts({ tenths: 0, seconds: 14 });
+            vueData.counter24 = { tenths: 0, seconds: 14 };
         },
     },
     setCounter24To24: {
         hint: 'счетчик 24 на 24',
         action: () => {
-            timerManager.changeCounter24Parts({ tenths: 0, seconds: 24 });
+            vueData.counter24 = { tenths: 0, seconds: 24 };
         },
     },
     addScoreLeft1: {
