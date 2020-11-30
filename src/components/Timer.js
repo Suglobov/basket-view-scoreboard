@@ -1,53 +1,58 @@
-import checkType from './checkType.js';
 import LimitInteger from './LimitInteger.js';
-import PartsNumber from './PartsNumber.js';
 
 export default class {
     constructor ({ maxValue = 0 } = {}) {
-        this.limitInteger = new LimitInteger({ max: maxValue });
-        this.partsNumber = new PartsNumber([
-            { divider: 1, remainder: 10 },
-            { divider: 10, remainder: 60 },
-            { divider: 600, remainder: 60 },
-        ]);
-        this.names = ['tenths', 'seconds', 'minutes'];
+        this.limitInteger = new LimitInteger({
+            max: maxValue,
+            cbWrongType: (message) => {
+                console.log('cbWrongType', message);
+            },
+            cbWrongMin: (message) => {
+                console.log('cbWrongMin', message);
+            },
+            cbOverLimit: (message) => {
+                console.log('cbOverLimit', message);
+            },
+        });
 
-        const namedParts = {};
-
-        const _saveToNamedParts = (parts = [0]) => {
-            this.names.forEach((name, index) => {
-                namedParts[name] = parts[index];
-            });
+        this.rules = {
+            tenths: { divider: 1, remainder: 10 },
+            seconds: { divider: 10, remainder: 60 },
+            minutes: { divider: 600, remainder: 60 },
         };
 
-        _saveToNamedParts(this.names.map(() => 0));
+        const objParts = {};
+        Object.keys(this.rules).forEach((res, name) => {
+            objParts[name] = 0;
+        });
 
         this.setValue = (value = 0) => {
-            checkType(value, 'integer');
-            this.limitInteger.setValue();
-            const parts = this.partsNumber.getParts(value);
-            _saveToNamedParts(parts);
+            const correctedValue = this.limitInteger.setValue(value).getValue();
+            Object.entries(this.rules).forEach(([partName, { divider = 0, remainder = 0 }]) => {
+                objParts[partName] = ~~(correctedValue / divider % remainder);
+            });
         };
 
-        this.setParts = (incomeNamedParts = {}) => {
-            checkType(incomeNamedParts, 'object');
-            const incomeParts = this.names.map((name) => {
-                if (incomeNamedParts[name] === undefined) {
-                    return namedParts[name];
-                }
-                checkType(incomeNamedParts[name], 'integer');
-                return incomeNamedParts[name];
+        this.setParts = (incomeParts = {}) => {
+            const allNameParts = {};
+            Object.keys(objParts).forEach((partName) => {
+                const tmpPart = (incomeParts[partName] === undefined)
+                    ? objParts[partName]
+                    : incomeParts[partName];
+                allNameParts[partName] = Number.isInteger(tmpPart) ? tmpPart : 0;
             });
-            const value = this.partsNumber.getValue(incomeParts);
-            this.limitInteger.setValue(value);
-            _saveToNamedParts(incomeParts);
+            const value = Object.entries(this.rules).reduce((res, [partName, { divider = 0 }]) => {
+                return res + allNameParts[partName] * divider;
+            }, 0);
+
+            this.setValue(value);
         };
 
         this.getParts = () => {
-            return namedParts;
+            return objParts;
         };
 
-        Object.freeze(this.names);
+        Object.freeze(this.rules);
         Object.freeze(this);
     }
 
