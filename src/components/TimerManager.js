@@ -18,13 +18,6 @@ export default class {
 
             'endOfQuarter',
             'endOfCounter24',
-
-            'startTimer',
-            'stopTimer',
-            'startCounter24RunningWithTimer',
-            'stopCounter24RunningWithTimer',
-            'setIsCounter24TemporaryStopToTrue',
-            'setIsCounter24TemporaryStopToFalse',
         ]);
 
         this._listenTimeTicker();
@@ -125,32 +118,26 @@ export default class {
         }
         this._timeTicker.startTick();
         this.isTimerRunning = true;
-        this.events.trigger('startTimer');
     }
 
     stopTimer () {
         this._timeTicker.stopTick();
         this.isTimerRunning = false;
-        this.events.trigger('stopTimer');
     }
 
     startCounter24RunningWithTimer () {
         this.isCounter24RunningWithTimer = true;
-        this.events.trigger('startCounter24RunningWithTimer');
     }
 
     stopCounter24RunningWithTimer () {
         this.isCounter24RunningWithTimer = false;
-        this.events.trigger('stopCounter24RunningWithTimer');
     }
 
     setIsCounter24TemporaryStopToTrue () {
         this.isCounter24TemporaryStop = true;
-        this.events.trigger('setIsCounter24TemporaryStopToTrue');
     }
 
     setIsCounter24TemporaryStopToFalse () {
         this.isCounter24TemporaryStop = false;
-        this.events.trigger('setIsCounter24TemporaryStopToFalse');
     }
 }

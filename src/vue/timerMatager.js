@@ -3,25 +3,7 @@ import vueData from './vueData.js';
 import sendSettings from '../components/sendSettings.js';
 
 const timerManager = new TimerManager();
-timerManager.events.on('startTimer', () => {
-    vueData.isTimerRunning = true;
-});
-timerManager.events.on('stopTimer', () => {
-    vueData.isTimerRunning = false;
-});
-timerManager.events.on('startCounter24RunningWithTimer', () => {
-    vueData.isCounter24RunningWithTimer = true;
-});
-timerManager.events.on('stopCounter24RunningWithTimer', () => {
-    vueData.isCounter24RunningWithTimer = false;
-});
-timerManager.events.on('setIsCounter24TemporaryStopToTrue', () => {
-    vueData.isCounter24TemporaryStop = true;
-});
-timerManager.events.on('setIsCounter24TemporaryStopToFalse', () => {
-    vueData.isCounter24TemporaryStop = false;
-});
-timerManager.events.on('timerChanged', (modifiedParts = {}) => {
+timerManager.events.on('timerChanged', (modifiedParts = ['']) => {
     const { timer } = timerManager;
     setTimeout(() => {
         vueData.timer.tenths = timer.tenths;
@@ -34,7 +16,7 @@ timerManager.events.on('timerChanged', (modifiedParts = {}) => {
         sendSettings({ timer: { seconds: timer.seconds, minutes: timer.minutes } });
     }
 });
-timerManager.events.on('counter24Changed', (modifiedParts = {}) => {
+timerManager.events.on('counter24Changed', (modifiedParts = ['']) => {
     const { counter24 } = timerManager;
     setTimeout(() => {
         vueData.counter24.tenths = counter24.tenths;
@@ -42,7 +24,7 @@ timerManager.events.on('counter24Changed', (modifiedParts = {}) => {
     });
 
     const partsForSend = ['seconds', 'minutes'];
-    if (modifiedParts.some((part) => partsForSend.includes(part))) {
+    if (modifiedParts.some((part = '') => partsForSend.includes(part))) {
         sendSettings({ counter24: { tenths: counter24.tenths, seconds: counter24.seconds } });
     } else if (counter24.getFullTenths() < 100) {
         sendSettings({ counter24: { tenths: counter24.tenths, seconds: counter24.seconds } });
@@ -54,6 +36,7 @@ timerManager.events.on('endOfQuarter', () => {
 timerManager.events.on('endOfCounter24', () => {
     vueData.soundBuzzerCounter24.play();
 });
+
 timerManager.changeTimerParts({ tenths: 9, seconds: 5, minutes: 1 });
 timerManager.changeCounter24Parts({ tenths: 3, seconds: 7 });
 
