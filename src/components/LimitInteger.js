@@ -1,45 +1,54 @@
-import checkType from './checkType.js';
-
 export default class {
-    constructor ({ value = 0, min = 0, max = 0 }) {
-        [value, min, max].forEach((val) => checkType(val, 'integer'));
-        this._checkMinMax(min, max);
-        this._checkValue(value, min, max);
+    constructor ({
+        value = 0,
+        min = 0,
+        max = 0,
+        cbWrongType = (_message = '') => { },
+        cbWrongMin = (_message = '') => { },
+        cbOverLimit = (_message = '') => { },
+    }) {
+        const integerValue = this._getInteger(value, () => cbWrongType('value not integer, assigned to 0'));
+        const integerMin = this._getInteger(min, () => cbWrongType('min not integer, assigned to 0'));
+        const integerMax = this._getInteger(max, () => cbWrongType('max not integer, assigned to 0'));
 
-        this.min = min;
-        this.max = max;
+        this.max = integerMax;
+        this.min = this._getCorrectMin(integerMin, () => cbWrongMin('min > max, assigned to max'));
 
-        let _value = value;
+        let _value = this._getCorrectValue(integerValue, () => cbOverLimit('value < min or value > max'));
 
         this.getValue = () => _value;
         this.setValue = (value = 0) => {
-            checkType(value, 'integer');
-            this._checkValue(value, min, max);
-            if (value === _value) {
+            const integerValue = this._getInteger(value, () => cbWrongType('value not integer, assigned to 0'));
+            const correctValue = this._getCorrectValue(integerValue, () => cbOverLimit('value < min or value > max'));
+            if (correctValue === _value) {
                 return;
             }
-            _value = value;
+            _value = correctValue;
         };
         Object.freeze(this);
     }
 
-    _checkMinMax (min = 0, max = 0) {
-        if (min <= max) {
-            return;
+    _getInteger (value = 0, cbError = () => {}) {
+        if (Number.isInteger(value) === true) {
+            return value;
         }
-        throw new Error(`min (${min}) > max (${max})`);
+        cbError();
+        return 0;
     }
 
-    _checkValue (value = 0, min = 0, max = 0) {
-        if (value >= min && value <= max) {
-            return;
+    _getCorrectMin (min = 0, cbError = (_warn = '') => { }) {
+        if (min <= this.max) {
+            return min;
         }
-        if (value < min) {
-            throw new Error(`value (${value}) < min (${min})`);
-        } else if (value > max) {
-            throw new Error(`value (${value}) > max (${max})`);
-        } else {
-            throw new Error('imposible step');
+        cbError();
+        return this.max;
+    }
+
+    _getCorrectValue (value = 0, cbError = () => {}) {
+        if (value >= this.min && value <= this.max) {
+            return value;
         }
+        cbError();
+        return value < this.min ? this.min : this.max;
     }
 }
