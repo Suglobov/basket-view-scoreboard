@@ -1,11 +1,15 @@
-import checkType from './checkType.js';
-
 export default class EventsStorage {
-    constructor(posibleEvents = []) {
-        checkType(posibleEvents, 'array');
+    constructor (posibleEvents = []) {
+        if (Array.isArray(posibleEvents) === false) {
+            console.error(new Error('posibleEvents not array'));
+            return;
+        }
         this.events = {};
         posibleEvents.forEach((eventName) => {
-            checkType(eventName, 'string');
+            if (typeof eventName !== 'string') {
+                console.error(new Error(`'${eventName}' eventName not string`));
+                return;
+            }
             this.events[eventName] = [];
         });
 
@@ -13,33 +17,42 @@ export default class EventsStorage {
         Object.freeze(this);
     }
 
-    _checkEvent(eventName = '', successCb = () => { }) {
-        if (this.events[eventName] === undefined) {
-            console.error('not posible eventName', eventName);
+    _checkEventName (eventName = '', cbSuccess = () => { }) {
+        if (typeof eventName !== 'string') {
+            console.error(new Error(`'${eventName}' eventName not string`));
             return;
         }
-        successCb();
+        if (this.events[eventName] === undefined) {
+            console.error(new Error(`not posible eventName '${eventName}'`));
+            return;
+        }
+        cbSuccess();
     }
 
-    on(eventName = '', eventHandler = () => { }) {
-        checkType(eventName, 'string');
-        checkType(eventHandler, 'function');
-        this._checkEvent(eventName, () => {
+    _checkEventNameAndHandler (eventName = '', eventHandler = () => {}, cbSuccess = () => { }) {
+        this._checkEventName(eventName, () => {
+            if ((eventHandler instanceof Function) === false) {
+                console.error(new Error(`'${eventHandler}' eventHandler not function`));
+                return;
+            }
+            cbSuccess();
+        });
+    }
+
+    on (eventName = '', eventHandler = () => { }) {
+        this._checkEventNameAndHandler(eventName, eventHandler, () => {
             this.events[eventName].push(eventHandler);
         });
     }
 
-    off(eventName = '', eventHandler = () => { }) {
-        checkType(eventName, 'string');
-        checkType(eventHandler, 'function');
-        this._checkEvent(eventName, () => {
+    off (eventName = '', eventHandler = () => { }) {
+        this._checkEventNameAndHandler(eventName, eventHandler, () => {
             this.events[eventName] = this.events[eventName].filter((handler = () => { }) => handler !== eventHandler);
         });
     }
 
-    trigger(eventName = '', ...args) {
-        checkType(eventName, 'string');
-        this._checkEvent(eventName, () => {
+    trigger (eventName = '', ...args) {
+        this._checkEventName(eventName, () => {
             this.events[eventName].forEach((handler = (..._args) => { }) => handler(...args));
         });
     }
