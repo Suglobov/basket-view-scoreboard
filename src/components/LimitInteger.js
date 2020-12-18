@@ -7,18 +7,17 @@ export default class {
         cbWrongMin = (_message = '') => { },
         cbOverLimit = (_message = '') => { },
     }) {
-        const integerValue = this._getInteger(value, () => cbWrongType('value not integer, assigned to 0'));
-        const integerMin = this._getInteger(min, () => cbWrongType('min not integer, assigned to 0'));
-        const integerMax = this._getInteger(max, () => cbWrongType('max not integer, assigned to 0'));
+        const integerMin = this._getInteger(min, (res) => cbWrongType(`min not integer, assigned to ${res}`));
+        const integerMax = this._getInteger(max, (res) => cbWrongType(`max not integer, assigned to ${res}`));
 
         this.max = integerMax;
         this.min = this._getCorrectMin(integerMin, () => cbWrongMin('min > max, assigned to max'));
 
-        let _value = this._getCorrectValue(integerValue, () => cbOverLimit('value < min or value > max'));
+        let _value;
 
         this.getValue = () => _value;
         this.setValue = (value = 0) => {
-            const integerValue = this._getInteger(value, () => cbWrongType('value not integer, assigned to 0'));
+            const integerValue = this._getInteger(value, (res) => cbWrongType(`value not integer, assigned to ${res}`));
             const correctValue = this._getCorrectValue(integerValue, () => cbOverLimit('value < min or value > max'));
             if (correctValue === _value) {
                 return;
@@ -26,15 +25,18 @@ export default class {
             _value = correctValue;
             return this;
         };
+        this.setValue(value);
         Object.freeze(this);
     }
 
-    _getInteger (value = 0, cbError = () => {}) {
+    _getInteger (value = 0, cbError = (_res = 0) => {}) {
         if (Number.isInteger(value) === true) {
             return value;
         }
-        cbError();
-        return 0;
+        const tmp = parseInt(String(value), 10);
+        const res = Number.isNaN(tmp) ? 0 : tmp;
+        cbError(res);
+        return res;
     }
 
     _getCorrectMin (min = 0, cbError = () => {}) {
