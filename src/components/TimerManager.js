@@ -1,6 +1,9 @@
 import TimeTicker from '../components/TimeTicker.js';
 import TimeComponent from '../components/TimeComponent.js';
 import EventsStorage from '../components/EventsStorage.js';
+import TimerTenths2 from '../components/TimerTenths2.js';
+import TimerTenthWrapper from '../components/TimerTenthWrapper.js';
+
 
 export default class {
     constructor () {
@@ -21,6 +24,13 @@ export default class {
         ]);
 
         this._listenTimeTicker();
+
+        const timerTenths2 = new TimerTenths2({ maxValue: 6000 });
+        console.log('timerTenths2', timerTenths2);
+        globalThis.timerTenths2 = timerTenths2;
+        const timerTenthWrapper = new TimerTenthWrapper({ maxValue: 6000 });
+        console.log('timerTenthWrapper', timerTenthWrapper, timerTenthWrapper.maxValue);
+        globalThis.timerTenthWrapper = timerTenthWrapper;
     }
 
     _listenTimeTicker () {

@@ -3,7 +3,18 @@ import checkType from './checkType.js';
 
 export default class {
     constructor ({ fullTenthsMax = 0 }) {
-        this.limitInteger = new LimitInteger({ max: fullTenthsMax });
+        this.limitInteger = new LimitInteger({
+            max: fullTenthsMax,
+            cbWrongType: (message) => {
+                console.log('cbWrongType', message);
+            },
+            cbWrongMin: (message) => {
+                console.log('cbWrongMin', message);
+            },
+            cbOverLimit: (message) => {
+                console.log('cbOverLimit', message);
+            },
+        });
         this.tenths = undefined;
         this.seconds = undefined;
         this.minutes = undefined;
@@ -65,12 +76,13 @@ export default class {
         checkType(value, 'integer');
         const oldValue = this.limitInteger.getValue();
         this.limitInteger.setValue(value);
+        const correctedValue = this.limitInteger.getValue();
 
-        if (oldValue === value) {
+        if (oldValue === correctedValue) {
             return;
         }
 
-        const parts = this._getPartsFromFullValue(value);
+        const parts = this._getPartsFromFullValue(correctedValue);
         this._saveComponents(parts);
     }
 
