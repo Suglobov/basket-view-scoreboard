@@ -61,7 +61,7 @@ const clientConfig = {
             meta: {
                 'Content-Security-Policy': {
                     'http-equiv': 'Content-Security-Policy',
-                    'content': 'script-src *',
+                    content: 'script-src *',
                 },
             },
         }),
@@ -73,7 +73,7 @@ const clientConfig = {
             meta: {
                 'Content-Security-Policy': {
                     'http-equiv': 'Content-Security-Policy',
-                    'content': 'script-src *',
+                    content: 'script-src *',
                 },
             },
         }),
