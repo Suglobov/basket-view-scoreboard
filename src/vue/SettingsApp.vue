@@ -119,7 +119,7 @@
 import '../scss/style.scss';
 
 
-import vueData from './vueData.js';
+import { vueData } from '../vue/instances.js';
 import listenHotKeys from './listenHotKeys.js';
 
 import SettingsTeam from './SettingsTeam.vue';

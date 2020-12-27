@@ -1,4 +1,4 @@
-import vueData from './vueData.js';
+import { vueData } from '../vue/instances.js';
 
 const funcStorage = {
     startStopTimer: {
