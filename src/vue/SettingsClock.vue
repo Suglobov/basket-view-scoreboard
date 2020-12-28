@@ -21,7 +21,7 @@
                     :class="$style.seconds"
                     type="number"
                     min="0"
-                    max="59"
+                    max="60"
                     step="1"
                     :value="seconds"
                     @input="emitInput({ seconds: Number($event.target.value) })"
@@ -35,7 +35,7 @@
                     :class="$style.tenths"
                     type="number"
                     min="0"
-                    max="9"
+                    max="10"
                     step="1"
                     :value="tenths"
                     @input="emitInput({ tenths: Number($event.target.value) })"
@@ -60,6 +60,7 @@
 <script>
 import debounce from '../components/debounce.js';
 import WrapperFuncWithHotkey from './WrapperFuncWithHotkey.vue';
+
 
 export default {
     components: {
@@ -121,21 +122,8 @@ export default {
 .minutes,
 .seconds,
 .tenths {
+    width: 5vw;
     font-size: 3vw;
-}
-
-.minutes {
-    width: 5vw;
-    text-align: right;
-}
-
-.seconds {
-    width: 5vw;
-    text-align: right;
-}
-
-.tenths {
-    width: 3.5vw;
     text-align: right;
 }
 </style>

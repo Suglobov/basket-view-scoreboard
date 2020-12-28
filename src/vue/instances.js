@@ -47,15 +47,15 @@ timersManager.events.on('timersChanged', ({
     timerParts,
     counter24Parts,
 }) => {
-    Object.keys(vueData.timer).forEach((name) => {
-        if (vueData.timer[name] !== timerParts[name]) {
+    setTimeout(() => {
+        Object.keys(vueData.timer).forEach((name) => {
             vueData.timer[name] = timerParts[name];
-        }
+        });
     });
-    Object.keys(vueData.counter24).forEach((name) => {
-        if (vueData.counter24[name] !== counter24Parts[name]) {
+    setTimeout(() => {
+        Object.keys(vueData.counter24).forEach((name) => {
             vueData.counter24[name] = counter24Parts[name];
-        }
+        });
     });
 });
 timersManager.events.on('timersChanged', ({
@@ -138,4 +138,7 @@ watch(() => vueData.counter24, ({ tenths, seconds }) => {
     });
 });
 
-export { timersManager, vueData };
+export {
+    vueData,
+    timersManager,
+};
