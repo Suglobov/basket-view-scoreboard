@@ -30,7 +30,6 @@
 </template>
 
 <script>
-import debounce from '../components/debounce.js';
 import WrapperFuncWithHotkeyAndStopCounter24 from './WrapperFuncWithHotkeyAndStopCounter24.vue';
 
 export default {
@@ -52,12 +51,23 @@ export default {
         'update:seconds',
     ],
     setup (props, context) {
+        const emitValue = (event) => {
+            const values = event.target.value.split('.');
+            context.emit('update:tenths', Number(values[1] === undefined ? 0 : values[1]));
+            context.emit('update:seconds', Number(values[0]));
+        };
         return {
-            emitInput: debounce(($event) => {
-                const values = $event.target.value.split('.');
-                context.emit('update:tenths', Number(values[1] === undefined ? 0 : values[1]));
-                context.emit('update:seconds', Number(values[0]));
-            }, 100),
+            emitInput: (() => {
+                let timer;
+                return (event) => {
+                    clearInterval(timer);
+                    if (event.inputType === undefined) {
+                        emitValue(event);
+                        return;
+                    }
+                    timer = setTimeout(emitValue, 500, event);
+                };
+            })(),
         };
     },
 };

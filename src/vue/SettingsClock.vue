@@ -10,7 +10,7 @@
                     max="10"
                     step="1"
                     :value="minutes"
-                    @input="emitInput({ minutes: Number($event.target.value) })"
+                    @input="emitInput($event, { minutes: Number($event.target.value) })"
                 >
             </div>
         </label>
@@ -24,7 +24,7 @@
                     max="60"
                     step="1"
                     :value="seconds"
-                    @input="emitInput({ seconds: Number($event.target.value) })"
+                    @input="emitInput($event, { seconds: Number($event.target.value) })"
                 >
             </div>
         </label>
@@ -38,7 +38,7 @@
                     max="10"
                     step="1"
                     :value="tenths"
-                    @input="emitInput({ tenths: Number($event.target.value) })"
+                    @input="emitInput($event, { tenths: Number($event.target.value) })"
                 >
             </div>
         </label>
@@ -58,7 +58,6 @@
 </template>
 
 <script>
-import debounce from '../components/debounce.js';
 import WrapperFuncWithHotkey from './WrapperFuncWithHotkey.vue';
 
 
@@ -86,18 +85,29 @@ export default {
         'update:minutes',
     ],
     setup (props, context) {
+        const emitValue = ({ tenths, seconds, minutes }) => {
+            if (tenths !== undefined) {
+                context.emit('update:tenths', tenths);
+            }
+            if (seconds !== undefined) {
+                context.emit('update:seconds', seconds);
+            }
+            if (minutes !== undefined) {
+                context.emit('update:minutes', minutes);
+            }
+        };
         return {
-            emitInput: debounce(({ tenths, seconds, minutes }) => {
-                if (tenths !== undefined) {
-                    context.emit('update:tenths', tenths);
-                }
-                if (seconds !== undefined) {
-                    context.emit('update:seconds', seconds);
-                }
-                if (minutes !== undefined) {
-                    context.emit('update:minutes', minutes);
-                }
-            }, 500),
+            emitInput: (() => {
+                let timer;
+                return (event, data) => {
+                    clearInterval(timer);
+                    if (event.inputType === undefined) {
+                        emitValue(data);
+                        return;
+                    }
+                    timer = setTimeout(emitValue, 500, data);
+                };
+            })(),
         };
     },
 };
