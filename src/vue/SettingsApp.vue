@@ -143,7 +143,7 @@ const components = {
 };
 
 listenHotKeys();
-
+vueData.timer.minutes = 10;
 
 export default {
     components,
