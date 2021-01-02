@@ -1,4 +1,4 @@
-export default () => (value) => {
+export default (value) => {
     const out = Object.create(null);
     out.input = value;
     out.integer = value;
