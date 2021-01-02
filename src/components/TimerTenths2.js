@@ -1,21 +1,11 @@
-// import waterFall from '../components/waterFall.js';
+import getIntegerInfo from '../components/getIntegerInfo.js';
+import LimitedIntegerInfo from '../components/LimitedIntegerInfo.js';
 
-
-const getInteger = (value, cbTypeError = (_value = 0, _newValue = 0) => { }) => {
-    if (Number.isInteger(value) === true) {
-        return value;
-    }
-    const integer = parseInt(String(value), 10);
-    const newValue = Number.isNaN(integer) ? 0 : integer;
-    cbTypeError(value, newValue);
-    return newValue;
-};
-const getIntegerOrNan = (value) => {
-    return Number.isInteger(value) ? value : parseInt(String(value));
-};
 
 export default class {
     constructor ({ maxValue = 0 } = {}) {
+        this.limitedInteger = new LimitedIntegerInfo(0, maxValue);
+
         this.rules = {
             tenths: { divider: 1, remainder: 10 },
             seconds: { divider: 10, remainder: 60 },
@@ -26,63 +16,74 @@ export default class {
         Object.freeze(this.rules.minutes);
         Object.freeze(this.rules);
 
-        this.maxValue = getInteger(maxValue);
 
-        let _value;
-        const _parts = Object.create(null);
+        const _time = Object.create(null);
+        _time.allTenths = 0;
+        _time.parts = this.getIntegerParts(0);
 
-        this.getValue = () => _value;
-        this.getParts = () => ({ ..._parts });
+        this.getTime = () => ({ ..._time });
 
-        const _setPartsFromInteger = (integer) => {
-            Object.entries(this.rules).forEach(([partName, { divider = 0, remainder = 0 }]) => {
-                _parts[partName] = ~~(integer / divider % remainder);
-            });
-        };
-
-        const _setValueFromInteger = (integer) => {
-            if (integer === _value) {
+        const _saveTime = (integer) => {
+            if (integer === _time.allTenths) {
                 return;
             }
-            _value = integer;
-            _setPartsFromInteger(integer);
+
+            _time.allTenths = integer;
+            _time.parts = this.getIntegerParts(integer);
         };
 
-        this.setValue = (value) => {
-            const integerOrNan = getIntegerOrNan(value);
-            if (Number.isNaN(integerOrNan) === false) {
-                const limitedInteger = this._getLimitedValue(integerOrNan);
-                _setValueFromInteger(limitedInteger);
+
+        this.setAllTenths = (value) => {
+            const integerInfo = this.limitedInteger.getLimitedIntegerInfo(value);
+            if (
+                integerInfo.inputInfo.isNaN === false &&
+                integerInfo.integer !== _time.allTenths
+            ) {
+                _saveTime(integerInfo.integer);
             }
+
             return this;
         };
 
         this.setParts = (incomeParts) => {
             if (incomeParts instanceof Object) {
-                let integer = this.getValue();
+                let integer = _time.allTenths;
+
                 Object.entries(this.rules).forEach(([partName, { divider }]) => {
-                    const incomePart = getIntegerOrNan(incomeParts[partName]);
-                    if (Number.isNaN(incomePart) || incomePart === _parts[partName]) {
+                    const incomePartInfo = getIntegerInfo(incomeParts[partName]);
+                    if (
+                        incomePartInfo.isNaN ||
+                        incomePartInfo.integer === _time.parts[partName]
+                    ) {
                         return;
                     }
-                    integer -= (_parts[partName] - incomePart) * divider;
+
+                    integer -= (_time.parts[partName] - incomePartInfo.integer) * divider;
                 });
-                const limitedInteger = this._getLimitedValue(integer);
-                _setValueFromInteger(limitedInteger);
+
+                this.setAllTenths(integer);
             }
+
             return this;
         };
 
         Object.freeze(this);
-        this.setValue(0);
     }
 
-    _getLimitedValue (value) {
-        if (value >= 0 && value <= this.maxValue) {
-            return value;
-        } else if (value < 0) {
-            return 0;
+    getIntegerParts (value) {
+        const inputInfo = getIntegerInfo(value);
+        if (inputInfo.isInteger === false) {
+            console.warn('value not integer');
         }
-        return this.maxValue;
+
+        const integerParts = Object.create(null);
+        Object.entries(this.rules)
+            .forEach(([partName, { divider = 0, remainder = 0 }]) => {
+                integerParts[partName] = ~~(inputInfo.integer / divider % remainder);
+            });
+
+        Object.freeze(integerParts);
+
+        return integerParts;
     }
 }

@@ -44,39 +44,38 @@ const vueData = reactive({
 
 const timersManager = new TimersManager();
 timersManager.events.on('timersChanged', ({
-    timerParts,
-    counter24Parts,
+    timerTime,
+    counter24Time,
 }) => {
     setTimeout(() => {
         Object.keys(vueData.timer).forEach((name) => {
-            vueData.timer[name] = timerParts[name];
+            vueData.timer[name] = timerTime.parts[name];
         });
     });
     setTimeout(() => {
         Object.keys(vueData.counter24).forEach((name) => {
-            vueData.counter24[name] = counter24Parts[name];
+            vueData.counter24[name] = counter24Time.parts[name];
         });
     });
 });
 timersManager.events.on('timersChanged', ({
-    prevTimerParts,
-    prevCounter24Parts,
-    timerParts,
-    counter24Value,
-    counter24Parts,
+    prevTimerTime,
+    prevCounter24Time,
+    timerTime,
+    counter24Time,
 }) => {
     if (
-        prevTimerParts.seconds !== timerParts.seconds ||
-        prevTimerParts.minutes !== timerParts.minutes
+        prevTimerTime.parts.seconds !== timerTime.parts.seconds ||
+        prevTimerTime.parts.minutes !== timerTime.parts.minutes
     ) {
-        sendSettings({ timer: { seconds: timerParts.seconds, minutes: timerParts.minutes } });
+        sendSettings({ timer: timerTime.parts });
     }
 
     if (
-        prevCounter24Parts.seconds !== counter24Parts.seconds ||
-        counter24Value < 100
+        prevCounter24Time.parts.seconds !== counter24Time.parts.seconds ||
+        counter24Time.allTenths < 100
     ) {
-        sendSettings({ counter24: { tenths: counter24Parts.tenths, seconds: counter24Parts.seconds } });
+        sendSettings({ counter24: counter24Time.parts });
     }
 });
 
