@@ -11,8 +11,6 @@ export default class {
         this.counter24 = new TimerTenths({ maxValue: 240 });
         this._timeTicker = new TimeTicker({ delayMs: 100 });
 
-        this.isCounter24Freeze = false;
-
         this.events = new EventsStorage([
             'timersChanged',
             'stopTimer',
@@ -22,37 +20,46 @@ export default class {
             'endOfCounter24',
         ]);
 
+
+        const additionalParams = Object.create(null);
+        additionalParams.isCounter24Freeze = false;
+
+        this.setAdditionalParams = ({ isCounter24Freeze } = {}) => {
+            if (isCounter24Freeze !== undefined) {
+                additionalParams.isCounter24Freeze = Boolean(isCounter24Freeze);
+            }
+        };
+
+
         this._timeTicker.events.on('tick', () => {
-            const prevTimerTime = this.timer.getTime();
-            const prevCounter24Time = this.counter24.getTime();
-
-            this.timer.setAllTenths(prevTimerTime.allTenths - 1);
-            if (this.isCounter24Freeze === false) {
-                this.counter24.setAllTenths(prevCounter24Time.allTenths - 1);
-            }
-            this._correctTimers();
-
-            const timerTime = this.timer.getTime();
-            const counter24Time = this.counter24.getTime();
-
-            if (timerTime.allTenths === 0) {
-                this.stopTimer();
-            }
-
-
-            this.events.trigger('timersChanged', {
+            this.wrapperAction(({
+                prevTimerTime,
+                prevCounter24Time,
+            }) => {
+                this.timer.setAllTenths(prevTimerTime.allTenths - 1);
+                if (additionalParams.isCounter24Freeze === false) {
+                    this.counter24.setAllTenths(prevCounter24Time.allTenths - 1);
+                }
+                this._correctTimers();
+            }, ({
                 prevTimerTime,
                 prevCounter24Time,
                 timerTime,
                 counter24Time,
-            });
+            }) => {
+                if (timerTime.allTenths === 0) {
+                    this.stopTimer();
+                }
 
-            if (timerTime.allTenths === 0 && prevTimerTime.allTenths !== 0) {
-                this.events.trigger('endOfQuarter');
-            } else if (counter24Time.allTenths === 0 && prevCounter24Time.allTenths !== 0) {
-                this.events.trigger('endOfCounter24');
-            }
+                if (timerTime.allTenths === 0 && prevTimerTime.allTenths !== 0) {
+                    this.events.trigger('endOfQuarter');
+                } else if (counter24Time.allTenths === 0 && prevCounter24Time.allTenths !== 0) {
+                    this.events.trigger('endOfCounter24');
+                }
+            });
         });
+
+        Object.freeze(this);
     }
 
     _correctTimers () {
@@ -64,19 +71,14 @@ export default class {
         }
     }
 
-    setAdditionalParams ({ isCounter24Freeze } = {}) {
-        if (isCounter24Freeze !== undefined) {
-            this.isCounter24Freeze = Boolean(isCounter24Freeze);
-        }
-    }
-
-    setTimers ({ timer, counter24 } = {}) {
+    wrapperAction (changeAction = () => { }, actionAfterChange = () => {}) {
         const prevTimerTime = this.timer.getTime();
         const prevCounter24Time = this.counter24.getTime();
 
-        this.timer.setParts(timer);
-        this.counter24.setParts(counter24);
-        this._correctTimers();
+        changeAction({
+            prevTimerTime,
+            prevCounter24Time,
+        });
 
         const timerTime = this.timer.getTime();
         const counter24Time = this.counter24.getTime();
@@ -86,6 +88,21 @@ export default class {
             prevCounter24Time,
             timerTime,
             counter24Time,
+        });
+
+        actionAfterChange({
+            prevTimerTime,
+            prevCounter24Time,
+            timerTime,
+            counter24Time,
+        });
+    }
+
+    setTimers ({ timer, counter24 } = {}) {
+        this.wrapperAction(() => {
+            this.timer.setParts(timer);
+            this.counter24.setParts(counter24);
+            this._correctTimers();
         });
     }
 
