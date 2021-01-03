@@ -91,6 +91,14 @@ timersManager.events.on('stopTimer', () => {
 });
 
 
+watch(() => vueData.timer, ({ tenths, seconds, minutes }) => {
+    timersManager.setTimers({ timer: { tenths, seconds, minutes } });
+}, { deep: true });
+
+watch(() => vueData.counter24, ({ tenths, seconds }) => {
+    timersManager.setTimers({ counter24: { tenths, seconds } });
+}, { deep: true });
+
 watch(() => vueData.isTimerRunning, (isTimerRunning) => {
     if (isTimerRunning === true) {
         timersManager.startTimer();
@@ -108,14 +116,6 @@ watch(() => vueData.isCounter24TemporaryStop, () => {
         isCounter24Freeze: vueData.isCounter24RunningWithTimer === false || vueData.isCounter24TemporaryStop === true,
     });
 });
-
-watch(() => vueData.timer, ({ tenths, seconds, minutes }) => {
-    timersManager.setTimers({ timer: { tenths, seconds, minutes } });
-}, { deep: true });
-
-watch(() => vueData.counter24, ({ tenths, seconds }) => {
-    timersManager.setTimers({ counter24: { tenths, seconds } });
-}, { deep: true });
 
 [
     'teamLeft',
