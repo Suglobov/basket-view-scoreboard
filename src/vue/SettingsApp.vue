@@ -5,7 +5,7 @@
                 v-model:team="teamLeft"
                 v-model:score="scoreLeft"
                 v-model:spent-timeouts="spentTimeoutsLeft"
-                v-model:fols="folsLeft"
+                v-model:fouls="foulsLeft"
                 :side="'left'"
             />
             <SettingsHelpText />
@@ -48,7 +48,7 @@
                 v-model:team="teamRight"
                 v-model:score="scoreRight"
                 v-model:spent-timeouts="spentTimeoutsRight"
-                v-model:fols="folsRight"
+                v-model:fouls="foulsRight"
                 :side="'right'"
             />
             <div class="mt-big">

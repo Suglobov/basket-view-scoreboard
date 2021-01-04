@@ -68,9 +68,9 @@
                     min="0"
                     max="5"
                     step="1"
-                    :class="$style.fols"
-                    :value="fols"
-                    @input="$emit('update:fols', Number($event.target.value))"
+                    :class="$style.fouls"
+                    :value="fouls"
+                    @input="$emit('update:fouls', Number($event.target.value))"
                 >
             </div>
         </label>
@@ -101,7 +101,7 @@ export default {
             type: Number,
             default: 0,
         },
-        fols: {
+        fouls: {
             type: Number,
             default: 0,
         },
@@ -110,7 +110,7 @@ export default {
         'update:team',
         'update:score',
         'update:spentTimeouts',
-        'update:fols',
+        'update:fouls',
     ],
 };
 </script>
@@ -146,7 +146,7 @@ export default {
     text-align: right;
 }
 
-.fols {
+.fouls {
     width: 5vw;
     font-size: 3vw;
     text-align: right;

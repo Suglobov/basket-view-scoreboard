@@ -89,9 +89,9 @@
                 </div>
                 <div
                     class="view-foul"
-                    :class="{ 'view-foul-limit': folsLeft > 3 }"
+                    :class="{ 'view-foul-limit': foulsLeft > 3 }"
                 >
-                    {{ folsLeft }}
+                    {{ foulsLeft }}
                 </div>
             </template>
             <template #center>
@@ -103,9 +103,9 @@
                 </div>
                 <div
                     class="view-foul"
-                    :class="{ 'view-foul-limit': folsRight > 3 }"
+                    :class="{ 'view-foul-limit': foulsRight > 3 }"
                 >
-                    {{ folsRight }}
+                    {{ foulsRight }}
                 </div>
             </template>
         </ViewRow>
@@ -147,8 +147,8 @@ const vueData = reactive({
     teamRight: 'Команда П',
     scoreLeft: 0,
     scoreRight: 0,
-    folsLeft: 0,
-    folsRight: 0,
+    foulsLeft: 0,
+    foulsRight: 0,
     isMirror: false,
     showArrow: false,
     arrowDirection: 'left',
@@ -169,7 +169,7 @@ const vueData = reactive({
 
 export default {
     components,
-    setup() {
+    setup () {
         return vueData;
     },
 };
