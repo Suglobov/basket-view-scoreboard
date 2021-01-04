@@ -1,59 +1,97 @@
+import { waterFall } from '../components/helpers.js';
+
+const checkString = (string, cbNext = () => { }) => {
+    if (typeof string !== 'string') {
+        console.warn(new Error(`'${string}' not string`));
+        return;
+    }
+
+    cbNext();
+};
+
+const checkFunction = (func, cbNext = () => {}) => {
+    if (func instanceof Function === false) {
+        console.warn(new Error(`'${func}' not function`));
+        return;
+    }
+
+    cbNext();
+};
+
+const checkDuplicateEventName = (events, eventName, cbNext = () => { }) => {
+    if (events[eventName] !== undefined) {
+        console.warn(new Error(`'${eventName}' eventName duplicate`));
+        return;
+    }
+
+    cbNext();
+};
+
+const checkEventName = (events, eventName, cbNext = () => { }) => {
+    if (events[eventName] === undefined) {
+        console.warn(new Error(`'${eventName}' eventName not possible`));
+        return;
+    }
+
+    cbNext();
+};
+
+const checkDuplicateHandler = (events, eventName, eventHandler, cbNext = () => { }) => {
+    if (events[eventName].some((handler) => handler === eventHandler)) {
+        console.warn(new Error(`'${eventHandler}' eventHandler duplicate`));
+        return;
+    }
+
+    cbNext();
+};
+
 export default class EventsStorage {
-    constructor (posibleEvents = []) {
-        if (Array.isArray(posibleEvents) === false) {
-            console.error(new Error('posibleEvents not array'));
-            return;
+    constructor (possibleEvents = []) {
+        this.possibleEvents = possibleEvents;
+        if (Array.isArray(possibleEvents) === false) {
+            console.warn(new Error('possibleEvents not array'));
+            this.possibleEvents = [];
         }
-        this.events = {};
-        posibleEvents.forEach((eventName) => {
-            if (typeof eventName !== 'string') {
-                console.error(new Error(`'${eventName}' eventName not string`));
-                return;
-            }
-            this.events[eventName] = [];
+
+
+        const events = Object.create(null);
+
+        this.possibleEvents.forEach((eventName) => {
+            waterFall(
+                (cbNext) => checkString(eventName, cbNext),
+                (cbNext) => checkDuplicateEventName(events, eventName, cbNext),
+                () => (events[eventName] = []),
+            );
         });
 
-        Object.freeze(this.events);
+        this.on = (eventName, eventHandler) => {
+            waterFall(
+                (cbNext) => checkString(eventName, cbNext),
+                (cbNext) => checkEventName(events, eventName, cbNext),
+                (cbNext) => checkFunction(eventHandler, cbNext),
+                (cbNext) => checkDuplicateHandler(events, eventName, eventHandler, cbNext),
+                () => events[eventName].push(eventHandler),
+            );
+        };
+
+        this.off = (eventName, eventHandler) => {
+            waterFall(
+                (cbNext) => checkString(eventName, cbNext),
+                (cbNext) => checkEventName(events, eventName, cbNext),
+                (cbNext) => checkFunction(eventHandler, cbNext),
+                () => (events[eventName] = events[eventName].filter((handler) => handler !== eventHandler)),
+            );
+        };
+
+        this.trigger = (eventName, ...args) => {
+            waterFall(
+                (cbNext) => checkString(eventName, cbNext),
+                (cbNext) => checkEventName(events, eventName, cbNext),
+                () => (events[eventName].forEach((handler) => handler(...args))),
+            );
+        };
+
+        Object.freeze(this.possibleEvents);
         Object.freeze(this);
-    }
-
-    _checkEventName (eventName = '', cbSuccess = () => { }) {
-        if (typeof eventName !== 'string') {
-            console.error(new Error(`'${eventName}' eventName not string`));
-            return;
-        }
-        if (this.events[eventName] === undefined) {
-            console.error(new Error(`not posible eventName '${eventName}'`));
-            return;
-        }
-        cbSuccess();
-    }
-
-    _checkEventNameAndHandler (eventName = '', eventHandler = () => {}, cbSuccess = () => { }) {
-        this._checkEventName(eventName, () => {
-            if ((eventHandler instanceof Function) === false) {
-                console.error(new Error(`'${eventHandler}' eventHandler not function`));
-                return;
-            }
-            cbSuccess();
-        });
-    }
-
-    on (eventName = '', eventHandler = () => { }) {
-        this._checkEventNameAndHandler(eventName, eventHandler, () => {
-            this.events[eventName].push(eventHandler);
-        });
-    }
-
-    off (eventName = '', eventHandler = () => { }) {
-        this._checkEventNameAndHandler(eventName, eventHandler, () => {
-            this.events[eventName] = this.events[eventName].filter((handler = () => { }) => handler !== eventHandler);
-        });
-    }
-
-    trigger (eventName = '', ...args) {
-        this._checkEventName(eventName, () => {
-            this.events[eventName].forEach((handler = (..._args) => { }) => handler(...args));
-        });
     }
 }
