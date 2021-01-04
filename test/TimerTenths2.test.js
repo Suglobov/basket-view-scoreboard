@@ -1,4 +1,4 @@
-// import { test, expect } from 'jest';
+import { test, expect } from '@jest/globals';
 import TimerTenths2 from '../src/components/TimerTenths2.js';
 
 const timerTenths2 = new TimerTenths2({ maxValue: 625 });
