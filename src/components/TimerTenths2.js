@@ -1,4 +1,4 @@
-import getIntegerInfo from '../components/getIntegerInfo.js';
+import { getIntegerInfo } from '../components/helpers.js';
 import LimitedIntegerInfo from '../components/LimitedIntegerInfo.js';
 
 
@@ -73,7 +73,7 @@ export default class {
     getIntegerParts (value) {
         const inputInfo = getIntegerInfo(value);
         if (inputInfo.isInteger === false) {
-            console.warn('value not integer');
+            console.warn(new Error('value not integer'));
         }
 
         const integerParts = Object.create(null);

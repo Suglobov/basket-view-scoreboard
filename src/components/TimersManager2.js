@@ -1,8 +1,6 @@
 import TimeTicker from './TimeTicker.js';
 import EventsStorage from './EventsStorage.js';
-// import TimerTenthWrapper from './TimerTenthWrapper.js';
 import TimerTenths from '../components/TimerTenths2.js';
-// import waterFall from './waterFall.js';
 
 
 export default class {
