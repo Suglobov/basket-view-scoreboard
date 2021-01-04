@@ -26,6 +26,11 @@ export const getIntegerInfo = (value) => {
 
 export const waterFall = (...functions) => {
     const next = ([firstFunction, ...otherFunctions], ...previousResult) => {
+        if (firstFunction instanceof Function === false) {
+            console.warn(new Error(`'${firstFunction}' not function`));
+            return;
+        }
+
         const cbNext = (...data) => {
             if (otherFunctions.length === 0) {
                 return;
