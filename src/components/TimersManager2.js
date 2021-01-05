@@ -1,3 +1,4 @@
+import { deepFreeze } from '../components/helpers.js';
 import TimeTicker from './TimeTicker.js';
 import EventsStorage from './EventsStorage.js';
 import TimerTenths from '../components/TimerTenths2.js';
@@ -57,7 +58,7 @@ export default class {
             });
         });
 
-        Object.freeze(this);
+        deepFreeze(this);
     }
 
     _correctTimers () {

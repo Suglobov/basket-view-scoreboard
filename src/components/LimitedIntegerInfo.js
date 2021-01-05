@@ -1,4 +1,4 @@
-import { getIntegerInfo } from '../components/helpers.js';
+import { getIntegerInfo, deepFreeze } from '../components/helpers.js';
 
 export default class {
     constructor (min, max) {
@@ -22,7 +22,7 @@ export default class {
             console.warn(new Error('min > max'));
         }
 
-        Object.freeze(this);
+        deepFreeze(this);
     }
 
     getLimitedIntegerInfo (value) {
@@ -44,7 +44,7 @@ export default class {
             out.integer = this.max;
         }
 
-        Object.freeze(out);
+        deepFreeze(out);
         return out;
     }
 }

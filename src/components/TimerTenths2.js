@@ -1,4 +1,4 @@
-import { getIntegerInfo } from '../components/helpers.js';
+import { getIntegerInfo, deepFreeze } from '../components/helpers.js';
 import LimitedIntegerInfo from '../components/LimitedIntegerInfo.js';
 
 
@@ -11,11 +11,6 @@ export default class {
             seconds: { divider: 10, remainder: 60 },
             minutes: { divider: 600, remainder: 60 },
         };
-        Object.freeze(this.rules.tenths);
-        Object.freeze(this.rules.seconds);
-        Object.freeze(this.rules.minutes);
-        Object.freeze(this.rules);
-
 
         const _time = Object.create(null);
         _time.allTenths = 0;
@@ -67,7 +62,7 @@ export default class {
             return this;
         };
 
-        Object.freeze(this);
+        deepFreeze(this);
     }
 
     getIntegerParts (value) {
@@ -82,7 +77,7 @@ export default class {
                 integerParts[partName] = ~~(inputInfo.integer / divider % remainder);
             });
 
-        Object.freeze(integerParts);
+        deepFreeze(integerParts);
 
         return integerParts;
     }
