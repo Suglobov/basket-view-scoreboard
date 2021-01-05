@@ -44,3 +44,14 @@ export const waterFall = (...functions) => {
     next(functions);
 };
 
+export const deepFreeze = (object) => {
+    const iter = (object) => {
+        Object.keys(object).forEach((key) => {
+            if (object[key] instanceof Object) {
+                iter(object[key]);
+            }
+        });
+        Object.freeze(object);
+    };
+    iter(object);
+};

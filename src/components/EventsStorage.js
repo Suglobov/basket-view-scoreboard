@@ -1,4 +1,4 @@
-import { waterFall } from '../components/helpers.js';
+import { waterFall, deepFreeze } from '../components/helpers.js';
 
 const checkString = (string, cbNext = () => { }) => {
     if (typeof string !== 'string') {
@@ -47,14 +47,19 @@ const checkDuplicateHandler = (events, eventName, eventHandler, cbNext = () => {
 
 export default class EventsStorage {
     constructor (possibleEvents = []) {
+        const events = Object.create(null);
         this.possibleEvents = possibleEvents;
+
+        this.on = undefined;
+        this.off = undefined;
+        this.trigger = undefined;
+
+
         if (Array.isArray(possibleEvents) === false) {
             console.warn(new Error('possibleEvents not array'));
             this.possibleEvents = [];
         }
 
-
-        const events = Object.create(null);
 
         this.possibleEvents.forEach((eventName) => {
             waterFall(
@@ -91,7 +96,6 @@ export default class EventsStorage {
             );
         };
 
-        Object.freeze(this.possibleEvents);
-        Object.freeze(this);
+        deepFreeze(this);
     }
 }
