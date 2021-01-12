@@ -1,3 +1,4 @@
 node_modules
 dist
 basket-view-scoreboard-win32-x64
+.vscode
