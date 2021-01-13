@@ -15,19 +15,6 @@
         "prettier": "prettier  --npwrite src/**/*.js",
         "test": "jest"
     },
-    "husky": {
-        "hooks": {
-            "pre-commit": "lint-staged"
-        }
-    },
-    "lint-staged": {
-        "src/**/*.(js|jsx|ts|vue)": [
-            "npx eslint --fix"
-        ],
-        "src/**/*.(css|scss|vue)": [
-            "npx stylelint --fix"
-        ]
-    },
     "keywords": [],
     "author": "",
     "license": "ISC",
