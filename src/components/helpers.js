@@ -24,6 +24,41 @@ export const getIntegerInfo = (value) => {
     return out;
 };
 
+export const deepFreeze = (object) => {
+    const iter = (iterObject) => {
+        if (Object.isFrozen(iterObject) === false) {
+            Object.freeze(iterObject);
+        }
+        Object.keys(iterObject).forEach((key) => {
+            if (
+                iterObject[key] instanceof Object ||
+                (typeof iterObject[key] === 'object' && iterObject[key] !== null)
+            ) {
+                iter(iterObject[key]);
+            }
+        });
+    };
+    iter(object);
+};
+
+export const getSimpleObject = (object) => {
+    const iter = (iterObject) => {
+        const simpleIterObject = Object.create(null);
+        Object.keys(iterObject).forEach((key) => {
+            if (typeof object[key] === 'object' && object[key] !== null) {
+                simpleIterObject[key] = iter(iterObject[key]);
+            } else {
+                simpleIterObject[key] = iterObject[key];
+            }
+        });
+        return simpleIterObject;
+    };
+
+    const simpleObject = iter(object);
+
+    return simpleObject;
+};
+
 export const waterFall = (...functions) => {
     const next = ([firstFunction, ...otherFunctions], ...previousResult) => {
         if (firstFunction instanceof Function === false) {
@@ -44,14 +79,69 @@ export const waterFall = (...functions) => {
     next(functions);
 };
 
-export const deepFreeze = (object) => {
-    const iter = (object) => {
-        Object.keys(object).forEach((key) => {
-            if (object[key] instanceof Object) {
-                iter(object[key]);
-            }
+
+/*
+new GoNext(({ toError }) => {})
+    .next(({ toError, data }) => {
+        if (need to transfer data to .next) {
+            return data;
+        } else if(need to transfer data to .error ) {
+            return toError(data);
+        }
+    })
+    .error(({ toError, data }) => {
+        similarly as 'next'
+    })
+*/
+export class GoNext {
+    constructor (func) {
+        let isGoNext = true;
+        let transferData;
+        const toError = (data) => {
+            transferData = data;
+            isGoNext = false;
+            return data;
+        };
+
+        this.next = undefined;
+        this.error = undefined;
+
+
+        if (func instanceof Function === false) {
+            console.warn(new Error('func not function'));
+        }
+
+        transferData = func({
+            toError,
         });
-        Object.freeze(object);
-    };
-    iter(object);
+
+        this.next = (func) => {
+            if (isGoNext === true) {
+                transferData = func({
+                    data: transferData,
+                    toError,
+                });
+            }
+
+            return this;
+        };
+
+        this.error = (func) => {
+            if (isGoNext === false) {
+                isGoNext = true;
+                transferData = func({
+                    data: transferData,
+                    toError,
+                });
+            }
+
+            return this;
+        };
+
+        deepFreeze(this);
+    }
+}
+
+export const checkType = () => {
+
 };
