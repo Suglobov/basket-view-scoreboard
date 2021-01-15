@@ -102,25 +102,27 @@ export class GoNext {
             isGoNext = false;
             return data;
         };
+        const callFunc = (func) => {
+            if (func instanceof Function === false) {
+                console.warn(new Error('func not function'));
+                return;
+            }
+
+            transferData = func({
+                data: transferData,
+                toError,
+            });
+        };
 
         this.next = undefined;
         this.error = undefined;
 
 
-        if (func instanceof Function === false) {
-            console.warn(new Error('func not function'));
-        }
-
-        transferData = func({
-            toError,
-        });
+        callFunc(func);
 
         this.next = (func) => {
             if (isGoNext === true) {
-                transferData = func({
-                    data: transferData,
-                    toError,
-                });
+                callFunc(func);
             }
 
             return this;
@@ -129,10 +131,7 @@ export class GoNext {
         this.error = (func) => {
             if (isGoNext === false) {
                 isGoNext = true;
-                transferData = func({
-                    data: transferData,
-                    toError,
-                });
+                callFunc(func);
             }
 
             return this;
