@@ -95,12 +95,16 @@ new GoNext(({ toError }) => {})
 */
 export class GoNext {
     constructor (func) {
-        let isGoNext = true;
+        let isGoNext = null;
         let transferData;
+
+        const toNext = (data) => {
+            transferData = data;
+            isGoNext = true;
+        };
         const toError = (data) => {
             transferData = data;
             isGoNext = false;
-            return data;
         };
         const callFunc = (func) => {
             if (func instanceof Function === false) {
@@ -108,8 +112,10 @@ export class GoNext {
                 return;
             }
 
+            isGoNext = null;
             transferData = func({
                 data: transferData,
+                toNext,
                 toError,
             });
         };
@@ -130,7 +136,6 @@ export class GoNext {
 
         this.error = (func) => {
             if (isGoNext === false) {
-                isGoNext = true;
                 callFunc(func);
             }
 
@@ -141,6 +146,102 @@ export class GoNext {
     }
 }
 
-export const checkType = () => {
+export const getInstanceOf = (value) => {
+    return (
+        value === undefined
+            ? undefined
+            : (
+                value === null
+                    ? null
+                    : Object.getPrototypeOf(value)
+            )
+    );
+};
 
+export const checkInteger = ({
+    value,
+    onFailValue = 0,
+    cbOk = () => { },
+    cbFail = (_info) => { },
+} = {}) => {
+    if (Number.isInteger(onFailValue)) {
+        console.warn(new Error('onFailValue is not an integer'));
+        return;
+    }
+    if (cbOk instanceof Function === false) {
+        console.warn(new Error('cbOk is not a function'));
+        return;
+    }
+    if (cbFail instanceof Function === false) {
+        console.warn(new Error('cbFail is not a function'));
+        return;
+    }
+
+    if (Number.isInteger(value)) {
+        cbOk();
+        return;
+    }
+
+    const instanceOf = getInstanceOf(value);
+
+    const parseInteger = parseInt(value, 10);
+    const isNaN = Number.isNaN(parseInteger);
+    const integer = isNaN ? onFailValue : parseInteger;
+
+    cbFail({
+        parseInteger,
+        isNaN,
+        integer,
+        instanceOf,
+    });
+};
+
+export const checkInstanceOf = ({
+    value,
+    type,
+    cbOk = () => { },
+    cbFail = (_info) => { },
+} = {}) => {
+    if (value === undefined || value === null) {
+        console.warn(new Error('value not defined'));
+        return;
+    }
+    if (cbOk instanceof Function === false) {
+        console.warn(new Error('cbOk is not a function'));
+        return;
+    }
+    if (cbFail instanceof Function === false) {
+        console.warn(new Error('cbFail is not a function'));
+        return;
+    }
+    if (type === undefined || type === null || type.name === undefined) {
+        console.warn(new Error('type not constructor'));
+        return;
+    }
+
+    let checkResult;
+    const special = {
+        String: (value) => typeof value === 'string',
+        Number: (value) => typeof value === 'number',
+        Boolean: (value) => typeof value === 'boolean',
+        Symbol: (value) => typeof value === 'symbol',
+        Object: (value) => typeof value === 'object' && value !== null,
+    };
+
+    if (special[String(type.name)] !== undefined) {
+        checkResult = special[String(type.name)](value);
+    } else {
+        checkResult = (value instanceof type === true);
+    }
+
+    if (checkResult === true) {
+        cbOk();
+        return;
+    }
+
+    const instanceOf = getInstanceOf(value);
+    console.warn(new Error(`${value} value is instanceof ${instanceOf.constructor.name}, not ${type.name}`));
+    cbFail({
+        instanceOf,
+    });
 };
