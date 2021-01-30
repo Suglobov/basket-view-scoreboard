@@ -225,7 +225,9 @@ export const checkInstanceOf = ({
         Number: (value) => typeof value === 'number',
         Boolean: (value) => typeof value === 'boolean',
         Symbol: (value) => typeof value === 'symbol',
-        Object: (value) => typeof value === 'object' && value !== null,
+        Object: (value) => {
+            return (typeof value === 'object' && value !== null) || value instanceof Object;
+        },
     };
 
     if (special[String(type.name)] !== undefined) {
@@ -240,7 +242,7 @@ export const checkInstanceOf = ({
     }
 
     const instanceOf = getInstanceOf(value);
-    console.warn(new Error(`${value} value is instanceof ${instanceOf.constructor.name}, not ${type.name}`));
+    console.warn(new Error(`${value} is instanceof ${instanceOf.constructor.name}, not ${type.name}`));
     cbFail({
         instanceOf,
     });

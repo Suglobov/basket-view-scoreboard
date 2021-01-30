@@ -79,16 +79,16 @@ describe('errors', () => {
         const warn = jest.spyOn(global.console, 'warn').mockImplementation();
 
         const eventStorage = new EventsStorage({ z: 1 });
-        expect(warn).toBeCalledWith(new Error('[object Object] value is instanceof Object, not Array'));
+        expect(warn).toBeCalledWith(new Error('[object Object] is instanceof Object, not Array'));
 
         eventStorage.on({}, () => { });
-        expect(warn).toBeCalledWith(new Error('[object Object] value is instanceof Object, not String'));
+        expect(warn).toBeCalledWith(new Error('[object Object] is instanceof Object, not String'));
 
         eventStorage.off([], () => { });
-        expect(warn).toBeCalledWith(new Error(' value is instanceof Array, not String'));
+        expect(warn).toBeCalledWith(new Error(' is instanceof Array, not String'));
 
         eventStorage.trigger(1, () => { });
-        expect(warn).toBeCalledWith(new Error('1 value is instanceof Number, not String'));
+        expect(warn).toBeCalledWith(new Error('1 is instanceof Number, not String'));
 
         eventStorage.on('test', () => {});
         expect(warn).toBeCalledWith(new Error('\'test\' eventName not possible'));
@@ -130,10 +130,10 @@ describe('errors', () => {
         const eventStorage = new EventsStorage(['event1', 'event2']);
 
         eventStorage.on('event1', 'zzz');
-        expect(warn).toBeCalledWith(new Error('zzz value is instanceof String, not Function'));
+        expect(warn).toBeCalledWith(new Error('zzz is instanceof String, not Function'));
 
         eventStorage.off('event1', 'yyy');
-        expect(warn).toBeCalledWith(new Error('yyy value is instanceof String, not Function'));
+        expect(warn).toBeCalledWith(new Error('yyy is instanceof String, not Function'));
 
         warn.mockRestore();
     });
