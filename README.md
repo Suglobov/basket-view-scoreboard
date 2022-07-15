@@ -46,6 +46,12 @@
 
 ## ссылк на архивы с версией для windows
 
+<https://drive.google.com/file/d/1EcmCgU-tb5PwLVe7vk6xNlj7jnudcz-y/view?usp=sharing>  
+В этой версии поправил стили (по просьбе), чтоб числа лучше было видно на записи.
+Поменял звуковые файлы, подрезал пустоту в начале и конце.
+
+---
+
 <https://drive.google.com/file/d/1NzHNbTkPXoy9KWdQO84SQ-iduerQtTsI/view?usp=sharing>  
 В этой версии добавил остановку счетчика 24
 во время зажатия горячей клавиши или кнопки мышки на кнопки сброса на 14 или 24.
