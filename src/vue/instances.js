@@ -2,8 +2,8 @@ import TimersManager from '../components/TimersManager2.js';
 
 import { reactive, watch } from 'vue';
 
-import soundBuzzerTimerPath from '../sounds/buzzer/beep_end_period.mp3';
-import soundBuzzerCounter24Path from '../sounds/buzzer/portal2buzzer.mp3';
+import soundBuzzerTimerPath from '../sounds/buzzer/beepEndPeriod.mp3';
+import soundBuzzerCounter24Path from '../sounds/buzzer/beepEnd24.mp3';
 import sendSettings from '../components/sendSettings.js';
 
 

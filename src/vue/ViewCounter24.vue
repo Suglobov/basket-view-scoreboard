@@ -3,6 +3,7 @@
         :class="[
             $style.wrapper,
             seconds < 6 ? $style.warning : '',
+            seconds === 0 && tenths === 0 ? $style.isFinished : '',
         ]"
     >
         <div
@@ -40,14 +41,21 @@ export default {
 <style lang="scss" module>
 .wrapper {
     display: flex;
+    box-sizing: border-box;
     justify-content: center;
     padding: 1vw;
+    border: 2px solid transparent;
     color: #e03838;
 }
 
 .warning {
     background-color: #ff0f;
     border-radius: 10px;
+    color: #000;
+}
+
+.isFinished {
+    background-color: #e03838;
 }
 
 .seconds {
